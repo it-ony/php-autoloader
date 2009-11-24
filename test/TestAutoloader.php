@@ -68,7 +68,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 				
 			}
 		}
-		$this->fail("$expectedPath not found.");
+		$this->fail("$expectedPath not found. Paths:\n" . implode("\n", $autoloader->getPaths()));
 	}
 	
 	
@@ -189,7 +189,11 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 		
 		$autoPath = realpath(dirname(__FILE__));
 		
+		$defaultLoader = new Autoloader();
+		$defaultLoader->addCallersPath();
+		
 		$loaderWithMorePaths = new Autoloader();
+		$loaderWithMorePaths->addCallersPath();
 		$loaderWithMorePaths->addPath(dirname(__FILE__) . "/../");
 		
 		$outsidePath = self::getClassDirectory(); 
@@ -198,10 +202,10 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 		$loaderWithOutsideOfThisPath->addPath($outsidePath);
 		
 		return array(
-		    array(Autoloader::getDefaultInstance(), $autoPath),
-		    array(new Autoloader(), $autoPath),
-		    array($loaderWithMorePaths, $autoPath),
-		    array($loaderWithOutsideOfThisPath, $outsidePath),
+		    array(Autoloader::getDefaultInstance(),   $autoPath),
+		    array($defaultLoader,                     $autoPath),
+		    array($loaderWithMorePaths,               $autoPath),
+		    array($loaderWithOutsideOfThisPath,       $outsidePath),
 		);
 	}
 	

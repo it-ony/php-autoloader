@@ -299,10 +299,13 @@ class Autoloader {
      * @throws AutoloaderException_GuessPathFailed
      */
     public function addCallersPath() {
-        $autoloaderPath = realpath(dirname(__FILE__) . '/..');
+        $autoloaderPaths = array(
+            realpath(dirname(__FILE__)),
+            realpath(dirname(__FILE__) . '/..'),
+        );
         foreach (debug_backtrace() as $trace) {
             $path = realpath(dirname($trace['file']));
-            if ($path != $autoloaderPath) {
+            if (! in_array($path, $autoloaderPaths)) {
                 $this->addPath($path);
                 $this->guessedPath = $path;
                 return;

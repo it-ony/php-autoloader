@@ -2,5 +2,5 @@
 
 class ClassB implements InterfaceB {
 	
-	
+    
 } 

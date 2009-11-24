@@ -1,8 +1,14 @@
+#!/usr/bin/php
 <?php
 
-require_once dirname(__FILE__) . '/../Autoloader.php';
+try {
+	require_once dirname(__FILE__) . '/../Autoloader.php';
+	
+	$a = new ClassA();
+	$b = new ClassB();
 
-$a = new ClassA();
-$b = new ClassB();
-
-var_dump($a, $b);
+    var_dump($a, $b);
+    
+} catch (ExceptionB $e) {
+	
+}

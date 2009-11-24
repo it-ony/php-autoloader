@@ -1,35 +1,5 @@
 <?php
 /**
- * The Autoloader works out of the box as simple as possible. You have
- * nothing more to do than require_once this file. Don't bother the time it
- * consumes when it's called the first time. Let it build its index.
- * The second time it will run as fast as light.
- * 
- * The simplest and probably most common usecase shows this example:
- * 
- * ,--<index.php>--
- * | <?php require_once dirname(__FILE__) . "/autoloader/Autoloader.php";
- * | $myObject = new MyClass();
- * |
- * |--<classes/MyClass.php>--
- * | <?php class MyClass extends MyParentClass { .. }
- * |
- * |--<classes/MyParentClass.php>--
- * | <?php class MyParentClass { .. }
- * `--
- * 
- * As you can see it's only necessary to require this file once.
- * If this is done in the document root of your classes (index.php in
- * this case) the Autoloader is already configured. After requiring
- * this file you don't have to worry where your classes reside.
- * 
- * If you have the possibility to enable PHP's tokenizer you should do
- * this. Otherwise the Autoloader has to use a Parser based on PCRE
- * which is not as reliable as PHP's tokenizer.
- * 
- * The Autoloader assumes that a class name is unique. If you have classes with
- * equal names the behaviour is undefined.
- * 
  * Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -189,7 +159,6 @@ class Autoloader {
      */
     static public function __static() {
     	self::$defaultInstance = new self();
-    	self::$defaultInstance->register();
     }
     
     
@@ -224,19 +193,6 @@ class Autoloader {
     
     
     /**
-     * The constructor builds a ready to use Autoloader.
-     * Its class path is set to the callers path.
-     * 
-     * @throws AutoloaderException_GuessPathFailed
-     */
-    public function __construct() {
-        // guess the class path
-        $this->addCallersPath();
-        $this->guessedPath = current($this->paths);
-    }
-    
-    
-    /**
      * The best parser is the tokenizer, which will be used
      * as default.
      */
@@ -266,6 +222,8 @@ class Autoloader {
      * If not set the index will be a AutoloaderIndex_SerializedHashtable_GZ
      * and the parser will be (if PHP has tokenizer support) 
      * AutoloaderFileParser_Tokenizer.
+     * 
+     * @throws AutoloaderException_GuessPathFailed
      */
     public function register() {
         // spl_autoload_register disables __autoload(). This might be unwanted.
@@ -285,6 +243,12 @@ class Autoloader {
     	if (empty($this->parser)) {
     		$this->setParser(AutoloaderFileParser::getInstance());
     		
+    	}
+    	
+    	// guess the class path
+    	if (empty($this->paths)) {
+            $this->addCallersPath();
+            
     	}
     }
     
@@ -340,6 +304,7 @@ class Autoloader {
             $path = realpath(dirname($trace['file']));
             if ($path != $autoloaderPath) {
                 $this->addPath($path);
+                $this->guessedPath = $path;
                 return;
                 
             }

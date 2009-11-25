@@ -2,7 +2,7 @@
 <?php
 
 try {
-	require_once dirname(__FILE__) . '/../Autoloader.php';
+	require dirname(__FILE__) . '/../Autoloader.php';
 	
 	$a = new ClassA();
 	$b = new ClassB();

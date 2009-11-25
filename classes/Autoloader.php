@@ -218,6 +218,38 @@ class Autoloader {
     
     
     /**
+     * All instances of Autoloader will be removed
+     */
+    static public function removeAll() {
+    	foreach (self::getRegisteredAutoloaders() as $autoloader) {
+    		$autoloader->remove();
+    		
+    	}
+    }
+    
+    
+    /**
+     * @return Array
+     */
+    static public function getRegisteredAutoloaders() {
+    	$autoloaders = array();
+        foreach (spl_autoload_functions() as $callback) {
+            if (! is_array($callback)) {
+                continue;
+                
+            }
+            if (! $callback[0] instanceof self) {
+                continue;
+                
+            }
+           $autoloaders[] = $callback[0];
+            
+        }
+        return $autoloaders;
+    }
+    
+    
+    /**
      * This Autoloader will be registered at the stack.
      * If not set the index will be a AutoloaderIndex_SerializedHashtable_GZ
      * and the parser will be (if PHP has tokenizer support) 
@@ -289,6 +321,13 @@ class Autoloader {
     public function removePath($path) {
     	$path = realpath($path); 
         unset($this->paths[md5($path)]);
+    }
+    
+    
+    /**
+     */
+    public function removeAllPaths() {
+        $this->paths = array();
     }
     
     

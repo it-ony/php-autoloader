@@ -129,6 +129,95 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 	}
 	
 	
+	public function testGetRegisteredAutoloaders() {
+		$autoloaders = array();
+        $autoloaders[] = Autoloader::getDefaultInstance();
+        
+        $newAutoloader = new Autoloader();
+        $newAutoloader->register();
+        $autoloaders[] = $newAutoloader;
+        
+        foreach ($autoloaders as $expectedAutoloader) {
+			foreach (Autoloader::getRegisteredAutoloaders() as $autoloader) {
+				if ($autoloader === $expectedAutoloader) {
+					continue 2;
+					
+				}
+			}
+            $this->fail("Autoloader wasn't registered.");
+        }
+        $newAutoloader->remove();
+	}
+	
+	
+    /**
+     */
+    public function testRemoveAllAutoloaders() {
+        $registeredAutoloaders = Autoloader::getRegisteredAutoloaders();
+        
+        $autoloader = new Autoloader();
+        $autoloader->register();
+        
+        $autoloader = new Autoloader();
+        $autoloader->register();
+        
+        $this->assertGreaterThanOrEqual(2, count(Autoloader::getRegisteredAutoloaders()));
+        
+        Autoloader::removeAll();
+        
+        $this->assertEquals(0, count(Autoloader::getRegisteredAutoloaders()));
+        
+        
+        foreach ($registeredAutoloaders as $autoloader) {
+        	$autoloader->register();
+        	
+        }
+    }
+	
+	
+	/**
+	 */
+	public function testSeveralRequiredAutoloaders() {
+		$autoloaders = Autoloader::getRegisteredAutoloaders();
+		Autoloader::getDefaultInstance()->removeAllPaths();
+		Autoloader::removeAll();
+		
+		$autoloaderPath = dirname(__FILE__) . "/../Autoloader.php";
+		
+		$classA   = $this->makeClass("A",         "a");
+		$classA2  = $this->makeClass("A2",        "a");
+		$requireA = $this->makeClass("requireA",  "a", "<?php require '$autoloaderPath' ?>");
+		
+		$classB   = $this->makeClass("B",         "b");
+		$requireB = $this->makeClass("requireB",  "b", "<?php require '$autoloaderPath' ?>");
+		
+		
+		$this->assertNotLoadable($classA);
+		$this->assertNotLoadable($classA2);
+		
+		require self::getClassDirectory() . DIRECTORY_SEPARATOR
+		      . "a" . DIRECTORY_SEPARATOR . "$requireA.test.php";
+		      
+		$this->assertLoadable($classA);
+		$this->assertNotLoadable($classB);
+		
+		require self::getClassDirectory() . DIRECTORY_SEPARATOR
+              . "b" . DIRECTORY_SEPARATOR . "$requireB.test.php";
+              
+        $this->assertLoadable($classA);              
+        $this->assertLoadable($classA2);              
+        $this->assertLoadable($classB);
+
+        Autoloader::getDefaultInstance()->removeAllPaths();
+        Autoloader::removeAll();
+		
+        foreach ($autoloaders as $autoloader) {
+            $autoloader->register();
+            
+        }
+	}
+	
+	
 	/**
 	 * @return Array
 	 */

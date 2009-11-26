@@ -1,26 +1,20 @@
 <?php
-/**
- * Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * @package Autoloader
- * @subpackage Index
- * @author Markus Malkusch <markus@malkusch.de>
- * @copyright Copyright (C) 2010 Markus Malkusch
- */
+#########################################################################
+# Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
+#                                                                       #
+# This program is free software: you can redistribute it and/or modify  #
+# it under the terms of the GNU General Public License as published by  #
+# the Free Software Foundation, either version 3 of the License, or     #
+# (at your option) any later version.                                   #
+#                                                                       #
+# This program is distributed in the hope that it will be useful,       #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
+# GNU General Public License for more details.                          #
+#                                                                       #
+# You should have received a copy of the GNU General Public License     #
+# along with this program.  If not, see <http://www.gnu.org/licenses/>. #
+#########################################################################
 
 
 Autoloader::registerInternalClass(
@@ -33,9 +27,23 @@ Autoloader::registerInternalClass(
 );
 
 
+/**
+ * The index is a PDO object.
+ * 
+ * This index uses a PDO object to store its data in any
+ * database wich understands SQL. There is no need to
+ * create any table. The index creates its structure by itself.
+ * 
+ * @see PDO 
+ */
 class AutoloaderIndex_PDO extends AutoloaderIndex {
     
 	
+	/**
+	 * The name of the default SQLite database.
+	 * 
+	 * @see getSQLiteInstance()
+	 */
 	const DEFAULT_SQLITE = "AutoloaderIndex_PDO.sqlite.db";
 	
     
@@ -50,6 +58,16 @@ class AutoloaderIndex_PDO extends AutoloaderIndex {
     $pdo;
     
     
+    /**
+     * Returns an index using a SQLite database.
+     * 
+     * If no filename is given a default database in the
+     * temporary directory will be used.
+     * 
+     * @param String $filename
+     * @return AutoloaderIndex_PDO
+     * @see AutoloaderIndex_PDO::DEFAULT_SQLITE
+     */
     static public function getSQLiteInstance($filename = null) {
     	if (is_null($filename)) {
     		$filename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_SQLITE;
@@ -60,6 +78,12 @@ class AutoloaderIndex_PDO extends AutoloaderIndex {
     }
     
     
+    /**
+     * Initializes the index.
+     * 
+     * If the structure doesn't exist in the database it will be
+     * created. The relation for the index is autoloadindex.
+     */
     public function __construct(PDO $pdo) {
     	$this->pdo = $pdo;
     	
@@ -83,7 +107,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex {
     
     
     /**
-     * @return PDO
+     * @return PDO the PDO object of this index
      */
     public function getPDO() {
     	return $this->pdo;
@@ -91,6 +115,8 @@ class AutoloaderIndex_PDO extends AutoloaderIndex {
     
     
     /**
+     * deletes the relation autoloadindex.
+     * 
      * @throws AutoloaderException_Index
      */
     public function delete() {
@@ -115,14 +141,6 @@ class AutoloaderIndex_PDO extends AutoloaderIndex {
     		
     	}
     	return $this->statements[$key];
-    }
-    
-    
-    /**
-     * @return String
-     */
-    private function getContext() {
-    	return md5(implode("", $this->autoloader->getPaths()));
     }
     
     
@@ -158,6 +176,11 @@ class AutoloaderIndex_PDO extends AutoloaderIndex {
     
     
     /**
+     * Stores the path imediatly persistent.
+     * 
+     * There is no sense in making the class paths persistent
+     * during {@link save()}. It is stored imediatly.
+     * 
      * @param String $class
      * @param String $path
      * @throws AutoloaderException_Index
@@ -182,6 +205,11 @@ class AutoloaderIndex_PDO extends AutoloaderIndex {
     
     
 	/**
+	 * Deletes the path imediatly persistent.
+     * 
+     * There is no sense in making the class paths persistent
+     * during {@link save()}. It is deleted imediatly.
+     * 
      * @param String $class
      * @throws AutoloaderException_Index
      */
@@ -223,10 +251,13 @@ class AutoloaderIndex_PDO extends AutoloaderIndex {
     }
 
     
+    /**
+     * Does nothing as {@link _setPath()} and {@link _unsetPath()} stored imediatly.
+     * 
+     * @see _setPath()
+     * @see _unsetPath()
+     */
     protected function save() {
-        /**
-         * @see _setPath()
-         */
     }
     
 

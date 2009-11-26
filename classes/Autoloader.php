@@ -1,32 +1,25 @@
 <?php
-/**
- * Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * @package Autoloader
- * @author Markus Malkusch <markus@malkusch.de>
- * @copyright Copyright (C) 2010 Markus Malkusch
- */
+##########################################################################
+# Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
+#                                                                       #
+# This program is free software: you can redistribute it and/or modify  #
+# it under the terms of the GNU General Public License as published by  #
+# the Free Software Foundation, either version 3 of the License, or     #
+# (at your option) any later version.                                   #
+#                                                                       #
+# This program is distributed in the hope that it will be useful,       #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
+# GNU General Public License for more details.                          #
+#                                                                       #
+# You should have received a copy of the GNU General Public License     #
+# along with this program.  If not, see <http://www.gnu.org/licenses/>. #
+#########################################################################
 
 
-/**
+/*
  * These classes are needed by the Autoloader itself.
  * They have to be registered statically.
- * 
- * @see Autoloader::registerInternalClass()
  */
 Autoloader::registerInternalClass(
 	'AutoloaderIndex',
@@ -86,7 +79,7 @@ Autoloader::registerInternalClass(
 );
 
 
-/**
+/*
  * As a simple requiring of this file should be
  * enough to get this Autoloader working a new
  * instance of the Autoloader must be created.
@@ -95,6 +88,8 @@ Autoloader::__static();
 
 
 /**
+ * An implemtation for Autoloading classes in PHP.
+ * 
  * This Autoloader implementation searches recursivly in
  * defined class paths for a class definition.
  * 
@@ -104,11 +99,19 @@ Autoloader::__static();
  * 
  * Actually there's no need to define a class path with
  * Autoloader->addPath() as the constructor uses the path
- * of the debug_backtrace(). 
+ * of the debug_backtrace().
+ * 
+ * @package autoloader
+ * @author Markus Malkusch <markus@malkusch.de>
+ * @copyright Copyright (C) 2010 Markus Malkusch
+ * @version 1.0
  */
 class Autoloader {
     
     
+	/**
+	 * The name of the class constructor is __static.
+	 */
     const CLASS_CONSTRUCTOR = '__static';
     
     
@@ -163,7 +166,7 @@ class Autoloader {
     
     
     /**
-     * @return Autoloader
+     * @return Autoloader the default Autoloader
      */
     static public function getDefaultInstance() {
     	return self::$defaultInstance;
@@ -193,8 +196,10 @@ class Autoloader {
     
     
     /**
-     * The best parser is the tokenizer, which will be used
-     * as default.
+     * Sets a AutoloaderFileParser.
+     * 
+     * This is not necessary to call, as the Autoloader initializes itself
+     * with the best available parser.
      */
     public function setParser(AutoloaderFileParser $parser) {
     	$this->parser = $parser;
@@ -211,6 +216,8 @@ class Autoloader {
     
     /**
      * This Autoloader will be removed from the stack.
+     * 
+     * @see removeAll()
      */
     public function remove() {
     	spl_autoload_unregister($this->getAutoloadCallback());
@@ -218,7 +225,9 @@ class Autoloader {
     
     
     /**
-     * All instances of Autoloader will be removed
+     * All instances of Autoloader will be removed from the stack.
+     * 
+     * @see remove()
      */
     static public function removeAll() {
     	foreach (self::getRegisteredAutoloaders() as $autoloader) {
@@ -229,7 +238,8 @@ class Autoloader {
     
     
     /**
-     * @return Array
+     * @return Array all registered Autoloader instances which are doing their jobs
+     * @see register()
      */
     static public function getRegisteredAutoloaders() {
     	$autoloaders = array();
@@ -251,11 +261,25 @@ class Autoloader {
     
     /**
      * This Autoloader will be registered at the stack.
-     * If not set the index will be a AutoloaderIndex_SerializedHashtable_GZ
-     * and the parser will be (if PHP has tokenizer support) 
-     * AutoloaderFileParser_Tokenizer.
+     * 
+     * After registration this Autoloader is autoloading class definitions.
+     * 
+     * There is no need to configure this object. All missing
+     * members are initialized before registration:
+     * -The index would be an AutoloaderIndex_SerializedHashtable_GZ
+     * -The parser will be (if PHP has tokenizer support) an AutoloaderFileParser_Tokenizer
+     * -The class path is set to the directory of the calling file
+     * 
+     * {@link spl_autoload_register()} disables __autoload(). This might be
+     * unwanted, so register() also adds __autoload() to the stack.
      * 
      * @throws AutoloaderException_GuessPathFailed
+     * @see setIndex()
+     * @see AutoloaderIndex_SerializedHashtable_GZ
+     * @see setParser()
+     * @see AutoloaderFileParser_Tokenizer
+     * @see addCallersPath()
+     * @see spl_autoload_register()
      */
     public function register() {
         // spl_autoload_register disables __autoload(). This might be unwanted.
@@ -295,7 +319,9 @@ class Autoloader {
     
     /**
      * You might change the index if your not happy with
-     * the default index.
+     * the default index AutoloaderIndex_SerializedHashtable_GZ.
+     * 
+     * @see AutoloaderIndex_SerializedHashtable_GZ
      */
     public function setIndex(AutoloaderIndex $index) {
         $this->index = $index;
@@ -304,10 +330,11 @@ class Autoloader {
     
     
     /**
-     * You can define several class paths where the
+     * You can define several class paths in which the
      * Autoloader will search for classes.
      * 
      * @param String $path A class path
+     * @see removePath()
      */
     public function addPath($path) {
     	$path = realpath($path); 
@@ -316,7 +343,11 @@ class Autoloader {
     
     
     /**
+     * remove a class path
+     * 
      * @param String $path A class path
+     * @see addPath()
+     * @see removeAllPaths()
      */
     public function removePath($path) {
     	$path = realpath($path); 
@@ -325,6 +356,9 @@ class Autoloader {
     
     
     /**
+     * remove all class paths.
+     * 
+     * @see removePath()
      */
     public function removeAllPaths() {
         $this->paths = array();
@@ -332,9 +366,12 @@ class Autoloader {
     
     
     /**
-     * Adds the class path of the caller.
+     * Adds the class path of the caller. This will
+     * be done automatically if no class path is set.
      * 
      * @see addPath()
+     * @see register()
+     * @see removeGuessedPath()
      * @throws AutoloaderException_GuessPathFailed
      */
     public function addCallersPath() {
@@ -356,10 +393,14 @@ class Autoloader {
     
     
     /**
-     * The constructor automatically adds a guessed path
+     * {@link register()} automatically adds a guessed path
      * where it assumes to find classes. If you're not happy
      * with this path, you might remove it from the class
      * path list.
+     * 
+     * @see addCallersPath()
+     * @see removePath()
+     * @see register()
      */
     public function removeGuessedPath() {
     	$this->removePath($this->guessedPath);
@@ -367,6 +408,8 @@ class Autoloader {
     
     
     /**
+     * Adds a regular expression for ignoring files in the class paths.
+     * 
      * Files which paths match one of these patterns won't be
      * searched for class definitions.
      * 
@@ -383,11 +426,12 @@ class Autoloader {
     
     
     /**
+     * Set a file size to ignore files bigger than $size.
+     * 
      * The autoloader has to look into every file. Large files
      * like images may result in exceeding the max_execution_time.
-     * A size of 0 would disable this limitation.
      * 
-     * Default is set to 1MB.
+     * Default is set to 1MB. A size of 0 would disable this limitation.
      * 
      * @param int $size Size in bytes
      * @see $skipFilesize
@@ -406,14 +450,18 @@ class Autoloader {
     
     
     /**
-     * PHP will call this method for loading a class. 
+     * PHP will call this method for loading a class.
      * 
+     * If this Autoloader doesn't find a class defintion it will
+     * only raise an error if it is the last Autoloader in the stack. 
+     * 
+     * @see handleErrors()
      * @param String $class
      */
     public function autoload($class) {
         self::normalizeClass($class);
         
-    	/**
+    	/*
          * spl_autoload_call() runs the complete stack,
          * even though the class is already defined by
          * a previously registered method.
@@ -507,7 +555,7 @@ class Autoloader {
 	                }
 	            }
         	} catch (AutoloaderException $e) {
-        		/**
+        		/*
         		 * An exception shouldn't stop the file search.
         		 * But if no files were found it could be thrown.
         		 */

@@ -1,26 +1,20 @@
 <?php
-/**
- * Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * @package Autoloader
- * @subpackage parser
- * @author Markus Malkusch <markus@malkusch.de>
- * @copyright Copyright (C) 2010 Markus Malkusch
- */
+#########################################################################
+# Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
+#                                                                       #
+# This program is free software: you can redistribute it and/or modify  #
+# it under the terms of the GNU General Public License as published by  #
+# the Free Software Foundation, either version 3 of the License, or     #
+# (at your option) any later version.                                   #
+#                                                                       #
+# This program is distributed in the hope that it will be useful,       #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
+# GNU General Public License for more details.                          #
+#                                                                       #
+# You should have received a copy of the GNU General Public License     #
+# along with this program.  If not, see <http://www.gnu.org/licenses/>. #
+#########################################################################
 
 
 Autoloader::registerInternalClass(
@@ -37,24 +31,38 @@ Autoloader::registerInternalClass(
 );
 
 
+/**
+ * A Parser for Class definition
+ * 
+ * An implementation of this class should be able to parse a file and
+ * find a class definition.
+ * 
+ * @package autoloader
+ * @subpackage parser
+ * @author Markus Malkusch <markus@malkusch.de>
+ * @copyright Copyright (C) 2010 Markus Malkusch
+ * @version 1.0
+ */
 abstract class AutoloaderFileParser {
 	
 	
 	/**
 	 * @param String $class
-	 * @param String $source
-	 * @return bool
+	 * @param String $source The source as a string. This is the content of a file.
+	 * @return bool True if the class $class was found in the source $source.
 	 * @throws AutoloaderException_Parser
 	 */
 	abstract public function isClassInSource($class, $source);
     /**
-     * @return bool
+     * @return bool True if this implementation is supported by the current PHP environment
      */
     abstract static public function isSupported();
     
 	
 	/**
-	 * @return AutoloaderFileParser
+	 * @see AutoloaderFileParser_Tokenizer
+	 * @see AutoloaderFileParser_RegExp
+	 * @return AutoloaderFileParser AutoloaderFileParser_Tokenizer if suported else AutoloaderFileParser_RegExp
 	 */
 	static public function getInstance() {
 		if (AutoloaderFileParser_Tokenizer::isSupported()) {
@@ -70,7 +78,7 @@ abstract class AutoloaderFileParser {
 	/**
 	 * @param String $class
 	 * @param String $file
-	 * @return bool
+	 * @return bool True if the class $class was found in the file $file.
 	 * @throws AutoloaderException_Parser_IO
 	 * @throws AutoloaderException_Parser
 	 */

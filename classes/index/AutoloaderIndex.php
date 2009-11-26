@@ -1,25 +1,35 @@
 <?php
+#########################################################################
+# Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
+#                                                                       #
+# This program is free software: you can redistribute it and/or modify  #
+# it under the terms of the GNU General Public License as published by  #
+# the Free Software Foundation, either version 3 of the License, or     #
+# (at your option) any later version.                                   #
+#                                                                       #
+# This program is distributed in the hope that it will be useful,       #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
+# GNU General Public License for more details.                          #
+#                                                                       #
+# You should have received a copy of the GNU General Public License     #
+# along with this program.  If not, see <http://www.gnu.org/licenses/>. #
+#########################################################################
+
+
 /**
- * Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * @package Autoloader
- * @subpackage Index
+ * The AutoloaderIndex stores the location of class defintions for speeding up recurring searches.
+ * 
+ * Searching a class definition in the filesystem takes a lot of time, as every
+ * file is read. To avoid these long searches, a found class definition will be stored
+ * in an index. The next search for an already found class definition will take no
+ * time.
+ * 
+ * @package autoloader
+ * @subpackage index
  * @author Markus Malkusch <markus@malkusch.de>
  * @copyright Copyright (C) 2010 Markus Malkusch
+ * @version 1.0
  */
 abstract class AutoloaderIndex {
     
@@ -42,43 +52,71 @@ abstract class AutoloaderIndex {
      * @param String $class
      * @throws AutoloaderException_Index
      * @throws AutoloaderException_Index_NotFound
-     * @return String The absolute path
+     * @return String The absolute path of the found class $class
      */
     abstract public function getPath($class);
     /**
      * @param String $class
      * @throws AutoloaderException_Index
-     * @return bool
+     * @return bool True if the class $class is already stored in the index 
      */
     abstract public function hasPath($class);
     /**
+     * Deletes the index
+     * 
      * @throws AutoloaderException_Index
      */
     abstract public function delete();
     /**
+     * Set the path for the class $class to $path
+     * 
+     * This must not yet be persistent to the index. The Destructor
+     * will call save() to make it persistent.
+     * 
      * @param String $class
      * @param String $path
      * @throws AutoloaderException_Index
+     * @see save()
+     * @see _unsetPath()
      */
     abstract protected function _setPath($class, $path);
     /**
+     * Unset the path for the class $class.
+     * 
+     * This must not yet be persistent to the index. The Destructor
+     * will call save() to make it persistent.
+     * 
      * @param String $class
      * @throws AutoloaderException_Index
+     * @see _setPath()
+     * @see save()
      */
     abstract protected function _unsetPath($class);
     /**
+     * Makes the changes to the index persistent
+     * 
      * @throws AutoloaderException_Index
+     * @see _setPath()
+     * @see _unsetPath()
      */
     abstract protected function save();
 
     
+    /**
+     * The Autoloader calls this to set itself to this index.
+     * 
+     * @see Autoloader::setIndex()
+     */
     public function setAutoloader(Autoloader $autoloader) {        
         $this->autoloader = $autoloader;
     }
     
     
     /**
+     * Destruction of this index will make changes persistent.
+     * 
      * @throws AutoloaderException_Index
+     * @see save()
      */
     public function __destruct() {
         if ($this->isChanged) {
@@ -89,9 +127,18 @@ abstract class AutoloaderIndex {
     
     
     /**
+     * Set the path for the class $class to $path
+     * 
+     * This must not yet be persistent to the index. The Destructor
+     * will call save() to make it persistent.
+     * 
      * @param String $class
      * @param String $path
      * @throws AutoloaderException_Index
+     * @see save()
+     * @see __destruct()
+     * @see _setPath()
+     * @see unsetPath()
      */
     public function setPath($class, $path) {
         $this->_setPath($class, $path);
@@ -100,12 +147,34 @@ abstract class AutoloaderIndex {
     
     
 	/**
+	 * Unset the path for the class
+     * 
+     * This must not yet be persistent to the index. The Destructor
+     * will call save() to make it persistent.
+     * 
      * @param String $class
      * @throws AutoloaderException_Index
+     * @see _unsetPath()
+     * @see __destruct()
+     * @see setPath()
+     * @see save()
      */
     public function unsetPath($class) {
         $this->_unsetPath($class);
         $this->isChanged = true;
+    }
+    
+    
+    /**
+     * The Autoloader class path context
+     * 
+     * Only Autoloaders with an equal class path configuration work in the
+     * same context.
+     * 
+     * @return String A context to distinguish different autoloaders
+     */
+    protected function getContext() {
+        return md5(implode("", $this->autoloader->getPaths()));
     }
     
     

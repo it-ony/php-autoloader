@@ -1,26 +1,20 @@
 <?php
-/**
- * Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * @package Autoloader
- * @subpackage Index
- * @author Markus Malkusch <markus@malkusch.de>
- * @copyright Copyright (C) 2010 Markus Malkusch
- */
+#########################################################################
+# Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
+#                                                                       #
+# This program is free software: you can redistribute it and/or modify  #
+# it under the terms of the GNU General Public License as published by  #
+# the Free Software Foundation, either version 3 of the License, or     #
+# (at your option) any later version.                                   #
+#                                                                       #
+# This program is distributed in the hope that it will be useful,       #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
+# GNU General Public License for more details.                          #
+#                                                                       #
+# You should have received a copy of the GNU General Public License     #
+# along with this program.  If not, see <http://www.gnu.org/licenses/>. #
+#########################################################################
 
 
 Autoloader::registerInternalClass(
@@ -41,9 +35,22 @@ Autoloader::registerInternalClass(
 );
 
 
+/**
+ * The index is a serialized hashtable.
+ * 
+ * This index is working in every PHP environment. It should be fast enough
+ * for most applications. The index is a file in the temporary directory.
+ * The content of this file is a serialized Hashtable.
+ * 
+ * @see serialize()
+ * @see unserialize()
+ */
 class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
     
     
+	/**
+	 * The prefix of the index file
+	 */
     const FILE_PREFIX = 'autoload_hash_';
     
     
@@ -59,7 +66,14 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
     
     
     /**
-     * @param Strint $path
+     * Set the path to the index file.
+     * 
+     * Setting the index file path is optional. Per default
+     * it will be a file in the temporary directory. Its
+     * prefix is AutoloaderIndex_SerializedHashtable::FILE_PREFIX.
+     * 
+     * @param String $path the path to the index file
+     * @see getIndexPath()
      */
     public function setIndexPath($path) {
     	$this->path  = $path;
@@ -68,7 +82,10 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
     
     
     /**
-     * @return String
+     * Get the path of the index file.
+     * 
+     * @return String The path to the index file
+     * @see setIndexPath()
      */
     public function getIndexPath() {
     	if (empty($this->path)) {
@@ -76,7 +93,7 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
     		    sys_get_temp_dir()
     		    . DIRECTORY_SEPARATOR
     		    . self::FILE_PREFIX
-    		    . md5( implode('', $this->autoloader->getPaths()) )
+    		    . $this->getContext()
             );
     		
     	}
@@ -85,7 +102,9 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
     
     
     /**
-     * @throws AutoloaderException_Index
+     * Deletes the index file
+     * 
+     * @throws AutoloaderException_Index Deleting failed
      */
     public function delete() {
     	if (! unlink($this->getIndexPath())) {

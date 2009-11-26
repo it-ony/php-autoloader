@@ -1,4 +1,22 @@
 <?php
+##########################################################################
+# Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
+#                                                                       #
+# This program is free software: you can redistribute it and/or modify  #
+# it under the terms of the GNU General Public License as published by  #
+# the Free Software Foundation, either version 3 of the License, or     #
+# (at your option) any later version.                                   #
+#                                                                       #
+# This program is distributed in the hope that it will be useful,       #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
+# GNU General Public License for more details.                          #
+#                                                                       #
+# You should have received a copy of the GNU General Public License     #
+# along with this program.  If not, see <http://www.gnu.org/licenses/>. #
+#########################################################################
+
+
 /**
  * The Autoloader works out of the box as simple as possible. You have
  * nothing more to do than require this file. Don't bother the time it
@@ -7,16 +25,24 @@
  * 
  * The simplest and probably most common usecase shows this example:
  * 
- * ,--<index.php>--
- * | <?php require dirname(__FILE__) . "/autoloader/Autoloader.php";
- * | $myObject = new MyClass();
- * |
- * |--<classes/MyClass.php>--
- * | <?php class MyClass extends MyParentClass { .. }
- * |
- * |--<classes/MyParentClass.php>--
- * | <?php class MyParentClass { .. }
- * `--
+ * index.php
+ * <code>
+ * <?php
+ * require dirname(__FILE__) . "/autoloader/Autoloader.php";
+ * $myObject = new MyClass();
+ * </code>
+ * 
+ * classes/MyClass.php
+ * <code>
+ * <?php
+ * class MyClass extends MyParentClass { }
+ * </code>
+ * 
+ * classes/MyParentClass.php
+ * <code>
+ * <?php
+ * class MyParentClass { }
+ * </code>
  * 
  * As you can see it's only necessary to require this file once.
  * If this is done in the document root of your classes (index.php in
@@ -29,29 +55,17 @@
  * 
  * The Autoloader assumes that a class name is unique. If you have classes with
  * equal names the behaviour is undefined.
- * 
- * Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * @package Autoloader
+ * @package autoloader
  * @author Markus Malkusch <markus@malkusch.de>
  * @copyright Copyright (C) 2010 Markus Malkusch
+ * @version 1.0
+ * @see Autoloader
  */
 
+
 require_once dirname(__FILE__) . "/classes/Autoloader.php";
+
 
 Autoloader::getDefaultInstance()->addCallersPath();
 Autoloader::getDefaultInstance()->register();

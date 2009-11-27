@@ -42,6 +42,8 @@ Autoloader::registerInternalClass(
  * for most applications. The index is a file in the temporary directory.
  * The content of this file is a serialized Hashtable.
  * 
+ * This implementation is threadsafe.
+ * 
  * @see serialize()
  * @see unserialize()
  */

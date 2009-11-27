@@ -150,7 +150,7 @@ class AutoloaderBenchmark {
 			
 		}
 		for ($i = 0; $i < $this->getPathCount; $i++) {
-			$index = (int) mt_rand(0, count($allClasses));
+			$index = (int) mt_rand(0, count($allClasses) - 1);
 			$classes[] = $allClasses[$index];
 			unset($allClasses[$index]);
 			$allClasses = array_values($allClasses);

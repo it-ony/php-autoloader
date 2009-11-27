@@ -50,12 +50,6 @@ Autoloader::registerInternalClass(
 class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
     
     
-	/**
-	 * The prefix of the index file
-	 */
-    const FILE_PREFIX = 'autoload_hash_';
-    
-    
     private
     /**
      * @var String
@@ -94,7 +88,7 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
     		$this->setIndexPath(
     		    sys_get_temp_dir()
     		    . DIRECTORY_SEPARATOR
-    		    . self::FILE_PREFIX
+    		    . get_class($this)
     		    . $this->getContext()
             );
     		

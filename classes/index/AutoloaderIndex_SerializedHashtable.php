@@ -173,10 +173,32 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
      */
     public function save() {
         $serializedIndex = serialize($this->index);
-        $writtenBytes    = $this->saveFile($this->getIndexPath(), $serializedIndex);
-        if ($writtenBytes !== strlen($serializedIndex)) {
-            throw new AutoloaderException_Index_IO("Could not save to {$this->getIndexPath()}. $writtenBytes Bytes written.");
+        
+        /* Avoid race conditions, by writting into a temporary file
+         * which will be moved atomically
+         */
+        $tmpFile = tempnam(dirname($this->getIndexPath()), get_class($this));
+        if (! $tmpFile) {
+            throw new AutoloaderException_Index_IO(
+                "Could not create temporary file in " . dirname($file)
+                . " for saving new index atomically."
+            );
             
+        }
+        
+        $writtenBytes = $this->saveFile($tmpFile, $serializedIndex);
+        if ($writtenBytes !== strlen($serializedIndex)) {
+            throw new AutoloaderException_Index_IO(
+                "Could not save new index to $tmpFile. $writtenBytes Bytes written."
+            );
+            
+        }
+        
+        if (! rename($tmpFile, $this->getIndexPath())) {
+        	throw new AutoloaderException_Index_IO(
+                "Could not move new index $tmpFile to {$this->getIndexPath()}."
+            );
+        	
         }
     }
     

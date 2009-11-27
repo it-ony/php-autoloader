@@ -23,6 +23,9 @@ Autoloader::registerInternalClass(
 );
 
 
+/**
+ * The Autoloader will throw this exception during autoloading if the index is empty.
+ */
 class AutoloaderException_Index_NotDefined extends AutoloaderException_Index {
     
     

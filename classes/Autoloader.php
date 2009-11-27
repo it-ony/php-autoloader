@@ -483,15 +483,16 @@ class Autoloader {
                 
             }
             
-            if (! $this->index->hasPath($class)) {
-                $path = $this->searchPath($class);
+            try {
+            	$path = $this->index->getPath($class);
+            	
+            } catch (AutoloaderException_Index_NotFound $e) {
+            	$path = $this->searchPath($class);
                 $this->index->setPath($class, $path);
-                
+            	
             }
             
-            
             try {
-                $path = $this->index->getPath($class);
                 $this->loadClass($class, $path);
                 
             } catch (AutoloaderException_Include $e) {

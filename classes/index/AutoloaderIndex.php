@@ -51,7 +51,7 @@ abstract class AutoloaderIndex {
     /**
      * @param String $class
      * @throws AutoloaderException_Index
-     * @throws AutoloaderException_Index_NotFound
+     * @throws AutoloaderException_Index_NotFound the class is not in the index
      * @return String The absolute path of the found class $class
      */
     abstract public function getPath($class);

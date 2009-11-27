@@ -171,7 +171,7 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
     /**
      * @throws AutoloaderException_Index_IO
      */
-    protected function save() {
+    public function save() {
         $serializedIndex = serialize($this->index);
         $writtenBytes    = $this->saveFile($this->getIndexPath(), $serializedIndex);
         if ($writtenBytes !== strlen($serializedIndex)) {

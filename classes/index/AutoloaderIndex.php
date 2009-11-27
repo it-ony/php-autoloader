@@ -93,13 +93,16 @@ abstract class AutoloaderIndex {
      */
     abstract protected function _unsetPath($class);
     /**
-     * Makes the changes to the index persistent
+     * Makes the changes to the index persistent.
+     * 
+     * The destructor is calling this method.
      * 
      * @throws AutoloaderException_Index
      * @see _setPath()
      * @see _unsetPath()
+     * @see __destruct()
      */
-    abstract protected function save();
+    abstract public function save();
 
     
     /**

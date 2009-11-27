@@ -154,11 +154,11 @@ class AutoloaderIndex_PDO extends AutoloaderIndex {
     	try {
 	    	$stmt = $this->getStatement(
 	    	    "SELECT path FROM autoloadindex
-	    	     WHERE class = ? AND context = ?"
+	    	     WHERE context = ? AND class = ?"
 	    	);
 	    	$stmt->execute(array(
-	    	    $class,
-	    	    $this->getContext()
+	    	    $this->getContext(),    
+	    	    $class
     	    ));
 	    	$path = $stmt->fetchColumn();
 	    	$stmt->closeCursor();
@@ -217,9 +217,9 @@ class AutoloaderIndex_PDO extends AutoloaderIndex {
         try {
             $stmt = $this->getStatement(
                 "DELETE FROM autoloadindex
-                 WHERE class = ? AND context = ?"
+                 WHERE context = ? AND class = ?"
             );
-            $stmt->execute(array($class, $this->getContext()));
+            $stmt->execute( array($this->getContext(), $class) );
             
         } catch (PDOException $e) {
             throw new AutoloaderException_Index($e->getMessage());
@@ -236,9 +236,9 @@ class AutoloaderIndex_PDO extends AutoloaderIndex {
     public function hasPath($class) {
         try {
             $stmt = $this->getStatement(
-                "SELECT 1 FROM autoloadindex WHERE class = ? AND context = ?"
+                "SELECT 1 FROM autoloadindex WHERE context = ? AND class = ?"
             );
-            $stmt->execute(array($class, $this->getContext()));
+            $stmt->execute( array($this->getContext(), $class) );
             $hasPath = $stmt->fetchColumn();
             $stmt->closeCursor();
             

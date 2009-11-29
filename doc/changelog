@@ -5,10 +5,5 @@
 
 2009-11-29 Markus Malkusch <markus@malkusch.de>
 
-    * classes/Autoloader.php (Autoloader::autoload()):
-    Instead of throwing an exception the class will be defined as a derivation
-    of AutoloaderPseudoClass. AutoloaderPseudoClass helps to throw the exception
-    in a normal application context.
-    
     * classes/exception/AutoloaderException_SearchFailed.php (AutoloaderException_SearchFailed::getClass()):
     A method for getting the information which class couldn't be found.

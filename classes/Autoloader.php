@@ -77,10 +77,6 @@ Autoloader::registerInternalClass(
     'AutoloaderFileParser',
     dirname(__FILE__).'/parser/AutoloaderFileParser.php'
 );
-Autoloader::registerInternalClass(
-    'AutoloaderPseudoClass',
-    dirname(__FILE__).'/AutoloaderPseudoClass.php'
-);
 
 
 /*
@@ -515,7 +511,7 @@ class Autoloader {
                 return;
                 
             }
-            AutoloaderPseudoClass::defineDerivation($class, $exception);
+            throw $exception;
             
         }
     }

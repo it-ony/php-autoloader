@@ -42,22 +42,6 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
             
         }
     }
-    
-    
-    /**
-     * @dataProvider provideTestExceptionsOnLoadingFailure
-     */
-    public function testExceptionsOnLoadingFailure($class, $missingClass) {
-    	try {
-    	   $object = new $class();
-    	   $this->fail("Expecting AutoloaderException_SearchFailed for class $class.");
-    	   
-    	} catch (AutoloaderException_SearchFailed $e) {
-    		// expected
-    		$this->assertEquals($missingClass, $e->getClass());
-    		
-    	}
-    }
 	
 	
 	public function testDefaultInstance() {
@@ -231,28 +215,6 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
             $autoloader->register();
             
         }
-	}
-	
-	
-	/**
-	 * @return Array
-	 */
-	public function provideTestExceptionsOnLoadingFailure() {
-		$classes = array();
-		
-		$missingParentClass = uniqid("class");
-		$classWithoutParent = $this->makeClass(
-		  "child",
-		  "provideTestExceptionsOnLoadingFailure",
-		  "<?php class %name% extends $missingParentClass {}"
-		);
-		$classes[] = array($classWithoutParent, $missingParentClass);
-		
-		
-		$missingClass = uniqid("class");
-		$classes[] = array($missingClass, $missingClass);
-		
-		return $classes;
 	}
 	
 	

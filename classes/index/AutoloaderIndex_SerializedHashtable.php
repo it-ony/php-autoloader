@@ -33,6 +33,10 @@ Autoloader::registerInternalClass(
     'AutoloaderException_Index_IO',
     dirname(__FILE__).'/exception/AutoloaderException_Index_IO.php'
 );
+Autoloader::registerInternalClass(
+    'AutoloaderException_Index_IO_FileNotExists',
+    dirname(__FILE__).'/exception/AutoloaderException_Index_IO_FileNotExists.php'
+);
 
 
 /**
@@ -131,11 +135,10 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
 	        }
 	        $this->index = $index;
 	        
-    	} catch (AutoloaderException_Index_IO $e) {
-    		if (file_exists($this->getIndexPath())) {
-                throw new AutoloaderException_Index_IO("Could not read Index {$this->getIndexPath()}.");
-                    
-            }
+    	} catch (AutoloaderException_Index_IO_FileNotExists $e) {
+    		/*
+    		 * This could happen. The index is reseted to an empty index.
+    		 */
             $this->index = array();
     		
     	}
@@ -145,12 +148,18 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
     /**
      * @return String
      * @throws AutoloaderException_Index_IO
+     * @throws AutoloaderException_Index_IO_FileNotExists
      */
     protected function readFile($file) {
         $serializedIndex = @file_get_contents($file);
         if ($serializedIndex === false) {
-            throw new AutoloaderException_Index_IO($file);
+        	if (! file_exists($file)) {
+        		throw new AutoloaderException_Index_IO_FileNotExists($file);
+        		
+        	} else {
+                throw new AutoloaderException_Index_IO("Could not read '$file'.");
                 
+        	}
         }
         return $serializedIndex;
     }
@@ -178,7 +187,7 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
         $tmpFile = tempnam(dirname($this->getIndexPath()), get_class($this));
         if (! $tmpFile) {
             throw new AutoloaderException_Index_IO(
-                "Could not create temporary file in " . dirname($file)
+                "Could not create temporary file in " . dirname($this->getIndexPath())
                 . " for saving new index atomically."
             );
             

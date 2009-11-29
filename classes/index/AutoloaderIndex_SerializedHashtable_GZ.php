@@ -25,6 +25,10 @@ Autoloader::registerInternalClass(
     'AutoloaderException_Index_IO',
     dirname(__FILE__).'/exception/AutoloaderException_Index_IO.php'
 );
+Autoloader::registerInternalClass(
+    'AutoloaderException_Index_IO_FileNotExists',
+    dirname(__FILE__).'/exception/AutoloaderException_Index_IO_FileNotExists.php'
+);
 
 
 /**
@@ -47,12 +51,22 @@ class AutoloaderIndex_SerializedHashtable_GZ extends AutoloaderIndex_SerializedH
     
     /**
      * @return String
+     * @throws AutoloaderException_Index_IO_FileNotExists
+     * @throws AutoloaderException_Index_IO
      */
     protected function readFile($file) {
     	$content = @gzfile($file);
     	if (! $content) {
-    		throw new AutoloaderException_Index_IO($file);
-    		
+    		if (! file_exists($file)) {
+    			throw new AutoloaderException_Index_IO_FileNotExists($file);
+    			
+    		} elseif (! @file_get_contents($file)) {
+    			throw new AutoloaderException_Index_IO("Could not read '$file'.");
+    			
+    		} else {
+    			throw new AutoloaderException_Index_IO("Could not decompress '$file'.");
+    			
+    		}
     	}
     	return implode('', $content);
     }

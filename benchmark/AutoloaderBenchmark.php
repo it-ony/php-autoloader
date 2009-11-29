@@ -27,11 +27,14 @@ AutoloaderBenchmark::__static();
 class AutoloaderBenchmark {
 	
 	
+	private static
+    /**
+     * @var Array
+     */
+    $pdoPool = array();
+    
+	
 	private
-	/**
-	 * @var Array
-	 */
-	$pdoPool = array(),
 	/**
 	 * @var int
 	 */
@@ -90,12 +93,12 @@ class AutoloaderBenchmark {
 			$benchmark = new self($case[0], $case[1]);
 	        $benchmark->run();
 	        echo $benchmark;
-			
+	        
 		}
 	}
 	
 	
-	public function __construct($indexSize, $getPathCount, $iterations = 10) {
+	public function __construct($indexSize, $getPathCount, $iterations = 100) {
 		$this->indexSize      = $indexSize;
         $this->iterations     = $iterations;
         $this->getPathCount   = $getPathCount;
@@ -223,7 +226,7 @@ class AutoloaderBenchmark {
 	 */
 	private function createIndexes() {
 		try {
-            $this->pdoPool['mysql'] = new PDO("mysql:dbname=test");
+            self::$pdoPool['mysql'] = new PDO("mysql:dbname=test");
             
 		} catch (PDOException $e) {
 			/*
@@ -236,7 +239,7 @@ class AutoloaderBenchmark {
 		
 		$indexes = array(
             "sqlite"      => AutoloaderIndex_PDO::getSQLiteInstance($this->sqliteFile),
-            "mysql"       => new AutoloaderIndex_PDO($this->pdoPool['mysql']),
+            "mysql"       => new AutoloaderIndex_PDO(self::$pdoPool['mysql']),
             "hashtable"   => new AutoloaderIndex_SerializedHashtable(),
             "hashtableGZ" => new AutoloaderIndex_SerializedHashtable_GZ()
         );

@@ -28,8 +28,38 @@ Autoloader::registerInternalClass(
  * 
  * AutoloaderException_SearchFailed is thrown internally by the Autoloader
  * if it fails during autoloading to find a class.
+ * 
+ * @version 1.1
  */
 class AutoloaderException_SearchFailed extends AutoloaderException {
+	
+	
+	private
+	/**
+	 * @var String
+	 */
+    $class = '';
     
+    
+    /**
+     * @param String $class
+     */
+    public function __construct($class) {
+    	parent::__construct("Couldn't find class $class.");
+    	
+    	$this->class = $class;
+    }
+    
+    
+    /**
+     * The class which wasn't found.
+     * 
+     * @return String
+     * @since 1.1
+     */
+    public function getClass() {
+    	return $this->class;
+    }
+
     
 }

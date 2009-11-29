@@ -42,6 +42,15 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
             
         }
     }
+    
+    
+    /**
+     * @expectedException AutoloaderException_SearchFailed
+     * @dataProvider provideTestExceptionsOnLoadingFailure
+     */
+    public function testExceptionsOnLoadingFailure($class) {
+    	$object = new $class();
+    }
 	
 	
 	public function testDefaultInstance() {
@@ -221,6 +230,20 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 	/**
 	 * @return Array
 	 */
+	public function provideTestExceptionsOnLoadingFailure() {
+		$classes = array();
+		
+		//TODO weitere Testfälle
+		
+		$classes[] = array(uniqid("class"));
+		
+		return $classes;
+	}
+	
+	
+	/**
+	 * @return Array
+	 */
 	public function provideTestSkipPatterns() {
 		Autoloader::getDefaultInstance()->addSkipPattern("~testPattern~");
 		
@@ -334,6 +357,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 	private function assertNotLoadable($class) {
 		try {
 		    new ReflectionClass($class);
+		    new $class();
 		    $this->fail("class $class is loadable.");
 		  
 		} catch (AutoloaderException_SearchFailed $e) {

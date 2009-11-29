@@ -77,6 +77,10 @@ Autoloader::registerInternalClass(
     'AutoloaderFileParser',
     dirname(__FILE__).'/parser/AutoloaderFileParser.php'
 );
+Autoloader::registerInternalClass(
+    'AutoloaderPseudoClass',
+    dirname(__FILE__).'/AutoloaderPseudoClass.php'
+);
 
 
 /*
@@ -104,7 +108,7 @@ Autoloader::__static();
  * @package autoloader
  * @author Markus Malkusch <markus@malkusch.de>
  * @copyright Copyright (C) 2010 Markus Malkusch
- * @version 1.0
+ * @version 1.1
  */
 class Autoloader {
     
@@ -453,10 +457,13 @@ class Autoloader {
      * PHP will call this method for loading a class.
      * 
      * If this Autoloader doesn't find a class defintion it will
-     * only raise an error if it is the last Autoloader in the stack. 
+     * only raise an error if it is the last Autoloader in the stack.
+     * Raising an error means defining a derivation of AutoloaderPseudoClass.
      * 
+     * @see AutoloaderPseudoClass
      * @see handleErrors()
      * @param String $class
+     * @since 1.1 define $class as derivation of AutoloaderPseudoClass
      */
     public function autoload($class) {
         self::normalizeClass($class);
@@ -508,7 +515,7 @@ class Autoloader {
                 return;
                 
             }
-            throw $exception;
+            AutoloaderPseudoClass::defineDerivation($class, $exception);
             
         }
     }

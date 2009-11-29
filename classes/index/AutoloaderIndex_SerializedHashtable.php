@@ -178,7 +178,7 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
      * @throws AutoloaderException_Index_IO
      * @since 1.1 save() is threadsafe. 
      */
-    public function save() {
+    protected function _save() {
         $serializedIndex = serialize($this->index);
         
         /* Avoid race conditions, by writting into a temporary file

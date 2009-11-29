@@ -257,7 +257,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex {
      * @see _setPath()
      * @see _unsetPath()
      */
-    public function save() {
+    protected function _save() {
     }
     
 

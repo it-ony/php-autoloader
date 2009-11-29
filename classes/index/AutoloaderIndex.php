@@ -98,11 +98,30 @@ abstract class AutoloaderIndex {
      * The destructor is calling this method.
      * 
      * @throws AutoloaderException_Index
+     * @see save()
+     */
+    abstract protected function _save();
+    
+    
+    /**
+     * Makes the changes to the index persistent.
+     * 
+     * The destructor is calling this method.
+     * 
+     * @throws AutoloaderException_Index
      * @see _setPath()
      * @see _unsetPath()
      * @see __destruct()
+     * @see _save()
      */
-    abstract public function save();
+    public function save() {
+    	if (! $this->isChanged) {
+    		return;
+    		
+    	}
+    	$this->_save();
+    	$this->isChanged = false;
+    }
 
     
     /**
@@ -122,10 +141,7 @@ abstract class AutoloaderIndex {
      * @see save()
      */
     public function __destruct() {
-        if ($this->isChanged) {
-            $this->save();
-            
-        }
+        $this->save();
     }
     
     

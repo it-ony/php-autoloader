@@ -97,7 +97,7 @@ class AutoloaderIndex_Dummy extends AutoloaderIndex {
     /**
      * Does nothing
      */
-    public function save() {
+    protected function _save() {
     }
     
 

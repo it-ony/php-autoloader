@@ -60,11 +60,15 @@ class AutoloaderIndex_SerializedHashtable_GZ extends AutoloaderIndex_SerializedH
     		if (! file_exists($file)) {
     			throw new AutoloaderException_Index_IO_FileNotExists($file);
     			
-    		} elseif (! @file_get_contents($file)) {
-    			throw new AutoloaderException_Index_IO("Could not read '$file'.");
+    		}
+    		
+    		$error = error_get_last();
+    		
+    		if (! @file_get_contents($file)) {
+    			throw new AutoloaderException_Index_IO("Could not read '$file': $error[message]");
     			
     		} else {
-    			throw new AutoloaderException_Index_IO("Could not decompress '$file'.");
+    			throw new AutoloaderException_Index_IO("Could not decompress '$file': $error[message]");
     			
     		}
     	}

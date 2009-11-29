@@ -157,7 +157,8 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
         		throw new AutoloaderException_Index_IO_FileNotExists($file);
         		
         	} else {
-                throw new AutoloaderException_Index_IO("Could not read '$file'.");
+        		$error = error_get_last();
+                throw new AutoloaderException_Index_IO("Could not read '$file': $error[message]");
                 
         	}
         }
@@ -184,7 +185,7 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
         /* Avoid race conditions, by writting into a temporary file
          * which will be moved atomically
          */
-        $tmpFile = tempnam(dirname($this->getIndexPath()), get_class($this));
+        $tmpFile = tempnam(dirname($this->getIndexPath()), get_class($this) . "_tmp_");
         if (! $tmpFile) {
             throw new AutoloaderException_Index_IO(
                 "Could not create temporary file in " . dirname($this->getIndexPath())

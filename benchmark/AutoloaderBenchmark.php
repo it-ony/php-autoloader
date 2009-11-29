@@ -29,6 +29,10 @@ class AutoloaderBenchmark {
 	
 	private
 	/**
+	 * @var Array
+	 */
+	$pdoPool = array(),
+	/**
 	 * @var int
 	 */
 	$getPathCount = 0,
@@ -91,7 +95,7 @@ class AutoloaderBenchmark {
 	}
 	
 	
-	public function __construct($indexSize, $getPathCount, $iterations = 1000) {
+	public function __construct($indexSize, $getPathCount, $iterations = 10) {
 		$this->indexSize      = $indexSize;
         $this->iterations     = $iterations;
         $this->getPathCount   = $getPathCount;
@@ -107,13 +111,20 @@ class AutoloaderBenchmark {
 	
 	public function run() {
 		$indexes = $this->createIndexes();
-		
 		foreach ($indexes as $name => $index) {
 			$this->fillIndex($index, $this->indexSize);
-			$this->durations[$name] = 0;
 			
-			for ($i = 0; $i < $this->iterations; $i++) {
+		}
+		
+		for ($i = 0; $i < $this->iterations; $i++) {
+            foreach ($this->createIndexes() as $name => $index) {
+            	if (! isset($this->durations[$name])) {
+                    $this->durations[$name] = 0;
+                    
+            	}
 				$classSet = $this->getClassSet();
+				clearstatcache();
+				
 				$startTime = microtime(true);
 				$this->runBenchmark($index, $classSet);
 				$stopTime = microtime(true);
@@ -163,7 +174,8 @@ class AutoloaderBenchmark {
 	public function __toString() {
 		$durations = "";
 		foreach ($this->durations as $name => $duration) {
-			$durations .= "$name:\t{$this->getAverageDuration($name)},\t$duration\n"; 
+			$paddedName = str_pad($name . ":", 12);
+			$durations  .= "$paddedName {$this->getAverageDuration($name)}\n"; 
 			
 		}
 		return "==================================\n"
@@ -210,9 +222,21 @@ class AutoloaderBenchmark {
 	 * @return Array
 	 */
 	private function createIndexes() {
+		try {
+            $this->pdoPool['mysql'] = new PDO("mysql:dbname=test");
+            
+		} catch (PDOException $e) {
+			/*
+			 * This happens when too many connections are open.
+			 * We will reuse the last connection.
+			 */
+			
+		}
+		
+		
 		$indexes = array(
             "sqlite"      => AutoloaderIndex_PDO::getSQLiteInstance($this->sqliteFile),
-            "mysql"       => new AutoloaderIndex_PDO(new PDO("mysql:dbname=test")),
+            "mysql"       => new AutoloaderIndex_PDO($this->pdoPool['mysql']),
             "hashtable"   => new AutoloaderIndex_SerializedHashtable(),
             "hashtableGZ" => new AutoloaderIndex_SerializedHashtable_GZ()
         );

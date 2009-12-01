@@ -98,7 +98,7 @@ class AutoloaderBenchmark {
 	}
 	
 	
-	public function __construct($indexSize, $getPathCount, $iterations = 100) {
+	public function __construct($indexSize, $getPathCount, $iterations = 1000) {
 		$this->indexSize      = $indexSize;
         $this->iterations     = $iterations;
         $this->getPathCount   = $getPathCount;
@@ -135,6 +135,7 @@ class AutoloaderBenchmark {
 				$this->durations[$name] += $stopTime - $startTime;
 				
 			}
+			
 		}
 		
 		foreach ($indexes as $index) {
@@ -247,8 +248,7 @@ class AutoloaderBenchmark {
         $indexes["hashtableGZ"]->setIndexPath($this->hashtableGZ);
         
         foreach ($indexes as $index) {
-        	$autoloader = new Autoloader();
-        	$autoloader->setIndex($index);
+        	Autoloader::getDefaultInstance()->setIndex($index);
         	
         }
         

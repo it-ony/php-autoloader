@@ -31,10 +31,15 @@
  * @copyright Copyright (C) 2010 Markus Malkusch
  * @version 1.0
  */
-abstract class AutoloaderIndex {
+abstract class AutoloaderIndex implements Countable {
     
     
     private
+    /**
+     * @var int counts how often getPath() is called
+     * @see getPath()
+     */
+    $getPathCallCounter = 0,
     /**
      * @var bool
      */
@@ -53,8 +58,9 @@ abstract class AutoloaderIndex {
      * @throws AutoloaderException_Index
      * @throws AutoloaderException_Index_NotFound the class is not in the index
      * @return String The absolute path of the found class $class
+     * @see getPath()
      */
-    abstract public function getPath($class);
+    abstract protected function _getPath($class);
     /**
      * @param String $class
      * @throws AutoloaderException_Index
@@ -101,6 +107,29 @@ abstract class AutoloaderIndex {
      * @see save()
      */
     abstract protected function _save();
+    
+    
+    /**
+     * @param String $class
+     * @throws AutoloaderException_Index
+     * @throws AutoloaderException_Index_NotFound the class is not in the index
+     * @return String The absolute path of the found class $class
+     * @see _getPath()
+     */
+    public function getPath($class) {
+    	$this->getPathCallCounter++;
+    	return $this->_getPath($class);
+    }
+    
+    
+    /**
+     * @return int A counter how often getPath() has been called
+     * @see getPath()
+     */
+    public function getGetPathCallCounter() {
+    	return $this->getPathCallCounter;
+    }
+    
     
     
     /**

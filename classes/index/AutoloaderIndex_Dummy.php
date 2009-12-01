@@ -42,14 +42,20 @@ class AutoloaderIndex_Dummy extends AutoloaderIndex {
     $index = array();
     
     
+    /**
+     * @return int the size of the index
+     */
+    public function count() {
+    	return count($this->index);
+    }
+    
     
     /**
      * @param String $class
-     * @throws AutoloaderException_Index
      * @throws AutoloaderException_Index_NotFound
      * @return String The absolute path
      */
-    public function getPath($class) {
+    protected function _getPath($class) {
         if (! $this->hasPath($class)) {
             throw new AutoloaderException_Index_NotFound($class);    
             

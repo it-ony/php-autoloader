@@ -215,6 +215,14 @@ class Autoloader {
     
     
     /**
+     * @return AutoloaderIndex
+     */
+    public function getIndex() {
+    	return $this->index;
+    }
+    
+    
+    /**
      * This Autoloader will be removed from the stack.
      * 
      * @see removeAll()

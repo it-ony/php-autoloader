@@ -150,7 +150,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex {
      * @throws AutoloaderException_Index_NotFound
      * @return String The absolute path
      */
-    public function getPath($class) {
+    protected function _getPath($class) {
     	try {
 	    	$stmt = $this->getStatement(
 	    	    "SELECT path FROM autoloadindex
@@ -172,6 +172,32 @@ class AutoloaderIndex_PDO extends AutoloaderIndex {
     		throw new AutoloaderException_Index($e->getMessage());
     		
     	} 
+    }
+    
+    
+    /**
+     * @throws AutoloaderException_Index
+     * @return int the size of the index
+     */
+    public function count() {
+        try {
+            $stmt = $this->getStatement(
+                "SELECT count(*) FROM autoloadindex WHERE context = ?"
+            );
+            $stmt->execute( array($this->getContext()) );
+            $count = $stmt->fetchColumn();
+            $stmt->closeCursor();
+            
+            if ($count === false) {
+                throw new AutoloaderException_Index("Couldn't SELECT count(*).");
+                
+            }
+            return $count;
+            
+        } catch (PDOException $e) {
+            throw new AutoloaderException_Index($e->getMessage());
+            
+        }
     }
     
     

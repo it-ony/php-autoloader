@@ -108,8 +108,9 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
      * @throws AutoloaderException_Index Deleting failed
      */
     public function delete() {
-    	if (! unlink($this->getIndexPath())) {
-    		throw new AutoloaderException_Index("Could not delete {$this->getIndexPath()}.");
+    	if (! @unlink($this->getIndexPath())) {
+    		$error = error_get_last();
+    		throw new AutoloaderException_Index("Could not delete {$this->getIndexPath()}: $error[message]");
     		
     	}
     	$this->index = null;

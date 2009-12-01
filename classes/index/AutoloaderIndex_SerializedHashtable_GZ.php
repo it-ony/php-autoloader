@@ -83,11 +83,16 @@ class AutoloaderIndex_SerializedHashtable_GZ extends AutoloaderIndex_SerializedH
     protected function saveFile($file, $serializedIndex) {
     	$zp = @gzopen($file, "w{$this->compression}");
     	if (! $zp) {
-    		throw new AutoloaderException_Index_IO($file);
+    		$error = error_get_last();
+    		throw new AutoloaderException_Index_IO("Could not write to $file: $error[message]");
     		
     	}
     	$bytes = gzwrite($zp, $serializedIndex);
-    	gzclose($zp);
+    	if (! @gzclose($zp)) {
+    		$error = error_get_last();
+            throw new AutoloaderException_Index_IO("Could not close $file: $error[message]");
+    		
+    	}
     	return $bytes;
     }
 

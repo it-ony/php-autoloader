@@ -83,9 +83,10 @@ abstract class AutoloaderFileParser {
 	 * @throws AutoloaderException_Parser
 	 */
 	public function isClassInFile($class, $file) {
-        $source = file_get_contents($file);
+        $source = @file_get_contents($file);
         if ($source === false) {
-            throw new AutoloaderException_Parser_IO("Could not read $file while searching $class.");
+        	$error = error_get_last();
+            throw new AutoloaderException_Parser_IO("Could not read $file while searching $class: $error[message]");
                     
         }
         return $this->isClassInSource($class, $source);

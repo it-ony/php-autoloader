@@ -185,26 +185,29 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
         /* Avoid race conditions, by writting into a temporary file
          * which will be moved atomically
          */
-        $tmpFile = tempnam(dirname($this->getIndexPath()), get_class($this) . "_tmp_");
+        $tmpFile = @tempnam(dirname($this->getIndexPath()), get_class($this) . "_tmp_");
         if (! $tmpFile) {
+        	$error = error_get_last();
             throw new AutoloaderException_Index_IO(
                 "Could not create temporary file in " . dirname($this->getIndexPath())
-                . " for saving new index atomically."
+                . " for saving new index atomically: $error[message]"
             );
             
         }
         
         $writtenBytes = $this->saveFile($tmpFile, $serializedIndex);
         if ($writtenBytes !== strlen($serializedIndex)) {
+        	$error = error_get_last();
             throw new AutoloaderException_Index_IO(
-                "Could not save new index to $tmpFile. $writtenBytes Bytes written."
+                "Could not save new index to $tmpFile. $writtenBytes Bytes written: $error[message]"
             );
             
         }
         
-        if (! rename($tmpFile, $this->getIndexPath())) {
+        if (! @rename($tmpFile, $this->getIndexPath())) {
+        	$error = error_get_last();
         	throw new AutoloaderException_Index_IO(
-                "Could not move new index $tmpFile to {$this->getIndexPath()}."
+                "Could not move new index $tmpFile to {$this->getIndexPath()}: $error[message]"
             );
         	
         }

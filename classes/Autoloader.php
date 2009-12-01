@@ -81,7 +81,7 @@ Autoloader::registerInternalClass(
 
 /*
  * As a simple requiring of this file should be
- * enough to get this Autoloader working a new
+ * enough to get this Autoloader working, a new
  * instance of the Autoloader must be created.
  */
 Autoloader::__static();
@@ -606,7 +606,8 @@ class Autoloader {
                 throw new AutoloaderException_Include_FileNotExists($path);
                 
             } else {
-                throw new AutoloaderException_Include("Failed to include $path for $class.");
+            	$error = error_get_last();
+                throw new AutoloaderException_Include("Failed to include $path for $class: $error[message]");
                 
             }
         }

@@ -98,7 +98,7 @@ class AutoloaderBenchmark {
 	}
 	
 	
-	public function __construct($indexSize, $getPathCount, $iterations = 1000) {
+	public function __construct($indexSize, $getPathCount, $iterations = 10000) {
 		$this->indexSize      = $indexSize;
         $this->iterations     = $iterations;
         $this->getPathCount   = $getPathCount;

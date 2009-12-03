@@ -1,9 +1,9 @@
-2009-11-27 Markus Malkusch <markus@malkusch.de>
-
-    * classes/index/AutoloaderIndex_SerializedHashtable.php (AutoloaderIndex_SerializedHashtable::save()):
-    Raceconditions were possible during saving the index. Saving is done now atomically.
-
 2009-11-29 Markus Malkusch <markus@malkusch.de>
 
     * classes/exception/AutoloaderException_SearchFailed.php (AutoloaderException_SearchFailed::getClass()):
     A method for getting the information which class couldn't be found.
+
+2009-11-27 Markus Malkusch <markus@malkusch.de>
+
+    * classes/index/AutoloaderIndex_SerializedHashtable.php (AutoloaderIndex_SerializedHashtable::save()):
+    Raceconditions were possible during saving the index. Saving is done now atomically.

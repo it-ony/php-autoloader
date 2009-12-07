@@ -462,12 +462,9 @@ class Autoloader {
      * 
      * If this Autoloader doesn't find a class defintion it will
      * only raise an error if it is the last Autoloader in the stack.
-     * Raising an error means defining a derivation of AutoloaderPseudoClass.
      * 
-     * @see AutoloaderPseudoClass
      * @see handleErrors()
      * @param String $class
-     * @since 1.1 define $class as derivation of AutoloaderPseudoClass
      */
     public function autoload($class) {
         self::normalizeClass($class);

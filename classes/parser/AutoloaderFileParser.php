@@ -19,7 +19,7 @@
 
 Autoloader::registerInternalClass(
     'AutoloaderException_Parser_IO',
-    dirname(__FILE__).'/../exception/AutoloaderException_Parser_IO.php'
+    dirname(__FILE__).'/exception/AutoloaderException_Parser_IO.php'
 );
 Autoloader::registerInternalClass(
     'AutoloaderFileParser_Tokenizer',

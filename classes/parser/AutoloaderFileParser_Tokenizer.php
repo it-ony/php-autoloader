@@ -18,6 +18,10 @@
 
 
 Autoloader::registerInternalClass(
+    'AutoloaderException_Parser',
+    dirname(__FILE__).'/exception/AutoloaderException_Parser.php'
+);
+Autoloader::registerInternalClass(
     'AutoloaderFileParser',
     dirname(__FILE__).'/AutoloaderFileParser.php'
 );
@@ -43,11 +47,18 @@ class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser {
 	 * @param String $class
 	 * @param String $source
 	 * @return bool
+	 * @throws AutoloaderException_Parser
 	 */
 	public function isClassInSource($class, $source) {
 		$class                 = strtolower($class);
-		$tokens                = token_get_all($source);
 		$nextStringIsClassName = false;
+		$tokens                = @token_get_all($source);
+
+		if (! is_array($tokens)) {
+			$error = error_get_last();
+			throw new AutoloaderException_Parser("Could not find $class: $error[message]");
+
+		}
 		
 		foreach ($tokens as $token) {
 			if (! is_array($token)) {

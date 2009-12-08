@@ -128,6 +128,10 @@ class Autoloader {
     
     private
     /**
+     * @var int the time in seconds to find a class definition
+     */
+    $searchTimeoutSeconds = 0,
+    /**
      * @var int Skip files greater than 1MB as default
      */
     $skipFilesize = 1048576,
@@ -270,13 +274,14 @@ class Autoloader {
     /**
      * This Autoloader will be registered at the stack.
      * 
-     * After registration this Autoloader is autoloading class definitions.
+     * After registration, this Autoloader is autoloading class definitions.
      * 
      * There is no need to configure this object. All missing
      * members are initialized before registration:
      * -The index would be an AutoloaderIndex_SerializedHashtable_GZ
      * -The parser will be (if PHP has tokenizer support) an AutoloaderFileParser_Tokenizer
      * -The class path is set to the directory of the calling file
+     * -The timeout for finding a class is set to max_execution_time
      * 
      * {@link spl_autoload_register()} disables __autoload(). This might be
      * unwanted, so register() also adds __autoload() to the stack.
@@ -313,6 +318,12 @@ class Autoloader {
     	if (empty($this->paths)) {
             $this->addCallersPath();
             
+    	}
+    	
+    	// set the timeout for finding a class to max_execution_time
+    	if (empty($this->searchTimeoutSeconds)) {
+    		$this->searchTimeoutSeconds = ini_get('max_execution_time');
+    		
     	}
     }
     
@@ -523,13 +534,18 @@ class Autoloader {
     
     
     /**
+     * This methods resets the max_execution_time to $searchTimeoutSeconds
+     * 
      * @param String $class
      * @throws AutoloaderException
      * @throws AutoloaderException_SearchFailed
      * @throws AutoloaderException_SearchFailed_EmptyClassPath
+     * @see set_time_limit()
      * @return String
      */
     private function searchPath($class) {
+    	set_time_limit($this->searchTimeoutSeconds);
+    	
     	$caughtExceptions = array();
         foreach ($this->paths as $searchpath) {
         	try {

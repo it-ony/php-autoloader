@@ -88,7 +88,7 @@ Autoloader::__static();
 
 
 /**
- * An implemtation for Autoloading classes in PHP.
+ * An implementation for Autoloading classes in PHP.
  * 
  * This Autoloader implementation searches recursivly in
  * defined class paths for a class definition.

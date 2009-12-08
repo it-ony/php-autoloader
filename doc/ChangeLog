@@ -7,7 +7,7 @@
     The path for AutoloaderException_Parser_IO was wrong.
     
     * classes/parser/AutoloaderFileParser_Tokenizer.php (AutoloaderFileParser_Tokenizer::isClassInSource()):
-    If the tokenizer fails it throws a AutoloaderException_Parser.
+    If the tokenizer fails it throws an AutoloaderException_Parser.
     
 2009-11-29 Markus Malkusch <markus@malkusch.de>
 

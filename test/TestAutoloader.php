@@ -42,6 +42,11 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
             
         }
     }
+    
+    
+    public function testNormalizedClassPaths() {
+    	//TODO test
+    }
 	
 	
 	public function testDefaultInstance() {

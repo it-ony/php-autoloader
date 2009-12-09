@@ -1,3 +1,9 @@
+2009-12-09 Markus Malkusch <markus@malkusch.de>
+
+    * classes/Autoloader.php (Autoloader::getNormalizeSearchPaths()):
+    Class paths are normalized for searching. That means that class paths
+    which are included in other class paths are removed.
+    
 2009-12-08 Markus Malkusch <markus@malkusch.de>
 
     * classes/Autoloader.php (Autoloader::searchPath()):

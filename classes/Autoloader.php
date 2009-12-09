@@ -152,6 +152,10 @@ class Autoloader {
      */
     $paths = array(),
     /**
+     * @var Array
+     */
+    $normalizedPaths = array(),
+    /**
      * @var AutoloaderIndex
      */
     $index,
@@ -349,6 +353,35 @@ class Autoloader {
     
     
     /**
+     * Paths which are below other search paths are removed. 
+     * 
+     * For example a /var/tmp would be removed if /var is already
+     * a search path.
+     * 
+     * @see $paths
+     * @return Array
+     */
+    private function getNormalizeSearchPaths() {
+    	if (empty($this->normalizedPaths)) {
+	    	$this->normalizedPaths = $this->paths;
+	    	
+	        foreach ($this->normalizedPaths as $removalKey => $removalCandidate) {
+	        	foreach ($this->normalizedPaths as $parentCandidate) {
+	        		$isIncluded =
+	                    strpos($removalCandidate, $parentCandidate) === 0
+	        		    && $removalCandidate !== $parentCandidate;
+	        		if ($isIncluded) {
+	        			unset($this->normalizedPaths[$removalKey]);
+	        			
+	        		}
+	        	}
+	        }
+    	}
+    	return $this->normalizedPaths;
+    }
+    
+    
+    /**
      * You can define several class paths in which the
      * Autoloader will search for classes.
      * 
@@ -358,6 +391,8 @@ class Autoloader {
     public function addPath($path) {
     	$path = realpath($path); 
         $this->paths[md5($path)] = $path;
+        
+        $this->normalizedPaths = array();
     }
     
     
@@ -370,7 +405,9 @@ class Autoloader {
      */
     public function removePath($path) {
     	$path = realpath($path); 
-        unset($this->paths[md5($path)]);
+    	unset($this->paths[md5($path)]);
+        
+    	$this->normalizedPaths = array();
     }
     
     
@@ -380,7 +417,8 @@ class Autoloader {
      * @see removePath()
      */
     public function removeAllPaths() {
-        $this->paths = array();
+        $this->paths            = array();
+        $this->normalizedPaths  = array();
     }
     
     
@@ -534,7 +572,9 @@ class Autoloader {
     
     
     /**
-     * This methods resets the max_execution_time to $searchTimeoutSeconds
+     * find a class definition in the search paths
+     * 
+     * This methods resets the max_execution_time to $searchTimeoutSeconds.
      * 
      * @param String $class
      * @throws AutoloaderException
@@ -547,7 +587,7 @@ class Autoloader {
     	set_time_limit($this->searchTimeoutSeconds);
     	
     	$caughtExceptions = array();
-        foreach ($this->paths as $searchpath) {
+        foreach ($this->getNormalizeSearchPaths() as $searchpath) {
         	try {
 	            $directories = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($searchpath));
 	            foreach ($directories as $file) {

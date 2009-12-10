@@ -1,3 +1,8 @@
+2009-12-10 Markus Malkusch <markus@malkusch.de>
+
+    * classes/index/AutoloaderIndex.php (AutoloaderIndex::getContext()):
+    Class paths are sorted for generating the context.
+    
 2009-12-09 Markus Malkusch <markus@malkusch.de>
 
     * classes/Autoloader.php (Autoloader::getNormalizeSearchPaths()):

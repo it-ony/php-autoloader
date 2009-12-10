@@ -222,7 +222,10 @@ abstract class AutoloaderIndex implements Countable {
      * @return String A context to distinguish different autoloaders
      */
     protected function getContext() {
-        return md5(implode("", $this->autoloader->getPaths()));
+    	//TODO That happens quiet offen, this should be stored in a variable.
+    	$paths = $this->autoloader->getPaths();
+    	sort($paths);
+        return md5(implode("", $paths));
     }
     
     

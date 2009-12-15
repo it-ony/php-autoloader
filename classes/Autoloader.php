@@ -20,8 +20,8 @@
 /*
  * These classes needed to be required in any case.
  */
-require_once dirname(__FILE__).'/InternalAutoloader.php';
 require_once dirname(__FILE__).'/AbstractAutoloader.php';
+require_once dirname(__FILE__).'/InternalAutoloader.php';
 require_once dirname(__FILE__).'/exception/AutoloaderException.php';
 require_once dirname(__FILE__).'/exception/AutoloaderException_PathNotRegistered.php';
 

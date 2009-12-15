@@ -7,6 +7,10 @@
     * classes/Autoloader.php (Autoloader::registerInternalClass())
     Autoloader::registerInternalClass() is deprecated and removed.
     InternalAutoloader::getInstance()->registerClass() is used instead.
+    
+    * classes/OldPHPAPI.php (OldPHPAPI::checkAPI())
+    Some functions are missing in older PHP 5 APIs.
+    If needed, these missing functions are implemented. 
 
 2009-12-11 Markus Malkusch <markus@malkusch.de>
 

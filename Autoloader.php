@@ -63,6 +63,13 @@
  * @see Autoloader
  */
 
+require_once dirname(__FILE__) . "/classes/OldPHPAPI.php";
+
+$__oldAPI = new OldPHPAPI();
+$__oldAPI->checkAPI();
+
+unset($__oldAPI);
+
 
 require_once dirname(__FILE__) . "/classes/Autoloader.php";
 

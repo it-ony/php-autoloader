@@ -39,13 +39,13 @@ class AutoloaderSuite extends PHPUnit_Framework_TestSuite {
     public static function suite() {
         $suite = new self();
  
+        $suite->addTestSuite("TestAutoloader");
         $suite->addTestSuite("TestIndex");
         $suite->addTestSuite("TestParser");
-        $suite->addTestSuite("TestAutoloader");
  
         return $suite;
     }
-    
+
     
     public function tearDown() {
         $this->deleteDirectory(TestAutoloader::getClassDirectory());

@@ -1,3 +1,17 @@
+2009-12-15 Markus Malkusch <markus@malkusch.de>
+
+    * classes/InternalAutoloader.php (InternalAutoloader):
+    Internal classes needed by the Autoloader itself are handled with
+    the InternalAutolader. 
+
+2009-12-11 Markus Malkusch <markus@malkusch.de>
+
+    * classes/Autoloader.php (Autoloader::setPath()):
+    For each class path one single Autoloader instance is responsable.
+    That allows to use individual configurations per class path and
+    to reuse an index for common class paths in different projects.
+    This is a major change which affects other classes and methods.
+
 2009-12-10 Markus Malkusch <markus@malkusch.de>
 
     * classes/index/AutoloaderIndex.php (AutoloaderIndex::getContext()):

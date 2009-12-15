@@ -34,8 +34,12 @@ class TestParser extends PHPUnit_Framework_TestCase {
 	public function testAutoloaderUsesTokenizer() {
 		$this->assertTrue(AutoloaderFileParser_Tokenizer::isSupported());
 		
+		$autoloader = new Autoloader();
+		$autoloader->register();
+		$autoloader->remove();
+		
 		$this->assertTrue(
-		  Autoloader::getDefaultInstance()->getParser() instanceof AutoloaderFileParser_Tokenizer
+		  $autoloader->getParser() instanceof AutoloaderFileParser_Tokenizer
         );
 	}
 	

@@ -29,7 +29,7 @@
  * @subpackage index
  * @author Markus Malkusch <markus@malkusch.de>
  * @copyright Copyright (C) 2010 Markus Malkusch
- * @version 1.0
+ * @version 1.1
  */
 abstract class AutoloaderIndex implements Countable {
     
@@ -216,16 +216,12 @@ abstract class AutoloaderIndex implements Countable {
     /**
      * The Autoloader class path context
      * 
-     * Only Autoloaders with an equal class path configuration work in the
-     * same context.
+     * Only Autoloaders with an equal class path work in the same context.
      * 
      * @return String A context to distinguish different autoloaders
      */
     protected function getContext() {
-    	//TODO That happens quiet offen, this should be stored in a variable.
-    	$paths = $this->autoloader->getPaths();
-    	sort($paths);
-        return md5(implode("", $paths));
+        return md5($this->autoloader->getPath());
     }
     
     

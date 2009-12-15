@@ -17,15 +17,13 @@
 #########################################################################
 
 
-Autoloader::registerInternalClass(
-	'AutoloaderException_SearchFailed',
-    dirname(__FILE__).'/AutoloaderException_SearchFailed.php'
-);
+require_once dirname(__FILE__).'/AutoloaderException.php';
+
 
 /**
- * No class path was defined.
+ * The internal Autoloader couldn't load a class.
  */
-class AutoloaderException_SearchFailed_EmptyClassPath extends AutoloaderException_SearchFailed {
+class AutoloaderException_InternalClassNotLoadable extends AutoloaderException {
     
     
 }

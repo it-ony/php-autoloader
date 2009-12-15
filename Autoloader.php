@@ -66,7 +66,7 @@
 
 require_once dirname(__FILE__) . "/classes/Autoloader.php";
 
+$__autoloader = new Autoloader();
+$__autoloader->register();
 
-Autoloader::getDefaultInstance()->addCallersPath();
-Autoloader::getDefaultInstance()->register();
-
+unset($__autoloader);

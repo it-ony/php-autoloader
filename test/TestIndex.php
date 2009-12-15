@@ -269,7 +269,7 @@ class TestIndex extends PHPUnit_Framework_TestCase {
     
     
     private function initIndex(AutoloaderIndex $index) {
-        $index->setAutoloader(Autoloader::getDefaultInstance());
+        $index->setAutoloader(new Autoloader());
         if ($index instanceof AutoloaderIndex_SerializedHashtable) {
             $index->setIndexPath($this->getIndexFile());
             
@@ -281,13 +281,22 @@ class TestIndex extends PHPUnit_Framework_TestCase {
      * @return Array
      */
     private function getIndexes() {
-        return array(
+    	$indeces =  array(
             $this->createAutoloaderIndex_Dummy(),
             $this->createAutoloaderIndex_SerializedHashtable(),
             $this->createAutoloaderIndex_SerializedHashtable_GZ(),
-            $this->createAutoloaderIndex_PDO_SQLITE(tempnam(sys_get_temp_dir(), "PDOTest")),
-            $this->createAutoloaderIndex_PDO_MySQL()
+            $this->createAutoloaderIndex_PDO_SQLITE(tempnam(sys_get_temp_dir(), "PDOTest"))
         );
+        
+        try {
+        	$indeces[] = $this->createAutoloaderIndex_PDO_MySQL();
+        	
+        } catch (PDOException $e) {
+        	trigger_error($e->getMessage());
+        	
+        }
+        
+        return $indeces;
     }
     
     

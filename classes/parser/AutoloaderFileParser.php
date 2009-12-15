@@ -17,15 +17,15 @@
 #########################################################################
 
 
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Parser_IO',
     dirname(__FILE__).'/exception/AutoloaderException_Parser_IO.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileParser_Tokenizer',
     dirname(__FILE__).'/AutoloaderFileParser_Tokenizer.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileParser_RegExp',
     dirname(__FILE__).'/AutoloaderFileParser_RegExp.php'
 );

@@ -2,7 +2,11 @@
 
     * classes/InternalAutoloader.php (InternalAutoloader):
     Internal classes needed by the Autoloader itself are handled with
-    the InternalAutolader. 
+    the InternalAutolader.
+    
+    * classes/Autoloader.php (Autoloader::registerInternalClass())
+    Autoloader::registerInternalClass() is deprecated and removed.
+    InternalAutoloader::getInstance()->registerClass() is used instead.
 
 2009-12-11 Markus Malkusch <markus@malkusch.de>
 

@@ -150,17 +150,6 @@ class Autoloader extends AbstractAutoloader {
 	
     
     /**
-     * @param String $class
-     * @param String $path
-     * @deprecated use InternalAutoloader::getInstance()->registerClass()
-     * TODO deprecated
-     */
-    static public function registerInternalClass($class, $path) {
-    	InternalAutoloader::getInstance()->registerClass($class, $path);
-    }
-    
-    
-    /**
      * All instances of Autoloader will be removed from the stack.
      * 
      * @see remove()
@@ -455,55 +444,55 @@ class Autoloader extends AbstractAutoloader {
  * These classes are needed by the Autoloader itself.
  * They have to be registered statically.
  */
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderIndex',
     dirname(__FILE__).'/index/AutoloaderIndex.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderException_SearchFailed',
     dirname(__FILE__).'/exception/AutoloaderException_SearchFailed.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderException_SearchFailed_EmptyClassPath',
     dirname(__FILE__).'/exception/AutoloaderException_SearchFailed_EmptyClassPath.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderException_Include',
     dirname(__FILE__).'/exception/AutoloaderException_Include.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderException_Include_FileNotExists',
     dirname(__FILE__).'/exception/AutoloaderException_Include_FileNotExists.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderException_Include_ClassNotDefined',
     dirname(__FILE__).'/exception/AutoloaderException_Include_ClassNotDefined.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderException_Index_NotDefined',
     dirname(__FILE__).'/index/exception/AutoloaderException_Index_NotDefined.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderException_GuessPathFailed',
     dirname(__FILE__).'/index/exception/AutoloaderException_GuessPathFailed.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderIndex_Dummy',
     dirname(__FILE__).'/index/AutoloaderIndex_Dummy.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderIndex_PDO',
     dirname(__FILE__).'/index/AutoloaderIndex_PDO.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderIndex_SerializedHashtable',
     dirname(__FILE__).'/index/AutoloaderIndex_SerializedHashtable.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndex_SerializedHashtable_GZ',
     dirname(__FILE__).'/index/AutoloaderIndex_SerializedHashtable_GZ.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileParser',
     dirname(__FILE__).'/parser/AutoloaderFileParser.php'
 );

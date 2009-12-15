@@ -17,11 +17,11 @@
 #########################################################################
 
 
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Parser',
     dirname(__FILE__).'/exception/AutoloaderException_Parser.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileParser',
     dirname(__FILE__).'/AutoloaderFileParser.php'
 );

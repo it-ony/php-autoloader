@@ -17,7 +17,7 @@
 #########################################################################
 
 
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderException_Index',
 	dirname(__FILE__).'/AutoloaderException_Index_IO.php'
 );

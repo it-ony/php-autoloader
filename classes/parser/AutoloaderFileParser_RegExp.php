@@ -17,7 +17,7 @@
 #########################################################################
 
 
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileParser',
     dirname(__FILE__).'/AutoloaderFileParser.php'
 );

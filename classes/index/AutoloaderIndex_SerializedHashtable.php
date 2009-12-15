@@ -17,23 +17,23 @@
 #########################################################################
 
 
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderIndex',
     dirname(__FILE__).'/AutoloaderIndex.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Index',
     dirname(__FILE__).'/exception/AutoloaderException_Index.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderException_Index_NotFound',
     dirname(__FILE__).'/exception/AutoloaderException_Index_NotFound.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Index_IO',
     dirname(__FILE__).'/exception/AutoloaderException_Index_IO.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Index_IO_FileNotExists',
     dirname(__FILE__).'/exception/AutoloaderException_Index_IO_FileNotExists.php'
 );

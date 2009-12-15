@@ -17,11 +17,11 @@
 #########################################################################
 
 
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderIndex',
     dirname(__FILE__).'/AutoloaderIndex.php'
 );
-Autoloader::registerInternalClass(
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderException_Index_NotFound',
     dirname(__FILE__).'/exception/AutoloaderException_Index_NotFound.php'
 );

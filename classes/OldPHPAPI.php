@@ -46,7 +46,7 @@ class OldPHPAPI {
 			return array(
                 'type'      => 0,
                 'message'   => 'Getting the last error message is not supported by your old PHP version.',
-                'file'      => 'Getting the last error message is not supported by your old PHP version.',
+                'file'      => '/dev/null',
                 'line'      => 0
 			);
 		}

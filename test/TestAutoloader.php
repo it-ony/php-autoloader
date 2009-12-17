@@ -44,6 +44,42 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
     }
     
     
+    /**
+     * This Test checks if a normalized Autolader will registered
+     * again, after removing its parent Autoloader.
+     */
+    public function testReregisteringAfterRemoval() {
+    	Autoloader::removeAll();
+    	
+    	$classA = $this->makeClass("A", "testReregisteringAfterRemoval");
+        $classB = $this->makeClass("B", "testReregisteringAfterRemoval/B");
+    	
+    	
+        $autoloaderB = new Autoloader();
+        $autoloaderB->setPath(self::getClassDirectory() . "/testReregisteringAfterRemoval/B");
+        $autoloaderB->register();
+        
+        $this->assertTrue($autoloaderB->isRegistered());
+        
+        $autoloaderA = new Autoloader();
+        $autoloaderA->setPath(self::getClassDirectory() . "/testReregisteringAfterRemoval");
+        $autoloaderA->register();
+        
+        $this->assertTrue($autoloaderA->isRegistered());
+        $this->assertFalse($autoloaderB->isRegistered());
+        
+        $autoloaderA->remove();
+        
+        $this->assertFalse($autoloaderA->isRegistered());
+        $this->assertTrue($autoloaderB->isRegistered());
+        
+        $this->assertNotLoadable($classA);
+        $this->assertLoadable($classB);
+        
+        Autoloader::removeAll();
+    }
+    
+    
     public function testNormalizedClassPaths() {
     	$autoloader = Autoloader::getRegisteredAutoloader();
 		Autoloader::removeAll();
@@ -59,10 +95,10 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
     	$autoloaderB->setPath(self::getClassDirectory() . "/testNormalizedClassPaths/B");
     	$autoloaderB->register();
     	
-    	$this->assertLoadable($classA);
-    	$this->assertLoadable($classB);
-    	
-    	$this->assertEquals(1, count(Autoloader::getRegisteredAutoloaders()));
+    	$this->assertTrue($autoloaderA->isRegistered());
+        $this->assertFalse($autoloaderB->isRegistered());
+        $this->assertLoadable($classA);
+        $this->assertLoadable($classB);
     	
     	Autoloader::removeAll();
 
@@ -81,12 +117,10 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
     	
     	$this->assertLoadable($classA);
     	$this->assertLoadable($classB);
-    	
-    	$this->assertEquals(1, count(Autoloader::getRegisteredAutoloaders()));
+    	$this->assertTrue($autoloaderA->isRegistered());
+        $this->assertFalse($autoloaderB->isRegistered());
     	
     	Autoloader::removeAll();
-    	
-    	
     	
     	$autoloader->register();
     }

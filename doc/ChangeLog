@@ -1,3 +1,9 @@
+2009-12-18 Markus Malkusch <markus@malkusch.de>
+
+    * classes/Autoloader.php (InternalAutoloader->remove()):
+    After removing an Autoloader a previously by normalization
+    removed Autoloader could become activated again.
+    
 2009-12-15 Markus Malkusch <markus@malkusch.de>
 
     * classes/InternalAutoloader.php (InternalAutoloader):

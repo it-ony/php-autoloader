@@ -69,6 +69,16 @@ abstract class AbstractAutoloader {
         }
     	spl_autoload_register($this->getCallback());
     }
+    
+    
+    /**
+     * Returns true for Autoloaders in the spl_autoload stack.
+     * 
+     * @return bool
+     */
+    public function isRegistered() {
+    	return in_array($this->getCallback(), spl_autoload_functions());
+    }
 
     
 	/**

@@ -52,7 +52,7 @@ class Autoloader extends AbstractAutoloader {
     /**
      * @var array
      */
-    $internalClasses = array();
+    $unregisteredNormalizedAutoloaders = array();
     
     
     private
@@ -155,6 +155,7 @@ class Autoloader extends AbstractAutoloader {
      * @see remove()
      */
     static public function removeAll() {
+    	self::$unregisteredNormalizedAutoloaders = array();
     	foreach (self::getRegisteredAutoloaders() as $autoloader) { //TODO use __CLASS__ in PHP 5.3 and remove the other implementations
     		$autoloader->remove();
     		
@@ -239,14 +240,32 @@ class Autoloader extends AbstractAutoloader {
     }
     
     
+    /**
+     * @see normalizeSearchPaths()
+     * @see remove()
+     */
+    private function removeByNormalization() {
+    	parent::remove();
+    	
+    	self::$unregisteredNormalizedAutoloaders[$this->getPath()] = $this;
+    }
+    
+    
+    
 	/**
      * This Autoloader will be removed from the stack.
      * 
      * @see removeAll()
      */
     public function remove() {
-    	//TODO A previously by normalizeSearchPaths() removed autoloader could now be active.
     	parent::remove();
+    	
+    	$autoloaders = self::$unregisteredNormalizedAutoloaders;
+    	self::$unregisteredNormalizedAutoloaders = array();
+    	foreach ($autoloaders as $autoloader) {
+    		$autoloader->register();
+    		
+    	}
     }
     
     
@@ -275,7 +294,7 @@ class Autoloader extends AbstractAutoloader {
                     strpos($removalCandidate->getPath(), $parentCandidate->getPath()) === 0
         		    && $removalCandidate !== $parentCandidate;
         		if ($isIncluded) {
-        			$removalCandidate->remove();
+        			$removalCandidate->removeByNormalization();
         			
         		}
         	}

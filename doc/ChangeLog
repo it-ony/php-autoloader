@@ -1,6 +1,6 @@
 2009-12-18 Markus Malkusch <markus@malkusch.de>
 
-    * classes/Autoloader.php (InternalAutoloader->remove()):
+    * classes/Autoloader.php (InternalAutoloader::remove()):
     After removing an Autoloader a previously by normalization
     removed Autoloader could become activated again.
     

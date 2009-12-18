@@ -88,7 +88,17 @@ class InternalAutoloader extends AbstractAutoloader {
     }
     
 
+    /**
+     * This is a Singleton
+     */
     private function __construct() {
+	}
+	
+
+	/**
+     * This is a Singleton
+     */
+	private function __clone() {
 	}
 	
 	

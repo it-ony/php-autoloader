@@ -42,14 +42,14 @@ class AutoloaderSuite extends PHPUnit_Framework_TestSuite {
         $suite->addTestSuite("TestAutoloader");
         $suite->addTestSuite("TestIndex");
         $suite->addTestSuite("TestParser");
-        //TODO test InternalAutoloader
+        $suite->addTestSuite("TestInternalAutoloader");
  
         return $suite;
     }
 
     
     public function tearDown() {
-        $this->deleteDirectory(TestAutoloader::getClassDirectory());
+        $this->deleteDirectory(AutoloaderTestHelper::getClassDirectory());
         $this->deleteDirectory(TestIndex::getIndexDirectory());
     }
     

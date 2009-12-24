@@ -26,7 +26,7 @@ InternalAutoloader::getInstance()->registerClass(
 /**
  * Indicates that guessing the callers path failed.
  */
-class AutoloaderException_SearchFailed extends AutoloaderException {
+class AutoloaderException_GuessPathFailed extends AutoloaderException {
     
     
 }

@@ -32,6 +32,13 @@ class AutoloaderTestHelper {
 	const CLASS_DIRECTORY = "testClasses";
 	
 	
+	private
+	/**
+	 * @var PHPUnit_Framework_TestCase
+	 */
+	$test;
+	
+	
     static public function __static() {
         if (! file_exists(self::getClassDirectory())) {
             mkdir(self::getClassDirectory());
@@ -43,8 +50,21 @@ class AutoloaderTestHelper {
     /**
      * @return String
      */
-    static public function getClassDirectory() {
-        return dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . self::CLASS_DIRECTORY;
+    static public function getClassDirectory($subDirectory = null) {
+        $classDirectory = dirname(__FILE__) . DIRECTORY_SEPARATOR
+                        . '..' . DIRECTORY_SEPARATOR
+                        . self::CLASS_DIRECTORY;
+
+        if (! empty($subDirectory)) {
+        	$classDirectory .= DIRECTORY_SEPARATOR . $subDirectory;
+        	
+        }
+        return $classDirectory;
+    }
+    
+    
+    public function __construct(PHPUnit_Framework_TestCase $test) {
+    	$this->test = $test;
     }
     
     
@@ -53,7 +73,7 @@ class AutoloaderTestHelper {
             new ReflectionClass($class);
           
         } catch (ReflectionException $e) {
-            $this->fail("class $class is not loadable.");
+            $this->test->fail("class $class is not loadable.");
             
         }
     }
@@ -63,7 +83,7 @@ class AutoloaderTestHelper {
         try {
             new ReflectionClass($class);
             new $class();
-            $this->fail("class $class is loadable.");
+            $this->test->fail("class $class is loadable.");
           
         } catch (AutoloaderException_SearchFailed $e) {
             // expected

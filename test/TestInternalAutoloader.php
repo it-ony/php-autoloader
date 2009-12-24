@@ -45,7 +45,24 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
  * @copyright Copyright (C) 2010 Markus Malkusch
  */
 class TestInternalAutoloader extends PHPUnit_Framework_TestCase {
+
 	
+	/**
+     * @param String $class
+     * @param String $path
+     * @dataProvider provideTestAutoload
+     */
+    public function testAutoload($class, $path) {
+    	return;
+        $autoloaderTestHelper = new AutoloaderTestHelper($this);
+        
+        Autoloader::removeAll();
+        
+        $autoloaderTestHelper->assertNotLoadable($class);
+        InternalAutoloader::getInstance()->registerClass($class, $path);
+        $autoloaderTestHelper->assertLoadable($class);
+    }
+    
 	
 	public function testGetInstance() {
 		$this->assertTrue(InternalAutoloader::getInstance() instanceof InternalAutoloader);
@@ -69,16 +86,38 @@ class TestInternalAutoloader extends PHPUnit_Framework_TestCase {
 		$this->assertRemoved();
 	}
 	
-	
-	private function assertRemoved() {
-		$this->assertFalse(InternalAutoloader::getInstance()->isRegistered());
+
+	/**
+	 * @return array
+	 */
+	public function provideTestAutoload() {
+		$autoloaderTestHelper = new AutoloaderTestHelper($this);
+		$return               = array();
+		
+		$return[] = array(
+            $autoloaderTestHelper->makeClass("ClassA", 'testInternal'),
+            AutoloaderTestHelper::getClassDirectory('testInternal')
+        );
+		$return[] = array(
+            $autoloaderTestHelper->makeClass("ClassA2", 'testInternal'),
+            AutoloaderTestHelper::getClassDirectory('testInternal')
+        );
+		$return[] = array(
+            $autoloaderTestHelper->makeClass("ClassB", 'testInternal/subDirectory'),
+            AutoloaderTestHelper::getClassDirectory('testInternal')
+        );
+		
+		return $return;
+	}
+
+    
+    private function assertRemoved() {
+        $this->assertFalse(InternalAutoloader::getInstance()->isRegistered());
         $this->assertEquals(0, count(InternalAutoloader::getRegisteredAutoloaders()));
         
         InternalAutoloader::getInstance()->register();
         $this->assertTrue(InternalAutoloader::getInstance()->isRegistered());
-	}
-	
-	//TODO more tests
-
-
+    }
+    
+    
 }

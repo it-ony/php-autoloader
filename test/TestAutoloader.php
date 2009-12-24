@@ -301,7 +301,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 		$autoloader = new Autoloader();
 		$autoloader->register();
 		
-		$this->autoloaderTestHelper = new AutoloaderTestHelper();
+		$this->autoloaderTestHelper = new AutoloaderTestHelper($this);
 	}
 	
 	
@@ -388,7 +388,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 	 * @return Array
 	 */
 	public function provideTestSkipPatterns() {
-		$this->autoloaderTestHelper = new AutoloaderTestHelper();
+		$this->autoloaderTestHelper = new AutoloaderTestHelper($this);
 		
 		$classSVN  = $this->autoloaderTestHelper->makeClass("SVN",    ".svn");
 		$classCVS  = $this->autoloaderTestHelper->makeClass("CVS",    ".CVS");
@@ -412,7 +412,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 	 * @return Array
 	 */
 	public function provideClassNames() {
-		$this->autoloaderTestHelper = new AutoloaderTestHelper();
+		$this->autoloaderTestHelper = new AutoloaderTestHelper($this);
 		
 		$classes = array();
 		$classes[] = $this->autoloaderTestHelper->makeClass("TestA",     "");

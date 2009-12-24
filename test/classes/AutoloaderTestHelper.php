@@ -34,6 +34,10 @@ class AutoloaderTestHelper {
 	
 	private
 	/**
+	 * @var array
+	 */
+	$generatedClassPaths = array(),
+	/**
 	 * @var PHPUnit_Framework_TestCase
 	 */
 	$test;
@@ -102,6 +106,8 @@ class AutoloaderTestHelper {
         $directory = self::getClassDirectory() . DIRECTORY_SEPARATOR . $directory;
         $path      = $directory . DIRECTORY_SEPARATOR . "$name.test.php";
         
+        $this->generatedClassPaths[$name] = $path;
+        
         if (file_exists($path)) {
             return $name;
             
@@ -115,6 +121,11 @@ class AutoloaderTestHelper {
         file_put_contents($path, $definition);
         
         return $name;
+    }
+    
+    
+    public function getGeneratedClassPath($class) {
+    	return $this->generatedClassPaths[$class];
     }
 
     

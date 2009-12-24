@@ -53,7 +53,6 @@ class TestInternalAutoloader extends PHPUnit_Framework_TestCase {
      * @dataProvider provideTestAutoload
      */
     public function testAutoload($class, $path) {
-    	return;
         $autoloaderTestHelper = new AutoloaderTestHelper($this);
         
         Autoloader::removeAll();
@@ -94,17 +93,20 @@ class TestInternalAutoloader extends PHPUnit_Framework_TestCase {
 		$autoloaderTestHelper = new AutoloaderTestHelper($this);
 		$return               = array();
 		
+		$class    = $autoloaderTestHelper->makeClass("ClassA", 'testInternal');
 		$return[] = array(
-            $autoloaderTestHelper->makeClass("ClassA", 'testInternal'),
-            AutoloaderTestHelper::getClassDirectory('testInternal')
+            $class,
+            $autoloaderTestHelper->getGeneratedClassPath($class)
         );
+		$class    = $autoloaderTestHelper->makeClass("ClassA2", 'testInternal');
 		$return[] = array(
-            $autoloaderTestHelper->makeClass("ClassA2", 'testInternal'),
-            AutoloaderTestHelper::getClassDirectory('testInternal')
+            $class,
+            $autoloaderTestHelper->getGeneratedClassPath($class)
         );
+		$class    = $autoloaderTestHelper->makeClass("ClassB", 'testInternal/sub');
 		$return[] = array(
-            $autoloaderTestHelper->makeClass("ClassB", 'testInternal/subDirectory'),
-            AutoloaderTestHelper::getClassDirectory('testInternal')
+            $class,
+            $autoloaderTestHelper->getGeneratedClassPath($class)
         );
 		
 		return $return;

@@ -1,4 +1,4 @@
-2010-01-08 Markus Malkusch <markus@malkusch.de>
+2010-01-09 Markus Malkusch <markus@malkusch.de>
 
     * classes/fileIterator/AutoloaderFileIterator_PriorityList.php:
     The AutoloaderFileIterator_PriorityList prefers *.inc and *.php files.

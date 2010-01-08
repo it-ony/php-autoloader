@@ -1,3 +1,13 @@
+2010-01-08 Markus Malkusch <markus@malkusch.de>
+
+    * classes/AbstractAutoloader.php (AbstractAutoloader::isRegistered()):
+    Using strict mode to avoid the endless recursion.
+    
+    * classes/Autoloader.php (Autoloader::setFileIterator()):
+    The file search is using a dedicated object (AutoloaderFileIterator)
+    for iterating through the filesystem. Therefore the methods addSkipPattern()
+    and setSkipFilesize() are moved into the AutoloaderFileIterator class.
+    
 2009-12-18 Markus Malkusch <markus@malkusch.de>
 
     * classes/Autoloader.php (InternalAutoloader::remove()):

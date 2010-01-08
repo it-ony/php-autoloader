@@ -118,6 +118,39 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
         
         return $cases;
     }
+    
+    
+    /**
+     * @dataProvider provideTestSkipPatterns
+     */
+    public function testSkipPatterns($class, $skipPattern = null) {
+        return; //TODO
+        if (! empty($skipPattern)) {
+            Autoloader::getRegisteredAutoloader()->addSkipPattern($skipPattern);
+            
+        }
+        $this->autoloaderTestHelper->assertNotLoadable($class);
+    }
+
+    
+    /**
+     * @return Array
+     */
+    public function provideTestSkipPatterns() {
+        return array(); //TODO
+        $this->autoloaderTestHelper = new AutoloaderTestHelper($this);
+        
+        $classSVN  = $this->autoloaderTestHelper->makeClass("SVN",    ".svn");
+        $classCVS  = $this->autoloaderTestHelper->makeClass("CVS",    ".CVS");
+        $classTEST = $this->autoloaderTestHelper->makeClass("TESt",   "testPattern");
+        
+        
+        return array(
+            array($classSVN),
+            array($classCVS),
+            array($classTEST, "~testPattern~")
+        );
+    }
 
     
 }

@@ -134,6 +134,10 @@ class AutoloaderTestHelper {
             $directory = self::getClassDirectory() . DIRECTORY_SEPARATOR . $directory;
             
         }
+        if (! file_exists($directory)) {
+            return;
+            
+        }
         foreach (new DirectoryIterator($directory) as $file) {
             if (in_array($file, array(".", ".."))) {
                 continue;

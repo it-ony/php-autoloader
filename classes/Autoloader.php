@@ -61,19 +61,9 @@ class Autoloader extends AbstractAutoloader {
      */
     $searchTimeoutSeconds = 0,
     /**
-     * @var int Skip files greater than 1MB as default
-     * @deprecated @see AutoloaderFileIterator::$skipFilesize XXX
+     * @var AutoloaderFileIterator
      */
-    $skipFilesize = 1048576,
-    /**
-     * @var Array ignore SVN, CVS and *.dist files
-     * @deprecated @see AutoloaderFileIterator::$skipPatterns XXX
-     */
-    $skipPatterns = array(
-    	'~/\.svn/~',
-    	'~/\.CVS/~',
-    	'~/\.dist$~i'
-    ),
+    $fileIterator,
     /**
      * @var String
      */
@@ -86,6 +76,26 @@ class Autoloader extends AbstractAutoloader {
      * @var AutoloaderFileParser
      */
     $parser;
+
+    
+    /**
+     * Sets a AutoloaderFileIterator.
+     * 
+     * This is not necessary to call, as the Autoloader initializes itself
+     * with an AutoloaderFileIterator.
+     */
+    public function setFileIterator(AutoloaderFileIterator $fileIterator) {
+    	$this->fileIterator = $fileIterator;
+    	$this->fileIterator->setAutoloader($this);
+    }
+    
+    
+    /**
+     * @return AutoloaderFileIterator
+     */
+    public function getFileIterator() {
+    	return $this->fileIterator;
+    }
 
     
     /**
@@ -206,6 +216,7 @@ class Autoloader extends AbstractAutoloader {
      * -The parser will be (if PHP has tokenizer support) an AutoloaderFileParser_Tokenizer
      * -The class path was set by the constructor to the directory of the calling file
      * -The timeout for finding a class is set to max_execution_time
+     * -The AutoloaderFileIterator
      * 
      * {@link spl_autoload_register()} disables __autoload(). This might be
      * unwanted, so register() also adds __autoload() to the stack.
@@ -234,6 +245,12 @@ class Autoloader extends AbstractAutoloader {
     	if (empty($this->searchTimeoutSeconds)) {
     		$this->searchTimeoutSeconds = ini_get('max_execution_time');
     		
+    	}
+    	
+    	// set the AutoloaderFileIterator
+    	if (empty($this->fileIterator)) {
+    	    $this->setFileIterator(new AutoloaderFileIterator_Simple());
+    	    
     	}
 
     	parent::register();
@@ -327,42 +344,6 @@ class Autoloader extends AbstractAutoloader {
     
     
     /**
-     * Adds a regular expression for ignoring files in the class paths.
-     * 
-     * Files which paths match one of these patterns won't be
-     * searched for class definitions.
-     * 
-     * This is useful for version control paths where files
-     * with class definitions exists.
-     * Subversion (.svn) and CVS (.CVS) are excluded by default.
-     * 
-     * @param String $pattern a regular expression including delimiters
-     * @see $skipPatterns
-     * @deprecated @see AutoloaderFileIterator::addSkipPattern() XXX
-     */
-    public function addSkipPattern($pattern) {
-        $this->skipPatterns[] = $pattern;
-    }
-    
-    
-    /**
-     * Set a file size to ignore files bigger than $size.
-     * 
-     * The autoloader has to look into every file. Large files
-     * like images may result in exceeding the max_execution_time.
-     * 
-     * Default is set to 1MB. A size of 0 would disable this limitation.
-     * 
-     * @param int $size Size in bytes
-     * @see $skipFilesize
-     * @deprecated @see AutoloaderFileIterator::addSkipPattern() XXX
-     */
-    public function setSkipFilesize($size) {
-        $this->skipFilesize = $size;
-    }
-    
-    
-    /**
      * @param String $class
      * @throws AutoloaderException
      */
@@ -410,31 +391,7 @@ class Autoloader extends AbstractAutoloader {
     	
     	$caughtExceptions = array();
         try {
-            $directories = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->path));
-            foreach ($directories as $file) {
-                
-                $file = (string) $file;
-                
-                // skip defined path patterns XXX
-                foreach ($this->skipPatterns as $pattern) {
-                	if (preg_match($pattern, $file)) {
-                		continue 2;
-                		
-                	}
-                	
-                }
-                
-                if (! is_file($file)) {
-                    continue;
-                    
-                }
-                
-                // avoid too large files XXX
-                if ($this->skipFilesize > 0 && filesize($file) > $this->skipFilesize) {
-                	continue;
-                	
-                }
-                
+            foreach ($this->fileIterator as $file) {
                 if ($this->parser->isClassInFile($class, $file)) {
                 	return $file;
                 	

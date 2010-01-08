@@ -62,6 +62,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
     public function testReregisteringAfterRemoval() {
     	Autoloader::removeAll();
     	
+    	
     	$classA = $this->autoloaderTestHelper->makeClass("A", "testReregisteringAfterRemoval");
         $classB = $this->autoloaderTestHelper->makeClass("B", "testReregisteringAfterRemoval/B");
     	
@@ -70,15 +71,17 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
         $autoloaderB->setPath(AutoloaderTestHelper::getClassDirectory() . "/testReregisteringAfterRemoval/B");
         $autoloaderB->register();
         
+        
         $this->assertTrue($autoloaderB->isRegistered());
         
         $autoloaderA = new Autoloader();
         $autoloaderA->setPath(AutoloaderTestHelper::getClassDirectory() . "/testReregisteringAfterRemoval");
         $autoloaderA->register();
         
+        
         $this->assertTrue($autoloaderA->isRegistered());
         $this->assertFalse($autoloaderB->isRegistered());
-        
+
         $autoloaderA->remove();
         
         $this->assertFalse($autoloaderA->isRegistered());
@@ -219,18 +222,6 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 			
 		}
 		$autoloader->register();
-	}
-	
-	
-	/**
-	 * @dataProvider provideTestSkipPatterns
-	 */
-	public function testSkipPatterns($class, $skipPattern = null) {
-		if (! empty($skipPattern)) {
-			Autoloader::getRegisteredAutoloader()->addSkipPattern($skipPattern);
-			
-		}
-		$this->autoloaderTestHelper->assertNotLoadable($class);
 	}
 	
 	
@@ -381,25 +372,6 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
             $autoloader->register();
             
         }
-	}
-	
-	
-	/**
-	 * @return Array
-	 */
-	public function provideTestSkipPatterns() {
-		$this->autoloaderTestHelper = new AutoloaderTestHelper($this);
-		
-		$classSVN  = $this->autoloaderTestHelper->makeClass("SVN",    ".svn");
-		$classCVS  = $this->autoloaderTestHelper->makeClass("CVS",    ".CVS");
-		$classTEST = $this->autoloaderTestHelper->makeClass("TESt",   "testPattern");
-		
-		
-		return array(
-		    array($classSVN),
-		    array($classCVS),
-		    array($classTEST, "~testPattern~")
-		);
 	}
 	
 	

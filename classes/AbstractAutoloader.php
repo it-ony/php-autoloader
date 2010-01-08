@@ -77,7 +77,7 @@ abstract class AbstractAutoloader {
      * @return bool
      */
     public function isRegistered() {
-    	return in_array($this->getCallback(), spl_autoload_functions());
+        return in_array($this->getCallback(), spl_autoload_functions(), true);
     }
 
     

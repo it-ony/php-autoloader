@@ -501,4 +501,8 @@ InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileIterator_Simple',
     dirname(__FILE__).'/fileIterator/AutoloaderFileIterator_Simple.php'
 );
+InternalAutoloader::getInstance()->registerClass(
+    'AutoloaderFileIterator_PriorityList',
+    dirname(__FILE__).'/fileIterator/AutoloaderFileIterator_PriorityList.php'
+);
 

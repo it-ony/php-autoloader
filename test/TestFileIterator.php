@@ -52,6 +52,10 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
      * @dataProvider provideTestCompleteIteration
      */
     public function testCompleteIteration(AutoloaderFileIterator $iterator, $path, Array $expectedFiles) {
+        $autoloader = new Autoloader();
+        $iterator->setAutoloader($autoloader);
+        $autoloader->setPath($path);
+        
         $expectedFiles = array_flip($expectedFiles);
         foreach ($iterator as $file) {
             $file = realpath($file);
@@ -110,11 +114,8 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
             
         }
         
-        $simpleIterator = new AutoloaderFileIterator_Simple();
-        $autoloader     = new Autoloader();
-        $cases[]        = array($simpleIterator, $rootDir, $files);
-        $simpleIterator->setAutoloader($autoloader);
-        $autoloader->setPath($rootDir);
+        $cases[] = array(new AutoloaderFileIterator_Simple(),       $rootDir, $files);
+        $cases[] = array(new AutoloaderFileIterator_PriorityList(), $rootDir, $files);
         
         return $cases;
     }
@@ -172,16 +173,28 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
         $simpleIterator->addSkipPattern('~myPattern1~');
         $simpleIterator->addSkipPattern('~myPattern2~');
         
+        $priorityIterator = new AutoloaderFileIterator_PriorityList();
+        $priorityIterator->addSkipPattern('~myPattern1~');
+        $priorityIterator->addSkipPattern('~myPattern2~');
+        
         
         $cases[] = array(
             $simpleIterator,
             $onlyIgnoredfiles,
             AutoloaderTestHelper::getClassDirectory("testSkipPatterns/onlyIgnored")
         );
-        
-        
         $cases[] = array(
             $simpleIterator,
+            $mixedfiles,
+            AutoloaderTestHelper::getClassDirectory("testSkipPatterns/mixed")
+        );
+        $cases[] = array(
+            $priorityIterator,
+            $onlyIgnoredfiles,
+            AutoloaderTestHelper::getClassDirectory("testSkipPatterns/onlyIgnored")
+        );
+        $cases[] = array(
+            $priorityIterator,
             $mixedfiles,
             AutoloaderTestHelper::getClassDirectory("testSkipPatterns/mixed")
         );
@@ -224,10 +237,51 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
         $simpleIterator->addSkipPattern('~myPattern1~');
         $simpleIterator->addSkipPattern('~myPattern2~');
         
-        $cases[] = array($simpleIterator, AutoloaderTestHelper::getClassDirectory("testEmptyIterator/empty"));
-        $cases[] = array($simpleIterator, AutoloaderTestHelper::getClassDirectory("testEmptyIterator/onlyIgnored"));
+        $priorityIterator = new AutoloaderFileIterator_PriorityList();
+        $priorityIterator->addSkipPattern('~myPattern1~');
+        $priorityIterator->addSkipPattern('~myPattern2~');
+        
+        $cases[] = array($simpleIterator,   AutoloaderTestHelper::getClassDirectory("testEmptyIterator/empty"));
+        $cases[] = array($simpleIterator,   AutoloaderTestHelper::getClassDirectory("testEmptyIterator/onlyIgnored"));
+        $cases[] = array($priorityIterator, AutoloaderTestHelper::getClassDirectory("testEmptyIterator/empty"));
+        $cases[] = array($priorityIterator, AutoloaderTestHelper::getClassDirectory("testEmptyIterator/onlyIgnored"));
         
         return $cases;
+    }
+    
+    
+    public function testPreferedPattern() {
+        AutoloaderTestHelper::deleteDirectory("testPreferedPattern");
+        $alTestHelper = new AutoloaderTestHelper($this);
+        
+        $alTestHelper->makeClass("A", "testPreferedPattern");
+        touch(AutoloaderTestHelper::getClassDirectory("testPreferedPattern") . DIRECTORY_SEPARATOR . "B.inc");
+        touch(AutoloaderTestHelper::getClassDirectory("testPreferedPattern") . DIRECTORY_SEPARATOR . "C.unimportant");
+        $alTestHelper->makeClass("D", "testPreferedPattern");
+        touch(AutoloaderTestHelper::getClassDirectory("testPreferedPattern") . DIRECTORY_SEPARATOR . "E.inc");
+        touch(AutoloaderTestHelper::getClassDirectory("testPreferedPattern") . DIRECTORY_SEPARATOR . "F.unimportant");
+        $alTestHelper->makeClass("G", "testPreferedPattern/sub");
+        touch(AutoloaderTestHelper::getClassDirectory("testPreferedPattern/sub") . DIRECTORY_SEPARATOR . "H.inc");
+        touch(AutoloaderTestHelper::getClassDirectory("testPreferedPattern/sub") . DIRECTORY_SEPARATOR . "I.unimportant");
+        $alTestHelper->makeClass("J", "testPreferedPattern/sub");
+        touch(AutoloaderTestHelper::getClassDirectory("testPreferedPattern/sub") . DIRECTORY_SEPARATOR . "K.inc");
+        touch(AutoloaderTestHelper::getClassDirectory("testPreferedPattern/sub") . DIRECTORY_SEPARATOR . "L.unimportant");
+        
+        $iterator   = new AutoloaderFileIterator_PriorityList();
+        $autoloader = new Autoloader();
+        $iterator->setAutoloader($autoloader);
+        $autoloader->setPath(AutoloaderTestHelper::getClassDirectory("testPreferedPattern"));
+        
+        $isUnimportantExpected = false;
+        foreach ($iterator as $file) {
+            if (! preg_match('~\.(inc|php)$~', $file)) {
+                $isUnimportantExpected = true;
+                
+            } elseif ($isUnimportantExpected) {
+                $this->fail("Did not expected the prefered file '$file'.");
+                
+            }
+        }
     }
 
     

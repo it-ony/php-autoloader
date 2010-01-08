@@ -8,6 +8,9 @@
     for iterating through the filesystem. Therefore the methods addSkipPattern()
     and setSkipFilesize() are moved into the AutoloaderFileIterator class.
     
+    * classes/Autoloader.php (Autoloader::setPath()):
+    Throws AutoloaderException_ClassPath if realpath() fails.
+    
 2009-12-18 Markus Malkusch <markus@malkusch.de>
 
     * classes/Autoloader.php (InternalAutoloader::remove()):

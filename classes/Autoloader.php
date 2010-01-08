@@ -327,9 +327,20 @@ class Autoloader extends AbstractAutoloader {
      * The constructor did this automatically.
      * 
      * @param String $path A class path
+     * @throws AutoloaderException_ClassPath_NotExists
+     * @throws AutoloaderException_ClassPath
      */
     public function setPath($path) {
-        $this->path = realpath($path);
+        $realpath = realpath($path);
+        if (! $realpath) {
+            if (! file_exists($path)) {
+                throw new AutoloaderException_ClassPath_NotExists($path);
+                
+            }
+            throw new AutoloaderException_ClassPath($path);
+            
+        }
+        $this->path = $realpath;
     }
     
     
@@ -447,6 +458,14 @@ InternalAutoloader::getInstance()->registerClass(
 InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderException_Include_ClassNotDefined',
     dirname(__FILE__).'/exception/AutoloaderException_Include_ClassNotDefined.php'
+);
+InternalAutoloader::getInstance()->registerClass(
+    'AutoloaderException_ClassPath',
+    dirname(__FILE__).'/exception/AutoloaderException_ClassPath.php'
+);
+InternalAutoloader::getInstance()->registerClass(
+    'AutoloaderException_ClassPath_NotExists',
+    dirname(__FILE__).'/exception/AutoloaderException_ClassPath_NotExists.php'
 );
 InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderException_Index_NotDefined',

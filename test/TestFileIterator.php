@@ -123,13 +123,23 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider provideTestSkipPatterns
      */
-    public function testSkipPatterns($class, $skipPattern = null) {
-        return; //TODO
-        if (! empty($skipPattern)) {
-            Autoloader::getRegisteredAutoloader()->addSkipPattern($skipPattern);
+    public function testSkipPatterns(AutoloaderFileIterator $iterator, Array $notExpectedFiles, $root) {
+        $autoloader = new Autoloader();
+        $autoloader->setPath($root);
+        $iterator->setAutoloader($autoloader);
+        
+        foreach ($notExpectedFiles as & $file) {
+            $file = realpath($file);
             
         }
-        $this->autoloaderTestHelper->assertNotLoadable($class);
+        $notExpectedFiles = array_flip($notExpectedFiles);
+        foreach ($iterator as $file) {
+            $this->assertFalse(
+                array_key_exists(realpath($file), $notExpectedFiles),
+                "should not find '$file'"
+            );
+            
+        }
     }
 
     
@@ -137,19 +147,46 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
      * @return Array
      */
     public function provideTestSkipPatterns() {
-        return array(); //TODO
-        $this->autoloaderTestHelper = new AutoloaderTestHelper($this);
+        AutoloaderTestHelper::deleteDirectory("testSkipPatterns");
         
-        $classSVN  = $this->autoloaderTestHelper->makeClass("SVN",    ".svn");
-        $classCVS  = $this->autoloaderTestHelper->makeClass("CVS",    ".CVS");
-        $classTEST = $this->autoloaderTestHelper->makeClass("TESt",   "testPattern");
-        
-        
-        return array(
-            array($classSVN),
-            array($classCVS),
-            array($classTEST, "~testPattern~")
+        $alTestHelper       = new AutoloaderTestHelper($this);
+        $cases              = array();
+        $onlyIgnoredfiles   = array(
+            $alTestHelper->getGeneratedClassPath($alTestHelper->makeClass("A", "testSkipPatterns/onlyIgnored/.CVS")),
+            $alTestHelper->getGeneratedClassPath($alTestHelper->makeClass("B", "testSkipPatterns/onlyIgnored/.svn")),
+            $alTestHelper->getGeneratedClassPath($alTestHelper->makeClass("C", "testSkipPatterns/onlyIgnored/.svn/C")),
+            $alTestHelper->getGeneratedClassPath($alTestHelper->makeClass("D", "testSkipPatterns/onlyIgnored/myPattern1")),
+            $alTestHelper->getGeneratedClassPath($alTestHelper->makeClass("myPattern2", "testSkipPatterns/onlyIgnored/")),
         );
+        $mixedfiles = array(
+            $alTestHelper->getGeneratedClassPath($alTestHelper->makeClass("A", "testSkipPatterns/mixed/.CVS")),
+            $alTestHelper->getGeneratedClassPath($alTestHelper->makeClass("B", "testSkipPatterns/mixed/.svn")),
+            $alTestHelper->getGeneratedClassPath($alTestHelper->makeClass("C", "testSkipPatterns/mixed/.svn/C")),
+            $alTestHelper->getGeneratedClassPath($alTestHelper->makeClass("D", "testSkipPatterns/mixed/myPattern1")),
+            $alTestHelper->getGeneratedClassPath($alTestHelper->makeClass("myPattern2", "testSkipPatterns/mixed/"))
+        );
+        $alTestHelper->makeClass("E", "testSkipPatterns/mixed/");
+        $alTestHelper->makeClass("F", "testSkipPatterns/mixed/F");
+
+        $simpleIterator = new AutoloaderFileIterator_Simple();
+        $simpleIterator->addSkipPattern('~myPattern1~');
+        $simpleIterator->addSkipPattern('~myPattern2~');
+        
+        
+        $cases[] = array(
+            $simpleIterator,
+            $onlyIgnoredfiles,
+            AutoloaderTestHelper::getClassDirectory("testSkipPatterns/onlyIgnored")
+        );
+        
+        
+        $cases[] = array(
+            $simpleIterator,
+            $mixedfiles,
+            AutoloaderTestHelper::getClassDirectory("testSkipPatterns/mixed")
+        );
+        
+        return $cases;
     }
 
     

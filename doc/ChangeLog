@@ -1,5 +1,12 @@
 2010-01-08 Markus Malkusch <markus@malkusch.de>
 
+    * classes/fileIterator/AutoloaderFileIterator_PriorityList.php:
+    The AutoloaderFileIterator_PriorityList prefers *.inc and *.php files.
+    It is not in use yet. You must set it explicitely with
+    Autoloader::setFileIterator().   
+    
+2010-01-08 Markus Malkusch <markus@malkusch.de>
+
     * classes/AbstractAutoloader.php (AbstractAutoloader::isRegistered()):
     Using strict mode to avoid the endless recursion.
     

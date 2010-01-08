@@ -1,5 +1,5 @@
 <?php
-##########################################################################
+#########################################################################
 # Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
 #                                                                       #
 # This program is free software: you can redistribute it and/or modify  #
@@ -126,6 +126,26 @@ class AutoloaderTestHelper {
     
     public function getGeneratedClassPath($class) {
     	return $this->generatedClassPaths[$class];
+    }
+    
+    
+    public static function deleteDirectory($directory, $isChroot = true) {
+        if ($isChroot) {
+            $directory = self::getClassDirectory() . DIRECTORY_SEPARATOR . $directory;
+            
+        }
+        foreach (new DirectoryIterator($directory) as $file) {
+            if (in_array($file, array(".", ".."))) {
+                continue;
+                
+            }
+            $path = $directory . DIRECTORY_SEPARATOR . $file;
+            is_dir($path)
+                ? self::deleteDirectory($path, false)
+                : unlink($path);
+            
+        }
+        rmdir($directory);
     }
 
     

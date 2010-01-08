@@ -1,5 +1,5 @@
 <?php
-##########################################################################
+#########################################################################
 # Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
 #                                                                       #
 # This program is free software: you can redistribute it and/or modify  #
@@ -59,31 +59,16 @@ class AutoloaderSuite extends PHPUnit_Framework_TestSuite {
         $suite->addTestSuite("TestIndex");
         $suite->addTestSuite("TestParser");
         $suite->addTestSuite("TestInternalAutoloader");
+        $suite->addTestSuite("TestFileIterator");
  
         return $suite;
     }
 
     
     public function tearDown() {
-        $this->deleteDirectory(AutoloaderTestHelper::getClassDirectory());
-        $this->deleteDirectory(TestIndex::getIndexDirectory());
+        AutoloaderTestHelper::deleteDirectory('.');
+        AutoloaderTestHelper::deleteDirectory(TestIndex::getIndexDirectory(), false);
     }
     
-    
-    private function deleteDirectory($directory) {
-    	foreach (new DirectoryIterator($directory) as $file) {
-    		if (in_array($file, array(".", ".."))) {
-    			continue;
-    			
-    		}
-    		$path = $directory . DIRECTORY_SEPARATOR . $file;
-    		is_dir($path)
-    		    ? $this->deleteDirectory($path)
-    		    : unlink($path);
-    		
-    	}
-    	rmdir($directory);
-    }
-
     
 }

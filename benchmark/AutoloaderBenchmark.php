@@ -1,6 +1,6 @@
 #! /usr/bin/php
 <?php
-##########################################################################
+#########################################################################
 # Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
 #                                                                       #
 # This program is free software: you can redistribute it and/or modify  #

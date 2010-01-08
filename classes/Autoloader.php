@@ -1,5 +1,5 @@
 <?php
-##########################################################################
+#########################################################################
 # Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
 #                                                                       #
 # This program is free software: you can redistribute it and/or modify  #
@@ -62,10 +62,12 @@ class Autoloader extends AbstractAutoloader {
     $searchTimeoutSeconds = 0,
     /**
      * @var int Skip files greater than 1MB as default
+     * @deprecated @see AutoloaderFileIterator::$skipFilesize XXX
      */
     $skipFilesize = 1048576,
     /**
      * @var Array ignore SVN, CVS and *.dist files
+     * @deprecated @see AutoloaderFileIterator::$skipPatterns XXX
      */
     $skipPatterns = array(
     	'~/\.svn/~',
@@ -336,6 +338,7 @@ class Autoloader extends AbstractAutoloader {
      * 
      * @param String $pattern a regular expression including delimiters
      * @see $skipPatterns
+     * @deprecated @see AutoloaderFileIterator::addSkipPattern() XXX
      */
     public function addSkipPattern($pattern) {
         $this->skipPatterns[] = $pattern;
@@ -352,6 +355,7 @@ class Autoloader extends AbstractAutoloader {
      * 
      * @param int $size Size in bytes
      * @see $skipFilesize
+     * @deprecated @see AutoloaderFileIterator::addSkipPattern() XXX
      */
     public function setSkipFilesize($size) {
         $this->skipFilesize = $size;
@@ -411,7 +415,7 @@ class Autoloader extends AbstractAutoloader {
                 
                 $file = (string) $file;
                 
-                // skip defined path patterns
+                // skip defined path patterns XXX
                 foreach ($this->skipPatterns as $pattern) {
                 	if (preg_match($pattern, $file)) {
                 		continue 2;
@@ -425,7 +429,7 @@ class Autoloader extends AbstractAutoloader {
                     
                 }
                 
-                // avoid too large files
+                // avoid too large files XXX
                 if ($this->skipFilesize > 0 && filesize($file) > $this->skipFilesize) {
                 	continue;
                 	
@@ -514,5 +518,9 @@ InternalAutoloader::getInstance()->registerClass(
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileParser',
     dirname(__FILE__).'/parser/AutoloaderFileParser.php'
+);
+InternalAutoloader::getInstance()->registerClass(
+    'AutoloaderFileIterator_Simple',
+    dirname(__FILE__).'/fileIterator/AutoloaderFileIterator_Simple.php'
 );
 

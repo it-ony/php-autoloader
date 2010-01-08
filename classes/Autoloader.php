@@ -179,6 +179,8 @@ class Autoloader extends AbstractAutoloader {
      * Set the class path of the caller.
      * 
      * @throws AutoloaderException_GuessPathFailed
+     * @throws AutoloaderException_ClassPath_NotExists
+     * @throws AutoloaderException_ClassPath
      */
     public function __construct() {
     	$this->setPath(self::getCallersPath());

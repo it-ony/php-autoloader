@@ -188,6 +188,47 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
         
         return $cases;
     }
+    
+    
+    /**
+     * @dataProvider provideTestEmptyIterator
+     */
+    public function testEmptyIterator(AutoloaderFileIterator $iterator, $root) {
+        $autoloader = new Autoloader();
+        $autoloader->setPath($root);
+        $iterator->setAutoloader($autoloader);
+        
+        foreach ($iterator as $file) {
+            $this->fail("Empty iterator expected but '$file' was found.");
+            
+        }
+    }
+    
+    
+    public function provideTestEmptyIterator() {
+        AutoloaderTestHelper::deleteDirectory("testEmptyIterator");
+        
+        $alTestHelper       = new AutoloaderTestHelper($this);
+        $cases              = array();
+        
+        $alTestHelper->makeClass("A", "testEmptyIterator/onlyIgnored/.CVS");
+        $alTestHelper->makeClass("B", "testEmptyIterator/onlyIgnored/.svn");
+        $alTestHelper->makeClass("C", "testEmptyIterator/onlyIgnored/.svn/C");
+        $alTestHelper->makeClass("D", "testEmptyIterator/onlyIgnored/myPattern1");
+        $alTestHelper->makeClass("myPattern2", "testEmptyIterator/onlyIgnored/");
+        mkdir(AutoloaderTestHelper::getClassDirectory("testEmptyIterator/onlyIgnored/emptyDir"));
+        
+        mkdir(AutoloaderTestHelper::getClassDirectory("testEmptyIterator/empty"));
+        
+        $simpleIterator = new AutoloaderFileIterator_Simple();
+        $simpleIterator->addSkipPattern('~myPattern1~');
+        $simpleIterator->addSkipPattern('~myPattern2~');
+        
+        $cases[] = array($simpleIterator, AutoloaderTestHelper::getClassDirectory("testEmptyIterator/empty"));
+        $cases[] = array($simpleIterator, AutoloaderTestHelper::getClassDirectory("testEmptyIterator/onlyIgnored"));
+        
+        return $cases;
+    }
 
     
 }

@@ -43,7 +43,7 @@ require_once dirname(__FILE__).'/exception/AutoloaderException_PathNotRegistered
  * @package autoloader
  * @author Markus Malkusch <markus@malkusch.de>
  * @copyright Copyright (C) 2010 Markus Malkusch
- * @version 1.2
+ * @version 1.3
  */
 class Autoloader extends AbstractAutoloader {
     
@@ -176,14 +176,15 @@ class Autoloader extends AbstractAutoloader {
     
     
     /**
-     * Set the class path of the caller.
+     * Set the class path of the caller if $path is null.
      * 
+     * @param String $path The class path
      * @throws AutoloaderException_GuessPathFailed
      * @throws AutoloaderException_ClassPath_NotExists
      * @throws AutoloaderException_ClassPath
      */
-    public function __construct() {
-    	$this->setPath(self::getCallersPath());
+    public function __construct($path = null) {
+    	$this->setPath(is_null($path) ? self::getCallersPath() : $path);
     }
     
     
@@ -251,7 +252,7 @@ class Autoloader extends AbstractAutoloader {
     	
     	// set the AutoloaderFileIterator
     	if (empty($this->fileIterator)) {
-    	    $this->setFileIterator(new AutoloaderFileIterator_Simple());
+    	    $this->setFileIterator(new AutoloaderFileIterator_PriorityList());
     	    
     	}
 
@@ -332,7 +333,7 @@ class Autoloader extends AbstractAutoloader {
      * @throws AutoloaderException_ClassPath_NotExists
      * @throws AutoloaderException_ClassPath
      */
-    public function setPath($path) {
+    private function setPath($path) {
         $realpath = realpath($path);
         if (! $realpath) {
             if (! file_exists($path)) {
@@ -404,6 +405,10 @@ class Autoloader extends AbstractAutoloader {
     	
     	$caughtExceptions = array();
         try {
+            if ($this->fileIterator instanceof AutoloaderFileIterator_PriorityList) {
+                $this->fileIterator->setClassname($class);
+                
+            }
             foreach ($this->fileIterator as $file) {
                 if ($this->parser->isClassInFile($class, $file)) {
                 	return $file;
@@ -500,6 +505,10 @@ InternalAutoloader::getInstance()->registerClass(
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileIterator_Simple',
     dirname(__FILE__).'/fileIterator/AutoloaderFileIterator_Simple.php'
+);
+InternalAutoloader::getInstance()->registerClass(
+    'AutoloaderFileIterator_SimpleCached',
+    dirname(__FILE__).'/fileIterator/AutoloaderFileIterator_SimpleCached.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileIterator_PriorityList',

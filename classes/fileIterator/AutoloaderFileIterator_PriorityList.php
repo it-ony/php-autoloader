@@ -32,17 +32,19 @@ InternalAutoloader::getInstance()->registerClass(
  * 
  * This AutoloaderFileIterator searches all files in advance and
  * orders them. It may not be practicable on a huge file base.
- * 
- * @package autoloader
- * @subpackage spider
- * @author Markus Malkusch <markus@malkusch.de>
- * @copyright Copyright (C) 2010 Markus Malkusch
- * @version 1.0
  */
 class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator {
 	
 	
 	private
+	/**
+	 * @var Array
+	 */
+	$preferedFiles = array(),
+	/**
+	 * @var Array
+	 */
+	$unpreferedFiles = array(),
 	/**
 	 * @var String
 	 */
@@ -76,6 +78,16 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator {
 	 */
 	public function addPreferedPattern($pattern) {
 	    $this->preferedPatterns[] = $pattern;
+	    $this->reset();
+	}
+	
+	
+	protected function reset() {
+	    parent::reset();
+	    
+	    unset($this->preferedFiles);
+        unset($this->unpreferedFiles);
+        unset($this->iterator);
 	}
 	
 	
@@ -101,29 +113,19 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator {
     
     
     public function rewind() {
-        $simpleIterator = new AutoloaderFileIterator_Simple();
-        $simpleIterator->setAutoloader($this->autoloader);
-        $simpleIterator->skipFilesize = $this->skipFilesize;
-        $simpleIterator->skipPatterns = $this->skipPatterns;
+        $this->initFileArrays();
         
-        // prefere Files which match agains the patterns in $preferedPatterns
-        $preferedList   = array();
-        $unpreferedList = array();
-        foreach ($simpleIterator as $file) {
-            foreach ($this->preferedPatterns as $pattern) {
-                if (preg_match($pattern, $file)) {
-                    $preferedList[] = $file;
-                    continue 2;
-                    
-                }
-            }
-            $unpreferedList[] = $file;
+        // order by Levenshtein distance to $classname
+        $levArray = array();
+        foreach ($this->preferedFiles as $file) {
+            $levArray[] = levenshtein(basename($file), $this->classname);
             
         }
+        array_multisort($levArray, $this->preferedFiles);
         
-        //TODO order by $classname
         
-        $files = array_merge($preferedList, $unpreferedList);
+        // merge ordered and unordered files
+        $files = array_merge($this->preferedFiles, $this->unpreferedFiles);
         
         $this->iterator = new ArrayIterator($files);
     }
@@ -133,7 +135,36 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator {
      * @return bool
      */
     public function valid() {
-        return $this->iterator->valid();
+        return ! is_null($this->iterator) && $this->iterator->valid();
+    }
+    
+    
+    /**
+     * @return Array
+     */
+    private function initFileArrays() {
+        if (! empty($this->preferedFiles) || ! empty($this->unpreferedFiles)) {
+            return;
+            
+        }
+        $simpleIterator = new AutoloaderFileIterator_Simple();
+        $simpleIterator->setAutoloader($this->autoloader);
+        $simpleIterator->skipFilesize = $this->skipFilesize;
+        $simpleIterator->skipPatterns = $this->skipPatterns;
+        
+        $this->preferedFiles   = array();
+        $this->unpreferedFiles = array();
+        foreach ($simpleIterator as $file) {
+            foreach ($this->preferedPatterns as $pattern) {
+                if (preg_match($pattern, $file)) {
+                    $this->preferedFiles[] = $file;
+                    continue 2;
+                    
+                }
+            }
+            $this->unpreferedFiles[] = $file;
+            
+        }
     }
 
     

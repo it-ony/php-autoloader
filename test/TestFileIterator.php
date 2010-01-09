@@ -52,9 +52,8 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
      * @dataProvider provideTestCompleteIteration
      */
     public function testCompleteIteration(AutoloaderFileIterator $iterator, $path, Array $expectedFiles) {
-        $autoloader = new Autoloader();
+        $autoloader = new Autoloader($path);
         $iterator->setAutoloader($autoloader);
-        $autoloader->setPath($path);
         
         $expectedFiles = array_flip($expectedFiles);
         foreach ($iterator as $file) {
@@ -115,6 +114,7 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
         }
         
         $cases[] = array(new AutoloaderFileIterator_Simple(),       $rootDir, $files);
+        $cases[] = array(new AutoloaderFileIterator_SimpleCached(), $rootDir, $files);
         $cases[] = array(new AutoloaderFileIterator_PriorityList(), $rootDir, $files);
         
         return $cases;
@@ -125,8 +125,7 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
      * @dataProvider provideTestSkipPatterns
      */
     public function testSkipPatterns(AutoloaderFileIterator $iterator, Array $notExpectedFiles, $root) {
-        $autoloader = new Autoloader();
-        $autoloader->setPath($root);
+        $autoloader = new Autoloader($root);
         $iterator->setAutoloader($autoloader);
         
         foreach ($notExpectedFiles as & $file) {
@@ -172,6 +171,10 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
         $simpleIterator = new AutoloaderFileIterator_Simple();
         $simpleIterator->addSkipPattern('~myPattern1~');
         $simpleIterator->addSkipPattern('~myPattern2~');
+
+        $simpleCachedIterator = new AutoloaderFileIterator_SimpleCached();
+        $simpleCachedIterator->addSkipPattern('~myPattern1~');
+        $simpleCachedIterator->addSkipPattern('~myPattern2~');
         
         $priorityIterator = new AutoloaderFileIterator_PriorityList();
         $priorityIterator->addSkipPattern('~myPattern1~');
@@ -185,6 +188,16 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
         );
         $cases[] = array(
             $simpleIterator,
+            $mixedfiles,
+            AutoloaderTestHelper::getClassDirectory("testSkipPatterns/mixed")
+        );
+        $cases[] = array(
+            $simpleCachedIterator,
+            $onlyIgnoredfiles,
+            AutoloaderTestHelper::getClassDirectory("testSkipPatterns/onlyIgnored")
+        );
+        $cases[] = array(
+            $simpleCachedIterator,
             $mixedfiles,
             AutoloaderTestHelper::getClassDirectory("testSkipPatterns/mixed")
         );
@@ -207,8 +220,7 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
      * @dataProvider provideTestEmptyIterator
      */
     public function testEmptyIterator(AutoloaderFileIterator $iterator, $root) {
-        $autoloader = new Autoloader();
-        $autoloader->setPath($root);
+        $autoloader = new Autoloader($root);
         $iterator->setAutoloader($autoloader);
         
         foreach ($iterator as $file) {
@@ -237,14 +249,20 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
         $simpleIterator->addSkipPattern('~myPattern1~');
         $simpleIterator->addSkipPattern('~myPattern2~');
         
+        $simpleCachedIterator = new AutoloaderFileIterator_SimpleCached();
+        $simpleCachedIterator->addSkipPattern('~myPattern1~');
+        $simpleCachedIterator->addSkipPattern('~myPattern2~');
+        
         $priorityIterator = new AutoloaderFileIterator_PriorityList();
         $priorityIterator->addSkipPattern('~myPattern1~');
         $priorityIterator->addSkipPattern('~myPattern2~');
         
-        $cases[] = array($simpleIterator,   AutoloaderTestHelper::getClassDirectory("testEmptyIterator/empty"));
-        $cases[] = array($simpleIterator,   AutoloaderTestHelper::getClassDirectory("testEmptyIterator/onlyIgnored"));
-        $cases[] = array($priorityIterator, AutoloaderTestHelper::getClassDirectory("testEmptyIterator/empty"));
-        $cases[] = array($priorityIterator, AutoloaderTestHelper::getClassDirectory("testEmptyIterator/onlyIgnored"));
+        $cases[] = array($simpleIterator,       AutoloaderTestHelper::getClassDirectory("testEmptyIterator/empty"));
+        $cases[] = array($simpleIterator,       AutoloaderTestHelper::getClassDirectory("testEmptyIterator/onlyIgnored"));
+        $cases[] = array($simpleCachedIterator, AutoloaderTestHelper::getClassDirectory("testEmptyIterator/empty"));
+        $cases[] = array($simpleCachedIterator, AutoloaderTestHelper::getClassDirectory("testEmptyIterator/onlyIgnored"));
+        $cases[] = array($priorityIterator,     AutoloaderTestHelper::getClassDirectory("testEmptyIterator/empty"));
+        $cases[] = array($priorityIterator,     AutoloaderTestHelper::getClassDirectory("testEmptyIterator/onlyIgnored"));
         
         return $cases;
     }
@@ -268,9 +286,8 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
         touch(AutoloaderTestHelper::getClassDirectory("testPreferedPattern/sub") . DIRECTORY_SEPARATOR . "L.unimportant");
         
         $iterator   = new AutoloaderFileIterator_PriorityList();
-        $autoloader = new Autoloader();
+        $autoloader = new Autoloader(AutoloaderTestHelper::getClassDirectory("testPreferedPattern"));
         $iterator->setAutoloader($autoloader);
-        $autoloader->setPath(AutoloaderTestHelper::getClassDirectory("testPreferedPattern"));
         
         $isUnimportantExpected = false;
         foreach ($iterator as $file) {
@@ -278,7 +295,124 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
                 $isUnimportantExpected = true;
                 
             } elseif ($isUnimportantExpected) {
-                $this->fail("Did not expected the prefered file '$file'.");
+                $this->fail("Did not expect the prefered file '$file'.");
+                
+            }
+        }
+    }
+    
+    
+    /**
+     * @dataProvider provideTestRepeatedIteratorUse
+     * @param int $limit
+     */
+    public function testRepeatedIteratorUse(AutoloaderFileIterator $iterator, $limit = null) {
+        $foundFiles = array();
+        $i          = 0;
+        foreach ($iterator as $file) {
+            if (! is_null($limit) && $i >= $limit) {
+                break;
+                
+            }
+            $foundFiles[] = $file;
+            
+        }
+        
+        $this->assertEqualFoundFiles($foundFiles, $iterator, $limit);
+        $this->assertEqualFoundFiles($foundFiles, $iterator, $limit);
+        $this->assertEqualFoundFiles($foundFiles, $iterator, $limit);
+    }
+    
+    
+    private function assertEqualFoundFiles(Array $expectedFiles, AutoloaderFileIterator $iterator, $limit = null) {
+        $i = 0;
+        foreach ($iterator as $file) {
+            if (! is_null($limit) && $i >= $limit) {
+                break;
+                
+            }
+            $this->assertEquals(array_shift($expectedFiles), $file);
+            
+        }
+    }
+    
+    
+    public function provideTestRepeatedIteratorUse() {
+        AutoloaderTestHelper::deleteDirectory("testRepeatedIteratorUse");
+        $alTestHelper = new AutoloaderTestHelper($this);
+        
+        
+        $alTestHelper->makeClass("A", "testRepeatedIteratorUse");
+        $alTestHelper->makeClass("B", "testRepeatedIteratorUse");
+        $alTestHelper->makeClass("C", "testRepeatedIteratorUse/C");
+        $alTestHelper->makeClass("D", "testRepeatedIteratorUse/D");
+        $alTestHelper->makeClass("E", "testRepeatedIteratorUse/D");
+        $alTestHelper->makeClass("F", "testRepeatedIteratorUse/D");
+        $alTestHelper->makeClass("G", "testRepeatedIteratorUse/D/G");
+        $alTestHelper->makeClass("H", "testRepeatedIteratorUse");
+        
+        $autoloader = new Autoloader(AutoloaderTestHelper::getClassDirectory("testRepeatedIteratorUse"));
+        
+        
+        $simpleIterator = new AutoloaderFileIterator_Simple();
+        $simpleIterator->setAutoloader($autoloader);
+        
+        $simpleCachedIterator = new AutoloaderFileIterator_SimpleCached();
+        $simpleCachedIterator->setAutoloader($autoloader);
+        
+        $priorityIterator = new AutoloaderFileIterator_PriorityList();
+        $priorityIterator->setAutoloader($autoloader);
+        
+        return array(
+            array($simpleIterator, 1),
+            array($simpleIterator, 3),
+            array($simpleIterator, 0),
+            array($simpleIterator),
+            array($simpleIterator, 1),
+            array($simpleIterator, 3),
+            array($simpleIterator, 0),
+            array($simpleCachedIterator, 1),
+            array($simpleCachedIterator, 3),
+            array($simpleCachedIterator, 0),
+            array($simpleCachedIterator),
+            array($simpleCachedIterator, 1),
+            array($simpleCachedIterator, 3),
+            array($simpleCachedIterator, 0),
+            array($priorityIterator, 1),
+            array($priorityIterator, 3),
+            array($priorityIterator, 0),
+            array($priorityIterator),
+            array($priorityIterator, 1),
+            array($priorityIterator, 3),
+            array($priorityIterator, 0)
+        );
+    }
+    
+    
+    public function testPriorityOrder() {
+        AutoloaderTestHelper::deleteDirectory("testPriorityOrder");
+        $alTestHelper = new AutoloaderTestHelper($this);
+        
+        $alTestHelper->makeClass("anyClass",        "testPriorityOrder");
+        $alTestHelper->makeClass("anyClass",        "testPriorityOrder");
+        $alTestHelper->makeClass("anyClass",        "testPriorityOrder/C");
+        $alTestHelper->makeClass("anyClass",        "testPriorityOrder/D");
+        $alTestHelper->makeClass("anyClass",        "testPriorityOrder/D");
+        $alTestHelper->makeClass("anyClass",        "testPriorityOrder/D");
+        $alTestHelper->makeClass("priorityClass",   "testPriorityOrder/D/G");
+        $alTestHelper->makeClass("priorityClass",   "testPriorityOrder");
+        
+        $autoloader       = new Autoloader(AutoloaderTestHelper::getClassDirectory("testPriorityOrder"));
+        $priorityIterator = new AutoloaderFileIterator_PriorityList();
+        $priorityIterator->setAutoloader($autoloader);
+        $priorityIterator->setClassname("priorityClass");
+        
+        $i = 0;
+        foreach ($priorityIterator as $file) {
+            $this->assertTrue((bool) preg_match('~priorityClass~', basename($file)));
+            $i++;
+            if ($i >= 2) {
+                break;
                 
             }
         }

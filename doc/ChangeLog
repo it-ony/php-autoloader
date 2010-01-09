@@ -1,9 +1,17 @@
 2010-01-09 Markus Malkusch <markus@malkusch.de>
 
-    * classes/fileIterator/AutoloaderFileIterator_PriorityList.php:
+    * classes/fileIterator/AutoloaderFileIterator_PriorityList.php (AutoloaderFileIterator_PriorityList):
     The AutoloaderFileIterator_PriorityList prefers *.inc and *.php files.
-    It is not in use yet. You must set it explicitely with
-    Autoloader::setFileIterator().   
+    Additionally the prefered files are ordered by the Levenshtein distance to the
+    class name. It is the default iterator.
+    
+    * classes/fileIterator/AutoloaderFileIterator_SimpleCached.php (AutoloaderFileIterator_SimpleCached):
+    Once a AutoloaderFileIterator_Simple is completely iterated the found
+    files are cached in an ArrayIterator.
+       
+    * classes/Autoloader.php (Autoloader::setPath()):
+    Autoloader::setPath() became private. The path is only set by the constructor.
+    If the constructor is empty, the path will be guessed.
     
 2010-01-08 Markus Malkusch <markus@malkusch.de>
 

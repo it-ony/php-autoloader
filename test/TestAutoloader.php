@@ -67,15 +67,13 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
         $classB = $this->autoloaderTestHelper->makeClass("B", "testReregisteringAfterRemoval/B");
     	
     	
-        $autoloaderB = new Autoloader();
-        $autoloaderB->setPath(AutoloaderTestHelper::getClassDirectory() . "/testReregisteringAfterRemoval/B");
+        $autoloaderB = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/testReregisteringAfterRemoval/B");
         $autoloaderB->register();
         
         
         $this->assertTrue($autoloaderB->isRegistered());
         
-        $autoloaderA = new Autoloader();
-        $autoloaderA->setPath(AutoloaderTestHelper::getClassDirectory() . "/testReregisteringAfterRemoval");
+        $autoloaderA = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/testReregisteringAfterRemoval");
         $autoloaderA->register();
         
         
@@ -101,12 +99,10 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
     	$classA = $this->autoloaderTestHelper->makeClass("A", "testNormalizedClassPaths");
     	$classB = $this->autoloaderTestHelper->makeClass("B", "testNormalizedClassPaths/B");
     	
-    	$autoloaderA = new Autoloader();
-    	$autoloaderA->setPath(AutoloaderTestHelper::getClassDirectory() . "/testNormalizedClassPaths");
+    	$autoloaderA = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/testNormalizedClassPaths");
     	$autoloaderA->register();
     	
-    	$autoloaderB = new Autoloader();
-    	$autoloaderB->setPath(AutoloaderTestHelper::getClassDirectory() . "/testNormalizedClassPaths/B");
+    	$autoloaderB = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/testNormalizedClassPaths/B");
     	$autoloaderB->register();
     	
     	$this->assertTrue($autoloaderA->isRegistered());
@@ -121,12 +117,10 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
     	$classB = $this->autoloaderTestHelper->makeClass("B", "testNormalizedClassPaths/B");
     	
     	
-    	$autoloaderB = new Autoloader();
-    	$autoloaderB->setPath(AutoloaderTestHelper::getClassDirectory() . "/testNormalizedClassPaths/B");
+    	$autoloaderB = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/testNormalizedClassPaths/B");
     	$autoloaderB->register();
     	
-    	$autoloaderA = new Autoloader();
-    	$autoloaderA->setPath(AutoloaderTestHelper::getClassDirectory() . "/testNormalizedClassPaths");
+    	$autoloaderA = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/testNormalizedClassPaths");
     	$autoloaderA->register();
     	
     	$this->autoloaderTestHelper->assertLoadable($classA);
@@ -167,19 +161,17 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 		
 		$autoloaders = array();
 		
-		$tmpAutoloader = new Autoloader();
 		$path = AutoloaderTestHelper::getClassDirectory() . "/testGetRegisteredAutoloaderA";
 		@mkdir($path);
 		@mkdir($path."/sub");
-		$tmpAutoloader->setPath($path);
+		$tmpAutoloader = new Autoloader($path);
 		$tmpAutoloader->register();
 		$autoloaders[] = $tmpAutoloader;
 		
-		$tmpAutoloader2 = new Autoloader();
 		$path = AutoloaderTestHelper::getClassDirectory() . "/testGetRegisteredAutoloaderB";
 		@mkdir($path);
 		@mkdir($path."/sub");
-		$tmpAutoloader2->setPath($path);
+		$tmpAutoloader2 = new Autoloader($path);
 		$tmpAutoloader2->register();
 		$autoloaders[] = $tmpAutoloader2;
 		
@@ -247,10 +239,8 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 		$defaultAutoloader = Autoloader::getRegisteredAutoloader();
 		$defaultAutoloader->remove();
 		
-		$tempLoaderA = new Autoloader();
-		$tempLoaderA->setPath(AutoloaderTestHelper::getClassDirectory() . "/" . $pathA);
-		$tempLoaderB = new Autoloader();
-		$tempLoaderB->setPath(AutoloaderTestHelper::getClassDirectory() . "/" . $pathB);
+		$tempLoaderA = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/" . $pathA);
+		$tempLoaderB = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/" . $pathB);
 
 		$this->autoloaderTestHelper->assertNotLoadable($classA);
 		$this->autoloaderTestHelper->assertNotLoadable($classB);
@@ -270,8 +260,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 		$autoloaders = array();
         $autoloaders[] = Autoloader::getRegisteredAutoloader();
         
-        $newAutoloader = new Autoloader();
-        $newAutoloader->setPath(sys_get_temp_dir());
+        $newAutoloader = new Autoloader(sys_get_temp_dir());
         $newAutoloader->register();
         $autoloaders[] = $newAutoloader;
         
@@ -320,8 +309,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
         
         $this->assertEquals(1, count(Autoloader::getRegisteredAutoloaders()));
         
-        $autoloader = new Autoloader();
-        $autoloader->setPath(sys_get_temp_dir());
+        $autoloader = new Autoloader(sys_get_temp_dir());
         $autoloader->register();
         
         $this->assertEquals(2, count(Autoloader::getRegisteredAutoloaders()));
@@ -425,8 +413,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 		$defaultLoader = new Autoloader();
 		
 		$outsidePath = AutoloaderTestHelper::getClassDirectory(); 
-		$loaderWithOutsideOfThisPath = new Autoloader();
-		$loaderWithOutsideOfThisPath->setPath($outsidePath);
+		$loaderWithOutsideOfThisPath = new Autoloader($outsidePath);
 		
 		return array(
 		    array($defaultLoader,                     $autoPath),

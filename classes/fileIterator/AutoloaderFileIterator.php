@@ -54,8 +54,13 @@ abstract class AutoloaderFileIterator implements Iterator {
 	$autoloader;
 	
 	
+	protected function reset() {
+	}
+	
+	
 	public function setAutoloader(Autoloader $autoloader) {
 		$this->autoloader = $autoloader;
+		$this->reset();
 	}
 	
 	
@@ -74,6 +79,7 @@ abstract class AutoloaderFileIterator implements Iterator {
      */
     public function addSkipPattern($pattern) {
         $this->skipPatterns[] = $pattern;
+        $this->reset();
     }
     
     
@@ -90,6 +96,7 @@ abstract class AutoloaderFileIterator implements Iterator {
      */
     public function setSkipFilesize($size) {
         $this->skipFilesize = $size;
+        $this->reset();
     }
 	
 	

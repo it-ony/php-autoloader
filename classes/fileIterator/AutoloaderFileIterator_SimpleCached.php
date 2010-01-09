@@ -21,30 +21,52 @@ InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileIterator',
     dirname(__FILE__).'/AutoloaderFileIterator.php'
 );
+InternalAutoloader::getInstance()->registerClass(
+    'AutoloaderFileIterator_Simple',
+    dirname(__FILE__).'/AutoloaderFileIterator_Simple.php'
+);
 
 
 /**
- * Searches all files without any logic.
+ * This AutoloaderFileIterator uses AutoloaderFileIterator_Simple. It caches
+ * the result in an array.
+ * 
+ * @see AutoloaderFileIterator_Simple
  */
-class AutoloaderFileIterator_Simple extends AutoloaderFileIterator {
+class AutoloaderFileIterator_SimpleCached extends AutoloaderFileIterator {
 	
 	
 	private
 	/**
 	 * @var Array
 	 */
-	$stack = array(),
+	$foundFiles = array(),
 	/**
-	 * @var DirectoryIterator
+	 * @var Iterator
 	 */
 	$iterator;
+	
+	
+	protected function reset() {
+	    parent::reset();
+	    
+	    $this->foundFiles  = array();
+	    $this->iterator    = new AutoloaderFileIterator_Simple();
+	    
+	    $this->iterator->setSkipFilesize($this->skipFilesize);
+	    $this->iterator->skipPatterns = $this->skipPatterns;
+	    if (! is_null($this->autoloader)) {
+	       $this->iterator->setAutoloader($this->autoloader);
+	       
+	    }
+	}
 	
 	
 	/**
 	 * @return String
 	 */
 	public function current () {
-	    return $this->iterator->current()->getPathname();
+	    return $this->iterator->current();
 	}
 	
 
@@ -62,8 +84,7 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator {
     
     
     public function rewind() {
-        $this->stack    = array();
-    	$this->iterator = new DirectoryIterator($this->autoloader->getPath());
+        $this->foundFiles = array();
     	$this->iterator->rewind();
     }
     
@@ -72,55 +93,19 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator {
      * @return bool
      */
     public function valid() {
-        if (is_null($this->iterator)) {
+        if (! $this->iterator instanceof AutoloaderFileIterator_Simple) {
+            return $this->iterator->valid();
+            
+        }
+        if ($this->iterator->valid()) {
+            $this->foundFiles[$this->current()] = $this->current();
+            return true;
+            
+        } else {
+            $this->iterator = new ArrayIterator($this->foundFiles);
             return false;
             
         }
-        
-        // recurse backwards
-        if (! $this->iterator->valid()) {
-            $this->iterator = array_pop($this->stack);
-            return $this->valid();
-            
-        }
-        
-        $path = $this->iterator->current()->getPathname();
-        
-        // apply file filters
-        foreach ($this->skipPatterns as $pattern) {
-            if (preg_match($pattern, $path)) {
-                $this->iterator->next();
-                return $this->valid();
-                
-            }
-            
-        }
-        
-        // skip . and ..
-        if (in_array($this->iterator->current()->getFilename(), array('.', '..'))) {
-            $this->iterator->next();
-            return $this->valid();
-            
-        }
-        
-        // recurse through the directories
-        if ($this->iterator->current()->isDir()) {
-            $this->iterator->next();
-            $this->stack[]  = $this->iterator;
-            $this->iterator = new DirectoryIterator($path);
-            $this->iterator->rewind();
-            return $this->valid();
-            
-        }
-        
-        // skip too big files
-        if (! empty($this->skipFilesize) && $this->iterator->current()->getSize() > $this->skipFilesize) {
-            $this->iterator->next();
-            return $this->valid();
-            
-        }
-        
-    	return true;
     }
 
     

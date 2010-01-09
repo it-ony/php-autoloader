@@ -66,7 +66,7 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator {
 	 * @param String $classname
 	 */
 	public function setClassname($classname) {
-	    $this->classname = $classname;
+	    $this->classname = strtolower($classname);
 	}
 	
 	
@@ -118,7 +118,7 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator {
         // order by Levenshtein distance to $classname
         $levArray = array();
         foreach ($this->preferedFiles as $file) {
-            $levArray[] = levenshtein(basename($file), $this->classname);
+            $levArray[] = levenshtein(strtolower(basename($file)), $this->classname);
             
         }
         array_multisort($levArray, $this->preferedFiles);

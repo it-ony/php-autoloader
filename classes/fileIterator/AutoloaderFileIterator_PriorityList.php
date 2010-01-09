@@ -147,6 +147,7 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator {
             return;
             
         }
+        //TODO This produces an too deep nesting level error
         $simpleIterator = new AutoloaderFileIterator_Simple();
         $simpleIterator->setAutoloader($this->autoloader);
         $simpleIterator->skipFilesize = $this->skipFilesize;

@@ -389,7 +389,28 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
     }
     
     
-    public function testPriorityOrder() {
+    /**
+     * @dataProvider provideTestPriorityOrder
+     */
+    public function testPriorityOrder($rootDir, $priorizedName, $limit) {
+        $autoloader       = new Autoloader(AutoloaderTestHelper::getClassDirectory($rootDir));
+        $priorityIterator = new AutoloaderFileIterator_PriorityList();
+        $priorityIterator->setAutoloader($autoloader);
+        $priorityIterator->setClassname($priorizedName);
+        
+        $i = 0;
+        foreach ($priorityIterator as $file) {
+            $this->assertTrue((bool) preg_match("~$priorizedName~", basename($file)));
+            $i++;
+            if ($i >= $limit) {
+                break;
+                
+            }
+        }
+    }
+    
+    
+    public function provideTestPriorityOrder() {
         AutoloaderTestHelper::deleteDirectory("testPriorityOrder");
         $alTestHelper = new AutoloaderTestHelper($this);
         
@@ -401,21 +422,50 @@ class TestFileIterator extends PHPUnit_Framework_TestCase {
         $alTestHelper->makeClass("anyClass",        "testPriorityOrder/D");
         $alTestHelper->makeClass("priorityClass",   "testPriorityOrder/D/G");
         $alTestHelper->makeClass("priorityClass",   "testPriorityOrder");
+        $alTestHelper->makeClass("otherClass",      "testPriorityOrder/D/G");
+        $alTestHelper->makeClass("otherClass",      "testPriorityOrder");
         
-        $autoloader       = new Autoloader(AutoloaderTestHelper::getClassDirectory("testPriorityOrder"));
-        $priorityIterator = new AutoloaderFileIterator_PriorityList();
-        $priorityIterator->setAutoloader($autoloader);
-        $priorityIterator->setClassname("priorityClass");
+        return array(
+            array("testPriorityOrder", "priorityClass", 2),
+            array("testPriorityOrder", "otherClass",    2)
+        );
+    }
+    
+    
+    /**
+     * @dataProvider provideTestLoadsOfFiles
+     */
+    public function testLoadsOfFiles(AutoloaderFileIterator $iterator, $rootDir) {
+        $iterator->setAutoloader(new Autoloader(AutoloaderTestHelper::getClassDirectory($rootDir)));
         
-        $i = 0;
-        foreach ($priorityIterator as $file) {
-            $this->assertTrue((bool) preg_match('~priorityClass~', basename($file)));
-            $i++;
-            if ($i >= 2) {
-                break;
-                
-            }
+        foreach ($iterator as $file) {
+            
         }
+    }
+    
+    
+    public function provideTestLoadsOfFiles() {
+        AutoloaderTestHelper::deleteDirectory("testLoadsOfFiles");
+        $alTestHelper = new AutoloaderTestHelper($this);
+        
+        for ($i = 0; $i < 150; $i++) {
+            $alTestHelper->makeClass("anyClass", "testLoadsOfFiles/flat");
+            
+        }
+        
+        for ($i = 0; $i < 150; $i++) {
+            $alTestHelper->makeClass("anyClass", "testLoadsOfFiles" . str_repeat('/sub', $i));
+            
+        }
+        
+        return array(
+            array(new AutoloaderFileIterator_PriorityList(),    "testLoadsOfFiles/flat"),
+            array(new AutoloaderFileIterator_Simple(),          "testLoadsOfFiles/flat"),
+            array(new AutoloaderFileIterator_SimpleCached(),    "testLoadsOfFiles/flat"),
+            array(new AutoloaderFileIterator_PriorityList(),    "testLoadsOfFiles/sub"),
+            array(new AutoloaderFileIterator_Simple(),          "testLoadsOfFiles/sub"),
+            array(new AutoloaderFileIterator_SimpleCached(),    "testLoadsOfFiles/sub")
+        );
     }
 
     

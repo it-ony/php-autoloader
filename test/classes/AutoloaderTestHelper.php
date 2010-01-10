@@ -134,22 +134,12 @@ class AutoloaderTestHelper {
             $directory = self::getClassDirectory() . DIRECTORY_SEPARATOR . $directory;
             
         }
+        $directory = realpath($directory);
         if (! file_exists($directory)) {
             return;
             
         }
-        foreach (new DirectoryIterator($directory) as $file) {
-            if (in_array($file, array(".", ".."))) {
-                continue;
-                
-            }
-            $path = $directory . DIRECTORY_SEPARATOR . $file;
-            is_dir($path)
-                ? self::deleteDirectory($path, false)
-                : unlink($path);
-            
-        }
-        rmdir($directory);
+        system('rm -rf ' . $directory);
     }
 
     

@@ -252,8 +252,7 @@ class Autoloader extends AbstractAutoloader {
     	
     	// set the AutoloaderFileIterator
     	if (empty($this->fileIterator)) {
-    	    //TODO recursive nesting level too deep: $this->setFileIterator(new AutoloaderFileIterator_PriorityList());
-    	    $this->setFileIterator(new AutoloaderFileIterator_SimpleCached());
+    	    $this->setFileIterator(new AutoloaderFileIterator_PriorityList());
     	    
     	}
 

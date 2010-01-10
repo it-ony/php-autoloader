@@ -72,55 +72,57 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator {
      * @return bool
      */
     public function valid() {
-        if (is_null($this->iterator)) {
-            return false;
-            
-        }
-        
-        // recurse backwards
-        if (! $this->iterator->valid()) {
-            $this->iterator = array_pop($this->stack);
-            return $this->valid();
-            
-        }
-        
-        $path = $this->iterator->current()->getPathname();
-        
-        // apply file filters
-        foreach ($this->skipPatterns as $pattern) {
-            if (preg_match($pattern, $path)) {
-                $this->iterator->next();
-                return $this->valid();
+        while(true) {
+            if (is_null($this->iterator)) {
+                return false;
                 
             }
             
-        }
-        
-        // skip . and ..
-        if (in_array($this->iterator->current()->getFilename(), array('.', '..'))) {
-            $this->iterator->next();
-            return $this->valid();
+            // recurse backwards
+            if (! $this->iterator->valid()) {
+                $this->iterator = array_pop($this->stack);
+                continue;
+                
+            }
             
-        }
-        
-        // recurse through the directories
-        if ($this->iterator->current()->isDir()) {
-            $this->iterator->next();
-            $this->stack[]  = $this->iterator;
-            $this->iterator = new DirectoryIterator($path);
-            $this->iterator->rewind();
-            return $this->valid();
+            $path = $this->iterator->current()->getPathname();
             
-        }
-        
-        // skip too big files
-        if (! empty($this->skipFilesize) && $this->iterator->current()->getSize() > $this->skipFilesize) {
-            $this->iterator->next();
-            return $this->valid();
+            // apply file filters
+            foreach ($this->skipPatterns as $pattern) {
+                if (preg_match($pattern, $path)) {
+                    $this->iterator->next();
+                    continue 2;
+                    
+                }
+                
+            }
             
+            // skip . and ..
+            if (in_array($this->iterator->current()->getFilename(), array('.', '..'))) {
+                $this->iterator->next();
+                continue;
+                
+            }
+            
+            // recurse through the directories
+            if ($this->iterator->current()->isDir()) {
+                $this->iterator->next();
+                $this->stack[]  = $this->iterator;
+                $this->iterator = new DirectoryIterator($path);
+                $this->iterator->rewind();
+                continue;
+                
+            }
+            
+            // skip too big files
+            if (! empty($this->skipFilesize) && $this->iterator->current()->getSize() > $this->skipFilesize) {
+                $this->iterator->next();
+                continue;
+                
+            }
+            
+        	return true;
         }
-        
-    	return true;
     }
 
     

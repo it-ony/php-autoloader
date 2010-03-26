@@ -1,0 +1,13 @@
+*** Split the search process in a fast and expensive part ***
+
+There exists a problem with multiple Autoloaders. Each Autoloader
+would search a class in its class path until one Autoloader found it.
+That means that in a worst case scenario the last Autoloader has cached
+the class path. The Autoloaders before that have to search the file
+system *every* time.
+
+A solution for this problem would be to split the autoload process into two
+tasks. The first is a fast task which searches the index. The second is the
+expensive which searches the filesystem. Finding a class is a process which
+first iterates through all Autoloaders and starts the fast process. If no
+class was found iteration with the expensive task will finish the job.

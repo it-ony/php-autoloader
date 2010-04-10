@@ -358,6 +358,63 @@ class Autoloader extends AbstractAutoloader {
     public function getPath() {
     	return $this->path;
     }
+
+
+    /**
+     * Returns true if this instance is the first registered instance of
+     * this class. It might return TRUE if there are Autoloaders registered
+     * of different classes.
+     *
+     * @return bool
+     * @see getAutoloaderPosition()
+     * @throws AutoloaderException_PathNotRegistered
+     */
+    private function isFirstRegisteredInstance() {
+        return $this->getAutoloaderPosition() == 0;
+    }
+
+
+    /**
+     * Returns the position in the autoloader stack. The offset is 0.
+     * It considers only instances of this class. That means a returned
+     * position of 0 doesn't implie it is the first Autoloader in the
+     * autoloader stack. It's only the first instance of this Autoloader class.
+     *
+     * @return int.
+     * @throws AutoloaderException_PathNotRegistered
+     */
+    private function getAutoloaderPosition() {
+        $position = array_search($this, self::getRegisteredAutoloaders());
+        if ($position === false) {
+            throw new AutoloaderException_PathNotRegistered($this->path);
+
+        }
+        return $position;
+    }
+
+
+    /**
+     * @param String $class
+     * @return String
+     * @throws AutoloaderException_Index_NotFound
+     */
+    private function searchPathInIndexes($class) {
+        // Only iterate once per __autoload call
+        if (! $this->isFirstRegisteredInstance()) {
+            throw new AutoloaderException_Index_NotFound($class);
+
+        }
+        foreach (self::getRegisteredAutoloaders() as $autoloader) {
+            try {
+                return $autoloader->getIndex()->getPath($class);
+
+            } catch (AutoloaderException_Index_NotFound $e) {
+                continue;
+
+            }
+        }
+        throw new AutoloaderException_Index_NotFound($class);
+    }
     
     
     /**
@@ -371,7 +428,7 @@ class Autoloader extends AbstractAutoloader {
         }
             
         try {
-      		$path = $this->index->getPath($class);
+      		$path = $this->searchPathInIndexes($class);
             
         } catch (AutoloaderException_Index_NotFound $e) {
             $path = $this->searchPath($class);

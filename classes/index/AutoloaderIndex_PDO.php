@@ -173,6 +173,31 @@ class AutoloaderIndex_PDO extends AutoloaderIndex {
     		
     	} 
     }
+
+
+    /**
+     * @throws AutoloaderException_Index
+     * @return Array() All paths in the index
+     */
+    public function getPaths() {
+        try {
+            $stmt =  $this->getStatement(
+	    	    "SELECT class, path FROM autoloadindex
+	    	     WHERE context = ?"
+	    	);
+            $stmt->execute(array($this->getContext()));
+            $paths = array();
+            foreach ($stmt->fetchAll() as $data) {
+                $paths[$data['class']] = $data['path'];
+
+            }
+            return $paths;
+
+        } catch (PDOException $e) {
+    		throw new AutoloaderException_Index($e->getMessage());
+
+    	}
+    }
     
     
     /**

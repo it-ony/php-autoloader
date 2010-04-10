@@ -48,6 +48,15 @@ class AutoloaderIndex_Dummy extends AutoloaderIndex {
     public function count() {
     	return count($this->index);
     }
+
+
+    /**
+     * @throws AutoloaderException_Index
+     * @return Array() All paths in the index
+     */
+    public function getPaths() {
+        return $this->index;
+    }
     
     
     /**

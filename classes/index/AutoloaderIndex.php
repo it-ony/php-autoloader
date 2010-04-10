@@ -68,6 +68,11 @@ abstract class AutoloaderIndex implements Countable {
      */
     abstract public function hasPath($class);
     /**
+     * @throws AutoloaderException_Index
+     * @return Array() All paths in the index
+     */
+    abstract public function getPaths();
+    /**
      * Deletes the index
      * 
      * @throws AutoloaderException_Index

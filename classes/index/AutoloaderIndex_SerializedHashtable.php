@@ -239,6 +239,16 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex {
         }
         return $this->index[$class];
     }
+
+
+    /**
+     * @throws AutoloaderException_Index
+     * @return Array() All paths in the index
+     */
+    public function getPaths() {
+        $this->assertLoadedIndex();
+        return $this->index;
+    }
     
     
     /**

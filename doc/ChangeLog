@@ -1,3 +1,15 @@
+2010-04-10 Markus Malkusch <markus@malkusch.de>
+
+    * classes/Autoloader.php (Autoloader::__autoload()):
+    The search process is divided into first iterating through all indexes and
+    then searching each path in the filesystem. This prevents in a multi
+    Autoloader environment that before the index of a later Autoloader would
+    be used the previous Autoloader would vainly search their class paths.
+
+    * classes/index/AutoloaderIndex.php (AutoloaderIndex::getPaths()):
+    For debuging the index has to return an indexed array with its indexed
+    paths.
+
 2010-01-09 Markus Malkusch <markus@malkusch.de>
 
     * classes/fileIterator/AutoloaderFileIterator_PriorityList.php (AutoloaderFileIterator_PriorityList):

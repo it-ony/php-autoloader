@@ -53,6 +53,13 @@ class Autoloader extends AbstractAutoloader {
      * @var array
      */
     $unregisteredNormalizedAutoloaders = array();
+
+
+    protected
+    /**
+     * @var AutoloaderIndex
+     */
+    $index;
     
     
     private
@@ -68,10 +75,6 @@ class Autoloader extends AbstractAutoloader {
      * @var String
      */
     $path = '',
-    /**
-     * @var AutoloaderIndex
-     */
-    $index,
     /**
      * @var AutoloaderFileParser
      */
@@ -400,7 +403,7 @@ class Autoloader extends AbstractAutoloader {
      * @see set_time_limit()
      * @return String
      */
-    private function searchPath($class) {
+    protected function searchPath($class) {
     	set_time_limit($this->searchTimeoutSeconds);
     	
     	$caughtExceptions = array();

@@ -17,16 +17,12 @@
 #########################################################################
 
 
-require_once 'PHPUnit/Framework.php';
 require_once dirname(__FILE__) . "/../Autoloader.php";
+require_once dirname(__FILE__) . "/../classes/Autoloader_Profiler.php";
 
 
 /**
- * Autoloader test suite.
- * 
- * The "Exception thrown without a stack frame in Unknown on line 0"
- * is a side effect of the tearDown() which deletes the indexes, before
- * every destructor was called.
+ * Autoloader_Profiler test cases.
  * 
  * Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>
  *
@@ -49,27 +45,46 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
  * @author Markus Malkusch <markus@malkusch.de>
  * @copyright Copyright (C) 2010 Markus Malkusch
  */
-class AutoloaderSuite extends PHPUnit_Framework_TestSuite {
-
+class TestAutoloaderProfiler extends PHPUnit_Framework_TestCase {
 	
-    public static function suite() {
-        $suite = new self();
- 
-        $suite->addTestSuite("TestAutoloader");
-        $suite->addTestSuite("TestAutoloader_Profiler");
-        $suite->addTestSuite("TestIndex");
-        $suite->addTestSuite("TestParser");
-        $suite->addTestSuite("TestInternalAutoloader");
-        $suite->addTestSuite("TestFileIterator");
- 
-        return $suite;
-    }
+	
+	private
+	/**
+	 * @var AutoloaderTestHelper
+	 */
+	$autoloaderTestHelper;
+	
+	
+    public function setUp() {
+		$this->autoloaderTestHelper = new AutoloaderTestHelper($this);
+        Autoloader::removeAll();
+	}
+	
+	
+	public function tearDown() {
+	}
 
-    
-    public function tearDown() {
-        AutoloaderTestHelper::deleteDirectory('.');
-        AutoloaderTestHelper::deleteDirectory(TestIndex::getIndexDirectory(), false);
+
+    public function testUseIndexInMultiALEnvironment() {
+        $classA = $this->autoloaderTestHelper->makeClass('A', 'a');
+        $classB = $this->autoloaderTestHelper->makeClass('B', 'b');
+
+        $alA = new Autoloader_Profiler(
+            dirname($this->autoloaderTestHelper->getGeneratedClassPath($classA)));
+        $alA->register();
+        $alA->buildIndex($classA);
+
+        $alB = new Autoloader_Profiler(
+            dirname($this->autoloaderTestHelper->getGeneratedClassPath($classB)));
+        $alB->register();
+        $alB->buildIndex($classB);
+
+        $this->autoloaderTestHelper->assertLoadable($classA);
+        $this->autoloaderTestHelper->assertLoadable($classB);
+
+        $this->assertEquals(array(), $alA->getSearchedClasses());
+        $this->assertEquals(array(), $alB->getSearchedClasses());
     }
-    
-    
+	
+	
 }

@@ -1,3 +1,10 @@
+2010-04-14 Markus Malkusch <markus@malkusch.de>
+
+    * classes/index/AutoloaderIndex_File.php (AutoloaderIndex_File):
+    AutoloaderIndex_SerializedHashtable derives from AutoloaderIndex_File.
+    This makes it easier to write a new Index implementation which uses
+    an index file.
+
 2010-04-10 Markus Malkusch <markus@malkusch.de>
 
     * classes/Autoloader.php (Autoloader::__autoload()):

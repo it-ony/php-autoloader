@@ -85,7 +85,7 @@ class OldPHPAPI {
     /**
      * @see AutoloaderIndex_IniFile
      */
-    static private function parse_ini_string() {
+    private function parse_ini_string() {
         if (function_exists(__FUNCTION__)) {
 			return;
 

@@ -243,6 +243,16 @@ class TestIndex extends PHPUnit_Framework_TestCase {
 
 
     /**
+     * @return AutoloaderIndex_IniFile
+     */
+    private function createAutoloaderIndex_IniFile() {
+        $index = new AutoloaderIndex_IniFile();
+        $this->initIndex($index);
+        return $index;
+    }
+
+
+    /**
      * @return AutoloaderIndex_PHPArrayCode
      */
     private function createAutoloaderIndex_PHPArrayCode() {
@@ -276,7 +286,7 @@ class TestIndex extends PHPUnit_Framework_TestCase {
      * @return AutoloaderIndex_SerializedHashtable
      */
     private function getIndexFromPersistence(AutoloaderIndex $index) {
-    	if ($index instanceof AutoloaderIndex_SerializedHashtable) {
+    	if ($index instanceof AutoloaderIndex_File) {
 	        $indexClass = get_class($index);
 	        $indexPath  = $index->getIndexPath();
 	        
@@ -296,7 +306,7 @@ class TestIndex extends PHPUnit_Framework_TestCase {
     
     private function initIndex(AutoloaderIndex $index) {
         $index->setAutoloader(new Autoloader());
-        if ($index instanceof AutoloaderIndex_SerializedHashtable) {
+        if ($index instanceof AutoloaderIndex_File) {
             $index->setIndexPath($this->getIndexFile());
             
         }
@@ -310,6 +320,7 @@ class TestIndex extends PHPUnit_Framework_TestCase {
     	$indeces =  array(
             $this->createAutoloaderIndex_Dummy(),
             $this->createAutoloaderIndex_PHPArrayCode(),
+            $this->createAutoloaderIndex_IniFile(),
             $this->createAutoloaderIndex_SerializedHashtable(),
             $this->createAutoloaderIndex_SerializedHashtable_GZ(),
             $this->createAutoloaderIndex_PDO_SQLITE(tempnam(sys_get_temp_dir(), "PDOTest"))

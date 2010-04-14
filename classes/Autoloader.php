@@ -551,6 +551,10 @@ InternalAutoloader::getInstance()->registerClass(
     dirname(__FILE__).'/index/AutoloaderIndex_PDO.php'
 );
 InternalAutoloader::getInstance()->registerClass(
+	'AutoloaderIndex_IniFile',
+    dirname(__FILE__).'/index/AutoloaderIndex_IniFile.php'
+);
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderIndex_PHPArrayCode',
     dirname(__FILE__).'/index/AutoloaderIndex_PHPArrayCode.php'
 );

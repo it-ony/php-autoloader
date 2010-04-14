@@ -28,17 +28,29 @@ InternalAutoloader::getInstance()->registerClass(
  * 
  * This index is working in every PHP environment. It should be fast enough
  * for most applications. The index is a file in the temporary directory.
- * The content of this file is PHP code which produces the index.
- *
- * This implementation uses eval() to execute the code of the index file.
- * If other users have access to the index file your application might
- * easily compromitted by this index. This index should really not be used!
+ * The content of this file is a ini file.
  * 
  * This implementation is threadsafe.
- * 
- * @see AutoloaderIndex_IniFile
+ *
+ * @see parse_ini_string()
  */
-class AutoloaderIndex_PHPArrayCode extends AutoloaderIndex_File {
+class AutoloaderIndex_IniFile extends AutoloaderIndex_File {
+
+
+    public static function __static() {
+        // parse_ini_string() is PHP >= 5.3
+        if (function_exists("parse_ini_string")) {
+			return;
+
+		}
+        function parse_ini_string($data) {
+            $file = tempnam(sys_get_temp_dir(), 'parse_ini_string');
+            file_put_contents($file, $data);
+            $iniData = parse_ini_file($file);
+            unlink($file);
+            return $iniData;
+        }
+    }
     
     
     /**
@@ -47,7 +59,7 @@ class AutoloaderIndex_PHPArrayCode extends AutoloaderIndex_File {
      * @throws AutoloaderException_Index
      */
     protected function buildIndex($data) {
-        $index = eval($data);
+        $index = parse_ini_string($data);
         if (! is_array($index)) {
             $error = "{$this->getIndexPath()} failed to generate the index:"
                    . " $data";
@@ -62,14 +74,12 @@ class AutoloaderIndex_PHPArrayCode extends AutoloaderIndex_File {
      * @return String
      */
     protected function serializeIndex(Array $index) {
-        $code = 'return array('."\n";
+        $lines = array();
         foreach ($index as $class => $path) {
-            $safePath = stripslashes($path);
-            $code .= "    '$class' => '$safePath',\n";
-
+            $lines[] = "$class = $path";
+            
         }
-        $code .= ');';
-        return $code;
+        return implode("\n", $lines);
     }
 
 

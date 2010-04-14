@@ -5,6 +5,14 @@
     This makes it easier to write a new Index implementation which uses
     an index file.
 
+    * classes/index/AutoloaderIndex_PHPArrayCode.php (AutoloaderIndex_PHPArrayCode):
+    Index implementation which produces a human readable file in PHP,
+    which produces an array.
+
+    * classes/index/AutoloaderIndex_IniFile.php (AutoloaderIndex_IniFile):
+    Index implementation which produces a human readable file with an array
+    in a PHP ini file style.
+
 2010-04-10 Markus Malkusch <markus@malkusch.de>
 
     * classes/Autoloader.php (Autoloader::__autoload()):

@@ -50,7 +50,7 @@ InternalAutoloader::getInstance()->registerClass(
  * 
  * @see serialize()
  * @see unserialize()
- * @version 1.1
+ * @version 1.0
  */
 abstract class AutoloaderIndex_File extends AutoloaderIndex {
     

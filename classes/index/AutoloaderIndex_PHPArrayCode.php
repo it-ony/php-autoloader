@@ -28,15 +28,11 @@ InternalAutoloader::getInstance()->registerClass(
  * 
  * This index is working in every PHP environment. It should be fast enough
  * for most applications. The index is a file in the temporary directory.
- * The content of this file is a serialized Hashtable.
+ * The content of this file is PHP code which produces the index.
  * 
  * This implementation is threadsafe.
- * 
- * @see serialize()
- * @see unserialize()
- * @version 1.2
  */
-class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex_File {
+class AutoloaderIndex_PHPArrayCode extends AutoloaderIndex_File {
     
     
     /**
@@ -45,9 +41,9 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex_File {
      * @throws AutoloaderException_Index
      */
     protected function buildIndex($data) {
-        $index = unserialize($data);
+        $index = eval($data);
         if (! is_array($index)) {
-            $error = "Can not unserialize {$this->getIndexPath()}:"
+            $error = "{$this->getIndexPath()} failed to generate the index:"
                    . " $data";
             throw new AutoloaderException_Index($error);
 
@@ -60,7 +56,15 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex_File {
      * @return String
      */
     protected function serializeIndex(Array $index) {
-        return serialize($index);
+        $code = "<?php\n\n"
+              . 'return array('."\n";
+        foreach ($index as $class => $path) {
+            $safePath = stripslashes($path);
+            $code .= "    '$class' => '$safePath',\n";
+
+        }
+        $code .= ');';
+        return $code;
     }
 
 

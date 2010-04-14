@@ -240,6 +240,16 @@ class TestIndex extends PHPUnit_Framework_TestCase {
         $this->initIndex($index);
         return $index;
     }
+
+
+    /**
+     * @return AutoloaderIndex_PHPArrayCode
+     */
+    private function createAutoloaderIndex_PHPArrayCode() {
+        $index = new AutoloaderIndex_PHPArrayCode();
+        $this->initIndex($index);
+        return $index;
+    }
     
     
     /**
@@ -299,6 +309,7 @@ class TestIndex extends PHPUnit_Framework_TestCase {
     private function getIndexes() {
     	$indeces =  array(
             $this->createAutoloaderIndex_Dummy(),
+            $this->createAutoloaderIndex_PHPArrayCode(),
             $this->createAutoloaderIndex_SerializedHashtable(),
             $this->createAutoloaderIndex_SerializedHashtable_GZ(),
             $this->createAutoloaderIndex_PDO_SQLITE(tempnam(sys_get_temp_dir(), "PDOTest"))

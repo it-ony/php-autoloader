@@ -34,6 +34,7 @@ class OldPHPAPI {
 	public function checkAPI() {
 		$this->sys_get_temp_dir();
 		$this->error_get_last();
+		$this->parse_ini_string();
 	}
 	
 	
@@ -79,6 +80,24 @@ class OldPHPAPI {
             throw new LogicException("sys_get_temp_dir() failed.");
 		}
 	}
+
+
+    /**
+     * @see AutoloaderIndex_IniFile
+     */
+    static private function parse_ini_string() {
+        if (function_exists(__FUNCTION__)) {
+			return;
+
+		}
+        function parse_ini_string($data) {
+            $file = tempnam(sys_get_temp_dir(), 'parse_ini_string');
+            file_put_contents($file, $data);
+            $iniData = parse_ini_file($file);
+            unlink($file);
+            return $iniData;
+        }
+    }
 	
 	
 }

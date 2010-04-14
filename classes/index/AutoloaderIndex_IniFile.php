@@ -37,22 +37,6 @@ InternalAutoloader::getInstance()->registerClass(
 class AutoloaderIndex_IniFile extends AutoloaderIndex_File {
 
 
-    public static function __static() {
-        // parse_ini_string() is PHP >= 5.3
-        if (function_exists("parse_ini_string")) {
-			return;
-
-		}
-        function parse_ini_string($data) {
-            $file = tempnam(sys_get_temp_dir(), 'parse_ini_string');
-            file_put_contents($file, $data);
-            $iniData = parse_ini_file($file);
-            unlink($file);
-            return $iniData;
-        }
-    }
-    
-    
     /**
      * @param String $data
      * @return Array

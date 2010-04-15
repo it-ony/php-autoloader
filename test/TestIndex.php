@@ -253,6 +253,16 @@ class TestIndex extends PHPUnit_Framework_TestCase {
 
 
     /**
+     * @return AutoloaderIndex_CSV
+     */
+    private function createAutoloaderIndex_CSV() {
+        $index = new AutoloaderIndex_CSV();
+        $this->initIndex($index);
+        return $index;
+    }
+
+
+    /**
      * @return AutoloaderIndex_PHPArrayCode
      */
     private function createAutoloaderIndex_PHPArrayCode() {
@@ -320,6 +330,7 @@ class TestIndex extends PHPUnit_Framework_TestCase {
     	$indeces =  array(
             $this->createAutoloaderIndex_Dummy(),
             $this->createAutoloaderIndex_PHPArrayCode(),
+            $this->createAutoloaderIndex_CSV(),
             $this->createAutoloaderIndex_IniFile(),
             $this->createAutoloaderIndex_SerializedHashtable(),
             $this->createAutoloaderIndex_SerializedHashtable_GZ(),

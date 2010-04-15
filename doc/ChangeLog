@@ -1,3 +1,8 @@
+2010-04-15 Markus Malkusch <markus@malkusch.de>
+
+    * classes/index/AutoloaderIndex_CSV.php (AutoloaderIndex_CSV):
+    Index implementation which produces a human readable CSV file.
+
 2010-04-14 Markus Malkusch <markus@malkusch.de>
 
     * classes/index/AutoloaderIndex_File.php (AutoloaderIndex_File):

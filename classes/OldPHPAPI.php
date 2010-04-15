@@ -35,6 +35,7 @@ class OldPHPAPI {
 		$this->sys_get_temp_dir();
 		$this->error_get_last();
 		$this->parse_ini_string();
+		$this->str_getcsv();
 	}
 	
 	
@@ -96,6 +97,29 @@ class OldPHPAPI {
             $iniData = parse_ini_file($file);
             unlink($file);
             return $iniData;
+        }
+    }
+
+
+    /**
+     * @see AutoloaderIndex_CSV
+     */
+    private function str_getcsv() {
+        if (function_exists(__FUNCTION__)) {
+			return;
+
+		}
+        function str_getcsv($data) {
+            $fp = tmpfile();
+            fwrite($fp, $data);
+            fseek($fp, 0);
+            $csv = array();
+            while(($data = fgetcsv($fp)) !== false) {
+                $csv[] = $data;
+
+            }
+            fclose($fp);
+            return $csv;
         }
     }
 	

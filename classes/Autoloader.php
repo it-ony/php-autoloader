@@ -551,6 +551,10 @@ InternalAutoloader::getInstance()->registerClass(
     dirname(__FILE__).'/index/AutoloaderIndex_PDO.php'
 );
 InternalAutoloader::getInstance()->registerClass(
+	'AutoloaderIndex_CSV',
+    dirname(__FILE__).'/index/AutoloaderIndex_CSV.php'
+);
+InternalAutoloader::getInstance()->registerClass(
 	'AutoloaderIndex_IniFile',
     dirname(__FILE__).'/index/AutoloaderIndex_IniFile.php'
 );

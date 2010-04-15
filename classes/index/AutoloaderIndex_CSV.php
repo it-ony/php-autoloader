@@ -32,7 +32,7 @@ InternalAutoloader::getInstance()->registerClass(
  * 
  * This implementation is threadsafe.
  *
- * @see parse_ini_string()
+ * @see str_getcsv()
  */
 class AutoloaderIndex_CSV extends AutoloaderIndex_File {
 

@@ -62,6 +62,18 @@ class AutoloaderBenchmark {
 	/**
 	 * @var String
 	 */
+	$hashtableCSV,
+	/**
+	 * @var String
+	 */
+	$hashtableIni,
+	/**
+	 * @var String
+	 */
+	$hashtablePHP,
+	/**
+	 * @var String
+	 */
 	$sqliteFile;
 	
 	
@@ -80,13 +92,11 @@ class AutoloaderBenchmark {
             array(100,   100),
             array(1000,  100),
             array(10000, 100),
-            
+
             array(1000,  1000),
             array(10000, 1000),
             
             array(10000, 10000),
-            
-            
 		);
 		
 		foreach ($cases as $case) {
@@ -103,12 +113,18 @@ class AutoloaderBenchmark {
         $this->iterations     = $iterations;
         $this->getPathCount   = $getPathCount;
 		$this->sqliteFile     = tempnam("/var/tmp/", "AutoloaderBenchmarkSQLite_");
-		$this->hashtable      = tempnam("/var/tmp/", "AutoloaderBenchmarkHT_");
-		$this->hashtableGZ    = tempnam("/var/tmp/", "AutoloaderBenchmarkHT_GZ_");
+		$this->hashtable      = tempnam("/var/tmp/", "AutoloaderBenchmarkHT_Serialized_");
+		$this->hashtableGZ    = tempnam("/var/tmp/", "AutoloaderBenchmarkHT_Serialized_GZ_");
+		$this->hashtableCSV   = tempnam("/var/tmp/", "AutoloaderBenchmarkHT_CSV_");
+		$this->hashtableIni   = tempnam("/var/tmp/", "AutoloaderBenchmarkHT_Ini_");
+		$this->hashtablePHP   = tempnam("/var/tmp/", "AutoloaderBenchmarkHT_PHP_");
 		
 		unlink($this->sqliteFile);
 		unlink($this->hashtable);
 		unlink($this->hashtableGZ);
+		unlink($this->hashtableCSV);
+		unlink($this->hashtableIni);
+		unlink($this->hashtablePHP);
 	}
 	
 	
@@ -176,18 +192,31 @@ class AutoloaderBenchmark {
 	
 	
 	public function __toString() {
-		$durations = "";
+		$durations = array();
+        $sortIndex = array();
 		foreach ($this->durations as $name => $duration) {
-			$paddedName = str_pad($name . ":", 12);
-			$durations  .= "$paddedName {$this->getAverageDuration($name)}\n"; 
+			$paddedName  = str_pad($name . ":", 13);
+            $avgDuration = $this->getAverageDuration($name);
+
+			$durations[$name] = "$paddedName {$avgDuration}";
+            $sortIndex[$name] = $duration;
 			
 		}
+
+        // Sort the result by duration
+        asort($sortIndex);
+        $sortedDurations = array();
+        foreach ($sortIndex as $name => $duration) {
+            $sortedDurations[] = $durations[$name];
+
+        }
+
 		return "==================================\n"
 		     . "Index size:      $this->indexSize\n"
 		     . "getPath() count: $this->getPathCount\n"
 		     . "Iterations:      $this->iterations\n"
 		     . "----------------------------------\n"
-		     . "$durations\n"
+		     . implode("\n", $sortedDurations) . "\n"
 		     . "==================================\n"; 
 	}
 	
@@ -239,16 +268,22 @@ class AutoloaderBenchmark {
 		
 		
 		$indexes = array(
-            "sqlite"      => AutoloaderIndex_PDO::getSQLiteInstance($this->sqliteFile),
-            "mysql"       => new AutoloaderIndex_PDO(self::$pdoPool['mysql']),
-            "hashtable"   => new AutoloaderIndex_SerializedHashtable(),
-            "hashtableGZ" => new AutoloaderIndex_SerializedHashtable_GZ()
+            "sqlite"        => AutoloaderIndex_PDO::getSQLiteInstance($this->sqliteFile),
+            "mysql"         => new AutoloaderIndex_PDO(self::$pdoPool['mysql']),
+            "hashtable"     => new AutoloaderIndex_SerializedHashtable(),
+            "hashtableGZ"   => new AutoloaderIndex_SerializedHashtable_GZ(),
+            "hashtableCSV"  => new AutoloaderIndex_CSV(),
+            "hashtableIni"  => new AutoloaderIndex_IniFile(),
+            "hashtablePHP"  => new AutoloaderIndex_PHPArrayCode()
         );
         $indexes["hashtable"]->setIndexPath($this->hashtable);
         $indexes["hashtableGZ"]->setIndexPath($this->hashtableGZ);
+        $indexes["hashtableCSV"]->setIndexPath($this->hashtableCSV);
+        $indexes["hashtableIni"]->setIndexPath($this->hashtableIni);
+        $indexes["hashtablePHP"]->setIndexPath($this->hashtablePHP);
         
         foreach ($indexes as $index) {
-        	Autoloader::getDefaultInstance()->setIndex($index);
+        	Autoloader::getRegisteredAutoloader()->setIndex($index);
         	
         }
         

@@ -1,6 +1,6 @@
 2010-04-16 Markus Malkusch <markus@malkusch.de>
 
-    * Autoloader.php:
+    * Autoloader.php ():
     Autoloader classes are required only once, even if you have several
     Autoloader packages in your application. This might happen if you use
     external libraries which use the Autoloader by them selves in their
@@ -32,7 +32,7 @@
     The search process is divided into first iterating through all indexes and
     then searching each path in the filesystem. This prevents in a multi
     Autoloader environment that before the index of a later Autoloader would
-    be used the previous Autoloader would vainly search their class paths.
+    be used the previous Autoloaders would vainly search their class paths.
 
     * classes/index/AutoloaderIndex.php (AutoloaderIndex::getPaths()):
     For debuging the index has to return an indexed array with its indexed

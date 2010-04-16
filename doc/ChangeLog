@@ -1,3 +1,11 @@
+2010-04-16 Markus Malkusch <markus@malkusch.de>
+
+    * Autoloader.php:
+    Autoloader classes are required only once, even if you have several
+    Autoloader packages in your application. This might happen if you use
+    external libraries which use the Autoloader by them selves in their
+    class paths.
+
 2010-04-15 Markus Malkusch <markus@malkusch.de>
 
     * classes/index/AutoloaderIndex_CSV.php (AutoloaderIndex_CSV):

@@ -52,7 +52,26 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 	 * @var AutoloaderTestHelper
 	 */
 	$autoloaderTestHelper;
-	
+
+
+    /**
+     * In this case you have several packages of this autoloader.
+     * This might happen if you use libraries which come with this
+     * autoloader in their own class path. The Autoloader should
+     * define its classes only once no matter how often it is required
+     * and where it has class definitions.
+     */
+    public function testRequire_onceMultipleAutoloaders() {
+        $copyPath   = '/var/tmp/' . __FUNCTION__;
+        $sourcePath = dirname(__FILE__) . "/..";
+        `cp -r --link $sourcePath $copyPath`;
+
+        require dirname(__FILE__) . "/../Autoloader.php";
+        require "$copyPath/Autoloader.php";
+
+        `rm -rf $copyPath`;
+    }
+
 	
 	
     /**

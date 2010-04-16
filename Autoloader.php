@@ -23,7 +23,7 @@
  * consumes when it's called the first time. Let it build its index.
  * The second time it will run as fast as light.
  * 
- * The simplest and probably most common usecase shows this example:
+ * The simplest and probably most common use case shows this example:
  * 
  * index.php
  * <code>
@@ -48,6 +48,26 @@
  * If this is done in the document root of your classes (index.php in
  * this case) the Autoloader is already configured. After requiring
  * this file you don't have to worry where your classes reside.
+ *
+ * Another use case would have the class path outside of your document root.
+ * As the autoloader has no knowledge of this arbitrary path you have to
+ * tell him where your class path is:
+ * 
+ * <code>
+ * <?php
+ * require dirname(__FILE__) . "/autoloader/Autoloader.php";
+ *
+ * // As the guessed class path is wrong you should remove this Autoloader.
+ * Autoloader::getRegisteredAutoloader()->remove();
+ *
+ * // register your arbitrary class path
+ * $autoloader = new Autoloader($classpath);
+ * $autoloader->register();
+ *
+ * // You might also have other class paths
+ * $autoloader2 = new Autoloader($classpath2);
+ * $autoloader2->register();
+ * </code>
  * 
  * If you have the possibility to enable PHP's tokenizer you should do
  * this. Otherwise the Autoloader has to use a Parser based on PCRE
@@ -59,19 +79,20 @@
  * @package autoloader
  * @author Markus Malkusch <markus@malkusch.de>
  * @copyright Copyright (C) 2010 Markus Malkusch
- * @version 1.0
+ * @version 1.1
  * @see Autoloader
  */
 
-require_once dirname(__FILE__) . "/classes/OldPHPAPI.php";
+// Another library might use this Autoloader in another package as well.
+if (! class_exists('Autoloader')) {
+    require_once dirname(__FILE__) . "/classes/OldPHPAPI.php";
+    $__oldAPI = new OldPHPAPI();
+    $__oldAPI->checkAPI();
+    unset($__oldAPI);
 
-$__oldAPI = new OldPHPAPI();
-$__oldAPI->checkAPI();
+    require_once dirname(__FILE__) . "/classes/Autoloader.php";
 
-unset($__oldAPI);
-
-
-require_once dirname(__FILE__) . "/classes/Autoloader.php";
+}
 
 $__autoloader = new Autoloader();
 $__autoloader->register();

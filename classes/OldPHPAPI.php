@@ -113,11 +113,7 @@ class OldPHPAPI {
             $fp = tmpfile();
             fwrite($fp, $data);
             fseek($fp, 0);
-            $csv = array();
-            while(($data = fgetcsv($fp)) !== false) {
-                $csv[] = $data;
-
-            }
+            $csv = fgetcsv($fp);
             fclose($fp);
             return $csv;
         }

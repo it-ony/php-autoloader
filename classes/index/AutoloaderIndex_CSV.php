@@ -43,16 +43,21 @@ class AutoloaderIndex_CSV extends AutoloaderIndex_File {
      * @throws AutoloaderException_Index
      */
     protected function buildIndex($data) {
-        $csv = str_getcsv($data);
-        if (! is_array($csv)) {
+        $lines = explode("\n", $data);
+        if (! is_array($lines)) {
             $error = "{$this->getIndexPath()} failed to generate the index:"
                    . " $data";
             throw new AutoloaderException_Index($error);
 
         }
         $index = array();
-        foreach ($csv as $csvData) {
-            $index[$csvData[0]] = $csvData[1];
+        foreach ($lines as $line) {
+            $csv = str_getcsv($line);
+            if (! $csv) {
+                continue;
+
+            }
+            $index[$csv[0]] = $csv[1];
 
         }
         return $index;

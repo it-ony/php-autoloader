@@ -55,6 +55,47 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 
 
     /**
+     * TODO
+     */
+    public function testBuildIndex() {
+        $this->fail("todo");
+    }
+
+
+    /**
+     * @dataProvider provideTestFailBuildIndex
+     * @expectedException AutoloaderException_IndexBuildCollision
+     */
+    public function testFailBuildIndex(Autoloader $autoloader) {
+        $autoloader->buildIndex();
+    }
+
+
+    public function provideTestFailBuildIndex() {
+        $cases = array();
+
+        $definition = "<?php class XXXTest".uniqid()." {} ?>";
+
+        $testHelper = new AutoloaderTestHelper($this);
+        $testHelper->makeClass('Test', 'testFailBuildIndexA/');
+        $testHelper->makeClass('Test', 'testFailBuildIndexA/', $definition);
+        $testHelper->makeClass('Test', 'testFailBuildIndexA/', $definition);
+        $cases[] = array(new Autoloader(
+            $testHelper->getClassDirectory('testFailBuildIndexA')));
+
+        $testHelper = new AutoloaderTestHelper($this);
+        $testHelper->makeClass('Test', 'testFailBuildIndexB/A', $definition);
+        $testHelper->makeClass('Test', 'testFailBuildIndexB/A');
+        $testHelper->makeClass('Test', 'testFailBuildIndexB/B', $definition);
+        $testHelper->makeClass('Test', 'testFailBuildIndexB/B');
+        $cases[] = array(new Autoloader(
+            $testHelper->getClassDirectory('testFailBuildIndexB')));
+
+        return $cases;
+    }
+
+
+    /**
      * In this case you have several packages of this autoloader.
      * This might happen if you use libraries which come with this
      * autoloader in their own class path. The Autoloader should

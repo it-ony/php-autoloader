@@ -218,16 +218,17 @@ class Autoloader extends AbstractAutoloader {
      * 
      * There is no need to configure this object. All missing
      * members are initialized before registration:
-     * -The index would be an AutoloaderIndex_SerializedHashtable_GZ
-     * -The parser will be (if PHP has tokenizer support) an AutoloaderFileParser_Tokenizer
-     * -The class path was set by the constructor to the directory of the calling file
-     * -The timeout for finding a class is set to max_execution_time
-     * -The AutoloaderFileIterator
+     * -The index would be an AutoloaderIndex_SerializedHashtable_GZ.
+     * -The parser will be (if PHP has tokenizer support) an AutoloaderFileParser_Tokenizer.
+     * -The class path was set by the constructor to the directory of the calling file.
+     * -The timeout for finding a class is set to max_execution_time.
+     * -The AutoloaderFileIterator searches for files in the filesystem.
      * 
      * {@link spl_autoload_register()} disables __autoload(). This might be
      * unwanted, so register() also adds __autoload() to the stack.
      * 
      * @throws AutoloaderException_GuessPathFailed
+     * @see initMembers()
      * @see setIndex()
      * @see AutoloaderIndex_SerializedHashtable_GZ
      * @see setParser()
@@ -235,33 +236,82 @@ class Autoloader extends AbstractAutoloader {
      * @see spl_autoload_register()
      */
     public function register() {
-    	// set the default index
-    	if (empty($this->index)) {
-            $this->setIndex(new AutoloaderIndex_SerializedHashtable_GZ());
-            
-    	}
-    	
-    	// set the default parser
-    	if (empty($this->parser)) {
-    		$this->setParser(AutoloaderFileParser::getInstance());
-    		
-    	}
-    	
-    	// set the timeout for finding a class to max_execution_time
-    	if (empty($this->searchTimeoutSeconds)) {
-    		$this->searchTimeoutSeconds = ini_get('max_execution_time');
-    		
-    	}
-    	
-    	// set the AutoloaderFileIterator
-    	if (empty($this->fileIterator)) {
-    	    $this->setFileIterator(new AutoloaderFileIterator_PriorityList());
-    	    
-    	}
+    	$this->initMembers();
 
     	parent::register();
     	
     	self::normalizeSearchPaths();
+    }
+
+
+    /**
+     * This method builds an index in advance. You can use it to build
+     * your index before deployment in a productive environment.
+     *
+     * The Autoloader does not have to be registered. All missing members
+     * are initialized like in register().
+     *
+     * @throws AutoloaderException_IndexBuildCollision
+     * @throws AutoloaderException_Index
+     */
+    public function buildIndex() {
+        $this->initMembers();
+
+        // The index should be clean before building
+        try {
+            $this->index->delete();
+
+        } catch (AutoloaderException_Index $e) {
+            // The index might not exist.
+
+        }
+
+        // All found classes are saved in the index
+        foreach ($this->fileIterator as $file) {
+            foreach ($this->parser->getClassesInFile($file) as $class) {
+                // A collision throws an AutoloaderException_IndexBuildCollision.
+                if ($this->index->hasPath($class)) {
+                    throw new AutoloaderException_IndexBuildCollision(
+                        $class,
+                        array($this->index->getPath($class), $file));
+
+                }
+                $this->index->setPath($class, $file);
+
+            }
+        }
+        $this->index->save();
+    }
+
+
+    /**
+     * @see register()
+     * @see buildIndex()
+     */
+    private function initMembers() {
+        // set the default index
+    	if (empty($this->index)) {
+            $this->setIndex(new AutoloaderIndex_SerializedHashtable_GZ());
+
+    	}
+
+    	// set the default parser
+    	if (empty($this->parser)) {
+    		$this->setParser(AutoloaderFileParser::getInstance());
+
+    	}
+
+    	// set the timeout for finding a class to max_execution_time
+    	if (empty($this->searchTimeoutSeconds)) {
+    		$this->searchTimeoutSeconds = ini_get('max_execution_time');
+
+    	}
+
+    	// set the AutoloaderFileIterator
+    	if (empty($this->fileIterator)) {
+    	    $this->setFileIterator(new AutoloaderFileIterator_PriorityList());
+
+    	}
     }
     
     
@@ -585,5 +635,9 @@ InternalAutoloader::getInstance()->registerClass(
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileIterator_PriorityList',
     dirname(__FILE__).'/fileIterator/AutoloaderFileIterator_PriorityList.php'
+);
+InternalAutoloader::getInstance()->registerClass(
+    'AutoloaderException_IndexBuildCollision',
+    dirname(__FILE__).'/exception/AutoloaderException_IndexBuildCollision.php'
 );
 

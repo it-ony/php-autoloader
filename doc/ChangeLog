@@ -1,5 +1,10 @@
 2010-04-21 Markus Malkusch <markus@malkusch.de>
 
+    * classes/Autoloader.php (Autoloader::buildIndex()):
+    Autoloader::buildIndex() iterates through all files in the class path and
+    builds an index for all found classes. This index is still not really
+    usable for deployment as it contains absolute paths.
+
     * classes/parser/AutoloaderFileParser.php (AutoloaderFileParser::getClassesInFile()):
     The Autoloader parser is able to return the list of found classes in a
     parsed file. This will be used in future to build an index before deployment

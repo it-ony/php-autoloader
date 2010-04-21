@@ -42,18 +42,24 @@ class AutoloaderFileParser_RegExp extends AutoloaderFileParser {
     static public function isSupported() {
     	return true;
     }
-    
-	
-	/**
-	 * @param String $class
-	 * @param String $source
-	 * @return bool
-	 */
-	public function isClassInSource($class, $source) {
+
+
+    /**
+     * @param String $source
+     * @return Array found classes in the source
+     * @throws AutoloaderException_Parser
+     */
+    public function getClassesInSource($source) {
+        $classes = array();
         $pattern =
-            '~\s*((abstract\s+)?class|interface)\s+'.$class.'[$\s#/{]~im';
-        return (bool) preg_match($pattern, $source);
-	}
-	
+            '~\s*((abstract\s+)?class|interface)\s+([a-z].*)[$\s#/{]~imU';
+        preg_match_all($pattern, $source, $matches);
+        foreach ($matches[3] as $class) {
+            $classes[] = $class;
+
+        }
+        return $classes;
+    }
+
 	
 }

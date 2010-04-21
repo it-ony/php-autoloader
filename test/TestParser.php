@@ -58,7 +58,26 @@ class TestParser extends PHPUnit_Framework_TestCase {
 		  $autoloader->getParser() instanceof AutoloaderFileParser_Tokenizer
         );
 	}
-	
+
+
+    /**
+     * @dataProvider provideTestGetClasses
+     */
+    public function testGetClassesInSource(AutoloaderFileParser $parser, Array $classes, $source) {
+        $this->assertEquals($classes, $parser->getClassesInSource($source));
+    }
+
+
+    /**
+     * @dataProvider provideTestGetClasses
+     */
+    public function testGetClassesInFile(AutoloaderFileParser $parser, Array $classes, $source) {
+        $file = $this->createFile($source);
+        $this->assertEquals($classes, $parser->getClassesInFile($file));
+        unlink($file);
+    }
+
+
 	
 	/**
 	 * @dataProvider provideTestIsClassInSource
@@ -73,9 +92,7 @@ class TestParser extends PHPUnit_Framework_TestCase {
 	 * @dataProvider provideTestIsClassInSource
 	 */
 	public function testIsClassInFile(AutoloaderFileParser $parser, $class, $source) {
-		$file = tempnam(sys_get_temp_dir(), "AutoloaderTestParser");
-		$this->assertTrue((bool) file_put_contents($file, $source));
-		$this->assertEquals($source, file_get_contents($file));
+		$file = $this->createFile($source);
 		$this->assertTrue($parser->isClassInFile($class, $file));
         $this->assertFalse($parser->isClassInSource($class.uniqid(), $file));
 		unlink($file);
@@ -89,8 +106,25 @@ class TestParser extends PHPUnit_Framework_TestCase {
 		$provider = array();
 		foreach ($this->provideParser() as $parser) {
 			foreach ($this->provideSource() as $source) {
-				$provider[] = array_merge($parser, $source);
-				
+                foreach ($source[0] as $class) {
+                    $provider[] = array($parser[0], $class, $source[1]);
+
+                }
+			}
+		}
+		return $provider;
+	}
+
+
+	/**
+	 * @return Array
+	 */
+	public function provideTestGetClasses() {
+		$provider = array();
+		foreach ($this->provideParser() as $parser) {
+			foreach ($this->provideSource() as $source) {
+                $provider[] = array($parser[0], $source[0], $source[1]);
+
 			}
 		}
 		return $provider;
@@ -102,18 +136,37 @@ class TestParser extends PHPUnit_Framework_TestCase {
      */
 	public function provideSource() {
 		return array(
-            array("Test", "<?php interface Test{}?>"),
-            array("Test", "<?php interface teSt{}?>"),
-            array("Test", "<?php abstract class Test{}?>"),
-	        array("Test", "<?php\nclass Test{\n}?>"),
-	        array("Test", "<?php\n class Test {\n}?>"),
-	        array("Test", "<?php\nclass Test\n {\n}?>"),
-	        array("Test", "<?php\nclass Test \n {\n}?>"),
-	        array("Test", "<?php\nClass Test \n {\n}?>"),
-	        array("Test", "<?php\nclass Test \n {\n}?>"),
-	        array("Test", "<?php\nclass Test1 \n {\n}\nclass Test \n {\n} ?>")
+            array(array("Test"), "<?php interface Test{}?>"),
+            array(array("teSt"), "<?php interface teSt{}?>"),
+            array(array("Test"), "<?php abstract class Test{}?>"),
+	        array(array("Test"), "<?php\nclass Test{\n}?>"),
+	        array(array("Test"), "<?php\n class Test {\n}?>"),
+	        array(array("Test"), "<?php\nclass Test\n {\n}?>"),
+	        array(array("Test"), "<?php\nclass Test \n {\n}?>"),
+	        array(array("Test"), "<?php\nClass Test \n {\n}?>"),
+	        array(array("Test"), "<?php\nclass Test \n {\n}?>"),
+
+	        array(
+                array("Test1", "Test"),
+                "<?php\nclass Test1 \n {\n}\nclass Test \n {\n} ?>"),
+	        array(
+                array("Test1", "Test"),
+                "<?php\nclass Test1 \n {\n}\interface Test \n {\n} ?>"),
+	        array(
+                array("Test1", "Test"),
+                "<?php\nabstract class Test1 \n {\n}\interface Test \n {\n} ?>"),
+	        array(
+                array("Test1", "Test"),
+                "<?php\interface Test1 \n {\n}\interface Test \n {\n} ?>")
         );
 	}
+
+
+    private function createFile($source) {
+        $file = tempnam(sys_get_temp_dir(), "AutoloaderTestParser");
+        $this->assertTrue((bool) file_put_contents($file, $source));
+        return $file;
+    }
 	
 	
 	/**

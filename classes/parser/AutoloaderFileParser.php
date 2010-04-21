@@ -41,22 +41,21 @@ InternalAutoloader::getInstance()->registerClass(
  * @subpackage parser
  * @author Markus Malkusch <markus@malkusch.de>
  * @copyright Copyright (C) 2010 Markus Malkusch
- * @version 1.0
+ * @version 1.1
  */
 abstract class AutoloaderFileParser {
 	
 	
-	/**
-	 * @param String $class
-	 * @param String $source The source as a string. This is the content of a file.
-	 * @return bool True if the class $class was found in the source $source.
-	 * @throws AutoloaderException_Parser
-	 */
-	abstract public function isClassInSource($class, $source);
     /**
      * @return bool True if this implementation is supported by the current PHP environment
      */
     abstract static public function isSupported();
+    /**
+     * @param String $source
+     * @return Array found classes in the source
+     * @throws AutoloaderException_Parser
+     */
+    abstract public function getClassesInSource($source);
     
 	
 	/**
@@ -73,6 +72,22 @@ abstract class AutoloaderFileParser {
 			
 		}
 	}
+
+
+    /**
+	 * @param String $class
+	 * @param String $source The source as a string. This is the content of a file.
+	 * @return bool True if the class $class was found in the source $source.
+	 * @throws AutoloaderException_Parser
+	 */
+	public function isClassInSource($class, $source) {
+        $normalizedClass    = $class;
+        $classes            = $this->getClassesInSource($source);
+        
+        $this->normalizeClass($normalizedClass);
+        array_walk($classes, array($this, 'normalizeClass'));
+        return in_array($normalizedClass, $classes);
+    }
 	
 	
 	/**
@@ -83,16 +98,43 @@ abstract class AutoloaderFileParser {
 	 * @throws AutoloaderException_Parser
 	 */
 	public function isClassInFile($class, $file) {
+        return $this->isClassInSource($class, $this->getSource($file));
+	}
+
+
+	/**
+	 * @param String $file
+	 * @return Array found classes in the source
+	 * @throws AutoloaderException_Parser_IO
+	 * @throws AutoloaderException_Parser
+	 */
+	public function getClassesInFile($file) {
+        return $this->getClassesInSource($this->getSource($file));
+	}
+
+
+    private function normalizeClass(& $class, $index = false) {
+        $class = strtolower($class);
+    }
+
+
+    /**
+     * @param String $file
+     * @return String
+     * @throws AutoloaderException_Parser_IO
+	 * @throws AutoloaderException_Parser
+     */
+    private function getSource($file) {
         $source = @file_get_contents($file);
         if ($source === false) {
         	$error = error_get_last();
             throw new AutoloaderException_Parser_IO(
-                "Could not read $file while searching $class: $error[message]"
+                "Could not read $file while searching for classes: $error[message]"
             );
-                    
+
         }
-        return $this->isClassInSource($class, $source);
-	}
+        return $source;
+    }
 	
 	
 }

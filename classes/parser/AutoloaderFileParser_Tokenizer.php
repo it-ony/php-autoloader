@@ -44,19 +44,18 @@ class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser {
     
     
 	/**
-	 * @param String $class
 	 * @param String $source
-	 * @return bool
-	 * @throws AutoloaderException_Parser
+	 * @return Array found classes in the source
+     * @throws AutoloaderException_Parser
 	 */
-	public function isClassInSource($class, $source) {
-		$class                 = strtolower($class);
+	public function getClassesInSource($source) {
+		$classes               = array();
 		$nextStringIsClassName = false;
 		$tokens                = @token_get_all($source);
 
 		if (! is_array($tokens)) {
 			$error = error_get_last();
-			throw new AutoloaderException_Parser("Could not find $class: $error[message]");
+			throw new AutoloaderException_Parser("Could not tokenize: $error[message]\n$source");
 
 		}
 		
@@ -77,17 +76,18 @@ class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser {
 					break;
 					
 				case T_STRING:
-					if ($nextStringIsClassName && strtolower($tokenValue) == $class) {
-						return true;
+					if (! $nextStringIsClassName) {
+						break;
 						
 					}
 					$nextStringIsClassName = false;
+                    $classes[]             = $tokenValue;
 					break;
 				
 			}
 			
 		}
-		return false;
+		return $classes;
 	}
 	
 	

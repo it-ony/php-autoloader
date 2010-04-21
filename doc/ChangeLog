@@ -1,3 +1,10 @@
+2010-04-21 Markus Malkusch <markus@malkusch.de>
+
+    * classes/parser/AutoloaderFileParser.php (AutoloaderFileParser::getClassesInFile()):
+    The Autoloader parser is able to return the list of found classes in a
+    parsed file. This will be used in future to build an index before deployment
+    in a productive environment.
+
 2010-04-16 Markus Malkusch <markus@malkusch.de>
 
     * Autoloader.php (Autoloader.php):

@@ -110,7 +110,8 @@ class TestParser extends PHPUnit_Framework_TestCase {
 	        array("Test", "<?php\nclass Test\n {\n}?>"),
 	        array("Test", "<?php\nclass Test \n {\n}?>"),
 	        array("Test", "<?php\nClass Test \n {\n}?>"),
-	        array("Test", "<?php\nclass Test \n {\n}?>")
+	        array("Test", "<?php\nclass Test \n {\n}?>"),
+	        array("Test", "<?php\nclass Test1 \n {\n}\nclass Test \n {\n} ?>")
         );
 	}
 	

@@ -55,14 +55,88 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 
 
     /**
-     * TODO
+     * @dataProvider provideTestBuildIndex
      */
-    public function testBuildIndex() {
-        $this->fail("todo");
+    public function testBuildIndex(Autoloader $autoloader, $expectedPaths) {
+        $autoloader->buildIndex();
+        $foundPaths = $autoloader->getIndex()->getPaths();
+        ksort($foundPaths);
+        ksort($expectedPaths);
+
+        $this->assertEquals($expectedPaths, $foundPaths);
+    }
+
+
+    public function provideTestBuildIndex() {
+        $cases      = array();
+        $testHelper = new AutoloaderTestHelper($this);
+
+
+        $testHelper->deleteDirectory('testBuildIndex/');
+        $classes = array(
+            $testHelper->makeClass('Test', 'testBuildIndex/'),
+            $testHelper->makeClass('Test', 'testBuildIndex/'),
+            $testHelper->makeClass('Test', 'testBuildIndex/A'),
+            $testHelper->makeClass('Test', 'testBuildIndex/A'),
+            $testHelper->makeClass('Test', 'testBuildIndex/A'),
+            $testHelper->makeClass('Test', 'testBuildIndex/A/B'),
+            $testHelper->makeClass('Test', 'testBuildIndex/A/B'),
+            $testHelper->makeClass('Test', 'testBuildIndex/A/C'),
+            $testHelper->makeClass('Test', 'testBuildIndex/A/C'),
+            $testHelper->makeClass('Test', 'testBuildIndex/D'),
+            $testHelper->makeClass('Test', 'testBuildIndex/D/E'),
+        );
+        $cases[] = array(
+            new Autoloader($testHelper->getClassDirectory('testBuildIndex')),
+            $this->getPaths($classes, $testHelper));
+
+
+        $testHelper->deleteDirectory('testBuildIndex2/');
+        $classes = array(
+            $testHelper->makeClass('Test', 'testBuildIndex2/'),
+        );
+        $cases[] = array(
+            new Autoloader($testHelper->getClassDirectory('testBuildIndex2')),
+            $this->getPaths($classes, $testHelper));
+
+
+        $testHelper->deleteDirectory('testBuildIndex3/');
+        $classes = array(
+            $testHelper->makeClass('Test', 'testBuildIndex3/'),
+            $testHelper->makeClass('Test', 'testBuildIndex3/'),
+        );
+        $cases[] = array(
+            new Autoloader($testHelper->getClassDirectory('testBuildIndex3')),
+            $this->getPaths($classes, $testHelper));
+
+
+        $testHelper->deleteDirectory('testBuildIndex4/');
+        $classes = array(
+            $testHelper->makeClass('Test', 'testBuildIndex4/A/B'),
+            $testHelper->makeClass('Test', 'testBuildIndex4/B/C'),
+        );
+        $cases[] = array(
+            new Autoloader($testHelper->getClassDirectory('testBuildIndex4')),
+            $this->getPaths($classes, $testHelper));
+
+
+        return $cases;
+    }
+
+
+    private function getPaths(Array $testClasses, AutoloaderTestHelper $testHelper) {
+        $paths = array();
+        foreach ($testClasses as $class) {
+            $paths[$class] = realpath($testHelper->getGeneratedClassPath($class));
+
+        }
+        return $paths;
     }
 
 
     /**
+     * Building an index fails if class definitions are not unique.
+     *
      * @dataProvider provideTestFailBuildIndex
      * @expectedException AutoloaderException_IndexBuildCollision
      */

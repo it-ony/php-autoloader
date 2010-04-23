@@ -17,10 +17,7 @@
 #########################################################################
 
 
-InternalAutoloader::getInstance()->registerClass(
-	'AutoloaderException',
-    dirname(__FILE__).'/AutoloaderException.php'
-);
+require_once dirname(__FILE__) . '/AutoloaderException.php';
 
 
 /**

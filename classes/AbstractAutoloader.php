@@ -18,6 +18,9 @@
 
 
 require_once dirname(__FILE__).'/exception/AutoloaderException.php';
+require_once dirname(__FILE__).'/exception/AutoloaderException_Include.php';
+require_once dirname(__FILE__).'/exception/AutoloaderException_Include_FileNotExists.php';
+require_once dirname(__FILE__).'/exception/AutoloaderException_Include_ClassNotDefined.php';
 
 
 /**

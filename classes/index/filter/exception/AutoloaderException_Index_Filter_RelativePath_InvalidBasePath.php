@@ -18,48 +18,16 @@
 
 
 InternalAutoloader::getInstance()->registerClass(
-	'AutoloaderIndex_File',
-    dirname(__FILE__).'/AutoloaderIndex_File.php'
+	'AutoloaderException_Index_Filter_RelativePath',
+    dirname(__FILE__).'/AutoloaderException_Index_Filter_RelativePath.php'
 );
 
 
-/**
- * The index is a serialized hashtable.
- * 
- * This index is working in every PHP environment. It should be fast enough
- * for most applications. The index is a file in the temporary directory.
- * The content of this file is a serialized Hashtable.
- * 
- * This implementation is threadsafe.
- * 
- * @see serialize()
- * @see unserialize()
- */
-class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex_File {
-    
-    
-    /**
-     * @param String $data
-     * @return Array
-     * @throws AutoloaderException_Index
-     */
-    protected function buildIndex($data) {
-        $index = unserialize($data);
-        if (! is_array($index)) {
-            $error = "Can not unserialize {$this->getIndexPath()}:"
-                   . " $data";
-            throw new AutoloaderException_Index($error);
-
-        }
-        return $index;
-    }
+class AutoloaderException_Index_Filter_RelativePath_InvalidBasePath extends AutoloaderException_Index_Filter_RelativePath {
 
 
-    /**
-     * @return String
-     */
-    protected function serializeIndex(Array $index) {
-        return serialize($index);
+    public function __construct($basePath) {
+        parent::__construct("$basePath is invalid.");
     }
 
 

@@ -18,23 +18,32 @@
 
 
 /**
- * The AutoloaderIndex stores the location of class defintions for speeding up recurring searches.
+ * The AutoloaderIndex stores the location of class defintions for speeding up
+ * recurring searches.
  * 
  * Searching a class definition in the filesystem takes a lot of time, as every
- * file is read. To avoid these long searches, a found class definition will be stored
- * in an index. The next search for an already found class definition will take no
- * time.
+ * file is read. To avoid these long searches, a found class definition will be
+ * stored in an index. The next search for an already found class definition
+ * will take no time.
  * 
  * @package autoloader
  * @subpackage index
  * @author Markus Malkusch <markus@malkusch.de>
  * @copyright Copyright (C) 2010 Markus Malkusch
- * @version 1.1
+ * @version 1.2
  */
 abstract class AutoloaderIndex implements Countable {
     
     
     private
+    /**
+     * @var Array
+     */
+    $getFilters = array(),
+    /**
+     * @var Array
+     */
+    $setFilters = array(),
     /**
      * @var int counts how often getPath() is called
      * @see getPath()
@@ -112,7 +121,41 @@ abstract class AutoloaderIndex implements Countable {
      * @see save()
      */
     abstract protected function _save();
-    
+
+
+    /**
+     * You can add a filter which modifies the path which is read
+     * from the index. This could for example produce absolute paths from
+     * relative paths.
+     *
+     * @see addSetFilter()
+     */
+    public function addGetFilter(AutoloaderIndexGetFilter $getFilter) {
+        $this->getFilters[] = $getFilter;
+    }
+
+
+    /**
+     * You can add a filter which modifies the path which is stored
+     * into the index. This could for example store relative paths instead
+     * of absolute paths.
+     *
+     * @see addGetFilter()
+     */
+    public function addSetFilter(AutoloaderIndexSetFilter $setFilter) {
+        $this->setFilters[] = $setFilter;
+    }
+
+
+    /**
+     * @see addGetFilter()
+     * @see addSetFilter()
+     */
+    public function addFilter(AutoloaderIndexFilter $filter) {
+        $this->addSetFilter($filter);
+        $this->addGetFilter($filter);
+    }
+
     
     /**
      * @param String $class
@@ -120,10 +163,16 @@ abstract class AutoloaderIndex implements Countable {
      * @throws AutoloaderException_Index_NotFound the class is not in the index
      * @return String The absolute path of the found class $class
      * @see _getPath()
+     * @see addGetFilter()
      */
-    public function getPath($class) {
+    final public function getPath($class) {
     	$this->getPathCallCounter++;
-    	return $this->_getPath($class);
+    	$path = $this->_getPath($class);
+        foreach ($this->getFilters as $filter) {
+            $path = $filter->filterGetPath($path);
+
+        }
+        return $path;
     }
     
     
@@ -192,8 +241,13 @@ abstract class AutoloaderIndex implements Countable {
      * @see __destruct()
      * @see _setPath()
      * @see unsetPath()
+     * @see addSetFilter()
      */
-    public function setPath($class, $path) {
+    final public function setPath($class, $path) {
+        foreach ($this->setFilters as $filter) {
+            $path = $filter->filterSetPath($path);
+
+        }
         $this->_setPath($class, $path);
         $this->isChanged = true;
     }

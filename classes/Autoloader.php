@@ -640,4 +640,8 @@ InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_IndexBuildCollision',
     dirname(__FILE__).'/exception/AutoloaderException_IndexBuildCollision.php'
 );
+InternalAutoloader::getInstance()->registerClass(
+    'AutoloaderIndexFilter_RelativePath',
+    dirname(__FILE__).'/index/filter/AutoloaderIndexFilter_RelativePath.php'
+);
 

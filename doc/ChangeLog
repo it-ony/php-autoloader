@@ -1,5 +1,14 @@
 2010-04-21 Markus Malkusch <markus@malkusch.de>
 
+    * classes/index/filter/AutoloaderIndexFilter_RelativePath.php (AutoloaderIndexFilter_RelativePath):
+    An AutoloaderIndex can filter the paths which are stored or read with
+    an AutoloaderIndexFilter. The AutoloaderIndexFilter_RelativePath stores
+    relative paths in an index. With this filter and Autoloader::buildIndex()
+    you can build an index in your developement environment and deploy the
+    build index into your productive environment.
+
+2010-04-21 Markus Malkusch <markus@malkusch.de>
+
     * classes/Autoloader.php (Autoloader::buildIndex()):
     Autoloader::buildIndex() iterates through all files in the class path and
     builds an index for all found classes. This index is still not really

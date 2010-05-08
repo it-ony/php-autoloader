@@ -18,10 +18,11 @@
 
 
 /**
- * Implementation of missing PHP5 functions
+ * Implementation of missing PHP5 functions and constants
  * 
- * Some required functions are not present in older PHP 5 APIs. This
- * class will check their existence and implement them if needed.
+ * Some required functions and constants are not present in older
+ * PHP 5 APIs. This class will check their existence and implement
+ * them if needed.
  * 
  * @package autoloader
  * @author Markus Malkusch <markus@malkusch.de>
@@ -36,8 +37,20 @@ class OldPHPAPI {
 		$this->error_get_last();
 		$this->parse_ini_string();
 		$this->str_getcsv();
+
+        $this->define('T_NAMESPACE');
+        $this->define('T_NS_SEPARATOR');
 	}
-	
+
+
+    private function define($const, $value = null) {
+        if (defined($const)) {
+            return;
+
+        }
+        define($const, is_null($value) ? $const : $value);
+    }
+
 	
 	private function error_get_last() {
 		if (function_exists(__FUNCTION__)) {

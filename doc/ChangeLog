@@ -1,11 +1,22 @@
-2010-04-21 Markus Malkusch <markus@malkusch.de>
+2010-05-08 Markus Malkusch <markus@malkusch.de>
+
+    * classes/parser/AutoloaderFileParser_Tokenizer (AutoloaderFileParser_Tokenizer::getClassesInSource()):
+    The Autoloader has support for Namespaces. Only the
+    AutoloaderFileParser_Tokenizer is able to determine the namespace of a
+    class. The AutoloaderFileParser_RegExp is yet not able to recognize
+    namespaces. You can use any possible namespace declaration. The
+    AutoloaderFileParser_Tokenizer can handle the braket syntax as well as the
+    non braket syntaxt. Multiple namespace declarations in one file are no
+    problem.
+
+2010-04-25 Markus Malkusch <markus@malkusch.de>
 
     * classes/index/filter/AutoloaderIndexFilter_RelativePath.php (AutoloaderIndexFilter_RelativePath):
     An AutoloaderIndex can filter the paths which are stored or read with
     an AutoloaderIndexFilter. The AutoloaderIndexFilter_RelativePath stores
     relative paths in an index. With this filter and Autoloader::buildIndex()
     you can build an index in your developement environment and deploy the
-    build index into your productive environment.
+    built index into your productive environment.
 
 2010-04-21 Markus Malkusch <markus@malkusch.de>
 

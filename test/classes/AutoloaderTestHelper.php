@@ -99,7 +99,13 @@ class AutoloaderTestHelper {
             // expected
         }
     }
-    
+
+
+    public function makeClassInNamespace($namespace, $name, $directory, $definition = "<?php namespace %namespace%; class %name%{}?>") {
+        $definition = str_replace('%namespace%', $namespace, $definition);
+        $name       = $this->makeClass($name, $directory, $definition);
+        return "$namespace\\$name";
+    }
     
     public function makeClass($name, $directory, $definition = "<?php class %name%{}?>") {
         $name     .= uniqid();

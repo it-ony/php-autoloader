@@ -31,8 +31,14 @@ InternalAutoloader::getInstance()->registerClass(
  * Reliable implementation using PHP's tokenizer.
  * 
  * @see token_get_all()
+ * @version 1.2
  */
 class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser {
+
+
+    const NEXT_CLASS        = 'class';
+    const NEXT_NAMESPACE    = 'namespace';
+    const NEXT_NOTHING      = 'nothing';
 	
 	
     /**
@@ -49,13 +55,15 @@ class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser {
      * @throws AutoloaderException_Parser
 	 */
 	public function getClassesInSource($source) {
-		$classes               = array();
-		$nextStringIsClassName = false;
-		$tokens                = @token_get_all($source);
+		$classes        = array();
+		$nextStringType = self::NEXT_NOTHING;
+        $namespace      = '';
+		$tokens         = @token_get_all($source);
 
 		if (! is_array($tokens)) {
 			$error = error_get_last();
-			throw new AutoloaderException_Parser("Could not tokenize: $error[message]\n$source");
+			throw new AutoloaderException_Parser(
+                "Could not tokenize: $error[message]\n$source");
 
 		}
 		
@@ -67,21 +75,34 @@ class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser {
 			}
             $tokenID    = $token[0];
             $tokenValue = $token[1];
-				
+
 			switch ($tokenID) {
+
+                case T_NAMESPACE:
+                    $namespace      = '';
+                case T_NS_SEPARATOR:
+                    $nextStringType = self::NEXT_NAMESPACE;
+                    break;
 				
 				case T_INTERFACE:
 				case T_CLASS:
-					$nextStringIsClassName = true;
+					$nextStringType = self::NEXT_CLASS;
 					break;
 					
 				case T_STRING:
-					if (! $nextStringIsClassName) {
-						break;
-						
-					}
-					$nextStringIsClassName = false;
-                    $classes[]             = $tokenValue;
+                    $type           = $nextStringType;
+                    $nextStringType = self::NEXT_NOTHING;
+                    switch ($type) {
+
+                        case self::NEXT_CLASS:
+                            $classes[] = $namespace.$tokenValue;
+                            break;
+
+                        case self::NEXT_NAMESPACE:
+                            $namespace .= "$tokenValue\\";
+                            break;
+
+                    }
 					break;
 				
 			}

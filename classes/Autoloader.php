@@ -43,7 +43,7 @@ require_once dirname(__FILE__).'/exception/AutoloaderException_PathNotRegistered
  * @package autoloader
  * @author Markus Malkusch <markus@malkusch.de>
  * @copyright Copyright (C) 2010 Markus Malkusch
- * @version 1.3
+ * @version 1.8
  */
 class Autoloader extends AbstractAutoloader {
     

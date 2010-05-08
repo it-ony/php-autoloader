@@ -526,7 +526,12 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 		$classes[] = $this->autoloaderTestHelper->makeClass("TestG4", "g", "<?php\nclass %name% \n {\n}?>");
 		$classes[] = $this->autoloaderTestHelper->makeClass("TestG5", "g", "<?php\nClass %name% \n {\n}?>");
 		$classes[] = $this->autoloaderTestHelper->makeClass("TestG6", "g", "<?php\nclass %name% \n {\n}?>");
-		
+
+        $classes[] = $this->autoloaderTestHelper->makeClassInNamespace("a",     "Test", "");
+        $classes[] = $this->autoloaderTestHelper->makeClassInNamespace("a\b",   "Test", "");
+        $classes[] = $this->autoloaderTestHelper->makeClassInNamespace("a\b",   "Test", "");
+        $classes[] = $this->autoloaderTestHelper->makeClassInNamespace("a\b\c", "Test", "");
+
 		$return = array();
 		foreach ($classes as $class) {
 			$return[] = array($class);

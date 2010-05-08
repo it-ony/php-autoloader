@@ -30,6 +30,8 @@ InternalAutoloader::getInstance()->registerClass(
  * But if there's not tokenizer support this is a well working
  * fallback. This class is as well as the regular expression
  * '~\s*((abstract\s+)?class|interface)\s+'.$class.'[$\s#/{]~im'.
+ *
+ * TODO Support for namespaces is missing.
  * 
  * @see AutoloaderFileParser_Tokenizer
  */

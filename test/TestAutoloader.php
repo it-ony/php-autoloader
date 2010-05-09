@@ -45,6 +45,13 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
  * @copyright Copyright (C) 2010 Markus Malkusch
  */
 class TestAutoloader extends PHPUnit_Framework_TestCase {
+
+
+    static public
+    /**
+     * @var String
+     */
+    $testClassConstructorState = '';
 	
 	
 	private
@@ -52,6 +59,70 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 	 * @var AutoloaderTestHelper
 	 */
 	$autoloaderTestHelper;
+
+
+    /**
+     * @dataProvider provideTestClassConstructor
+     */
+    public function testClassConstructor($expectedState, $class) {
+        self::$testClassConstructorState = '';
+        $this->autoloaderTestHelper->assertLoadable($class);
+        $this->assertEquals($expectedState, self::$testClassConstructorState);
+    }
+
+
+    public function provideTestClassConstructor() {
+        $this->autoloaderTestHelper = new AutoloaderTestHelper($this);
+        
+        return array(
+            array(
+                'a',
+                $this->autoloaderTestHelper->makeClass(
+                    'test',
+                    '',
+                    '<?php class %name% {
+
+                        static public function __static() {
+                            TestAutoloader::$testClassConstructorState = "a";
+                        }
+                    } ?>'
+                )
+            ),
+
+            array(
+                '',
+                $this->autoloaderTestHelper->makeClass(
+                    'test',
+                    '',
+                    '<?php class %name% {
+
+                        public function __static() {
+                            TestAutoloader::$testClassConstructorState = "b";
+                        }
+                    } ?>'
+                )
+            ),
+
+            array(
+                'c',
+                $this->autoloaderTestHelper->makeClassInNamespace(
+                    'de\malkusch\autoloader\test',
+                    'test',
+                    '',
+                    '<?php
+                        namespace %namespace%;
+                        
+                        class %name% {
+
+                            static public function __static() {
+                                \TestAutoloader::$testClassConstructorState = "c";
+                            }
+                        }
+                    ?>'
+                )
+            )
+        );
+    }
 
 
     /**

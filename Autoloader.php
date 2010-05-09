@@ -79,7 +79,7 @@
  * @package autoloader
  * @author Markus Malkusch <markus@malkusch.de>
  * @copyright Copyright (C) 2010 Markus Malkusch
- * @version 1.1
+ * @version 1.8
  * @see Autoloader
  */
 

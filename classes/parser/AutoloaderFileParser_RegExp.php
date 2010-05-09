@@ -31,9 +31,8 @@ InternalAutoloader::getInstance()->registerClass(
  * fallback. This class is as well as the regular expression
  * '~\s*((abstract\s+)?class|interface)\s+'.$class.'[$\s#/{]~im'.
  *
- * TODO Support for namespaces is missing.
- * 
  * @see AutoloaderFileParser_Tokenizer
+ * @version 1.2
  */
 class AutoloaderFileParser_RegExp extends AutoloaderFileParser {
 	
@@ -52,12 +51,50 @@ class AutoloaderFileParser_RegExp extends AutoloaderFileParser {
      * @throws AutoloaderException_Parser
      */
     public function getClassesInSource($source) {
-        $classes = array();
-        $pattern =
+        // Namespaces are searched.
+        $namespaces         = array();
+        $namespacePattern   =
+            '~namespace\s+([^\s;{]+)~im';
+        preg_match_all(
+            $namespacePattern,
+            $source,
+            $namespaceMatches,
+            PREG_OFFSET_CAPTURE
+        );
+        foreach ($namespaceMatches[1] as $namespaceMatch) {
+            $namespace  = $namespaceMatch[0];
+            $offset     = $namespaceMatch[1];
+
+            $namespaces[$offset] = $namespace;
+
+        }
+
+        // Classes and interfaces are searched.
+        $classes        = array();
+        $classPattern   =
             '~\s*((abstract\s+)?class|interface)\s+([a-z].*)[$\s#/{]~imU';
-        preg_match_all($pattern, $source, $matches);
-        foreach ($matches[3] as $class) {
-            $classes[] = $class;
+        preg_match_all(
+            $classPattern,
+            $source,
+            $classMatches,
+            PREG_OFFSET_CAPTURE
+        );
+        foreach ($classMatches[3] as $classMatch) {
+            $class  = $classMatch[0];
+            $offset = $classMatch[1];
+
+            // The appropriate will be prepended.
+            $classNamespace = '';
+            foreach ($namespaces as $namespaceOffset => $namespace) {
+                if ($namespaceOffset > $offset) {
+                    break;
+
+                }
+                $classNamespace = $namespace . "\\";
+
+            }
+            
+            $classes[] = $classNamespace . $class;
 
         }
         return $classes;

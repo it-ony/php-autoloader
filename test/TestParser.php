@@ -93,70 +93,14 @@ class TestParser extends PHPUnit_Framework_TestCase {
 	 */
 	public function testIsClassInFile(AutoloaderFileParser $parser, $class, $source) {
 		$file = $this->createFile($source);
-		$this->assertTrue($parser->isClassInFile($class, $file));
+		$this->assertTrue(
+            $parser->isClassInFile($class, $file),
+            "$class not found in $file. These classes where found: "
+            . print_r($parser->getClassesInSource($source), true)
+        );
         $this->assertFalse($parser->isClassInSource($class.uniqid(), $file));
 		unlink($file);
 	}
-
-
-    /**
-     * @dataProvider provideTestNamespaces
-     */
-    public function testNamespaces(AutoloaderFileParser $parser, $file, Array $expectedClasses) {
-        $foundClasses = $parser->getClassesInFile($file);
-        sort($foundClasses);
-        sort($expectedClasses);
-
-        $this->assertEquals($expectedClasses, $foundClasses);
-    }
-
-
-    /**
-     * @return Array
-     */
-    public function provideTestNamespaces() {
-        $cases = array();
-        //TODO foreach ($this->provideParser() as $parser) {
-        foreach (array(array(new AutoloaderFileParser_Tokenizer())) as $parser) {
-            $cases[] = array(
-                $parser[0],
-                __DIR__ . "/namespaceDefinitions/Bracket.php",
-                array('de\malkusch\autoloader\test\ns\bracket\Test')
-            );
-
-            $cases[] = array(
-                $parser[0],
-                __DIR__ . "/namespaceDefinitions/MultiBracket.php",
-                array(
-                    'de\malkusch\autoloader\test\ns\multibracket\A\Test',
-                    'de\malkusch\autoloader\test\ns\multibracket\B\Test'
-                )
-            );
-
-            $cases[] = array(
-                $parser[0],
-                __DIR__ . "/namespaceDefinitions/MultiNoBracket.php",
-                array(
-                    'de\malkusch\autoloader\test\ns\multinobracket\A\Test',
-                    'de\malkusch\autoloader\test\ns\multinobracket\B\Test'
-                )
-            );
-
-            $cases[] = array(
-                $parser[0],
-                __DIR__ . "/namespaceDefinitions/NoBracket.php",
-                array('de\malkusch\autoloader\test\ns\nobracket\Test')
-            );
-
-            $cases[] = array(
-                $parser[0],
-                __DIR__ . "/namespaceDefinitions/None.php",
-                array('Test')
-            );
-
-        }
-        return $cases;
-    }
 	
 	
 	/**
@@ -206,18 +150,57 @@ class TestParser extends PHPUnit_Framework_TestCase {
 	        array(array("Test"), "<?php\nClass Test \n {\n}?>"),
 	        array(array("Test"), "<?php\nclass Test \n {\n}?>"),
 
+
 	        array(
                 array("Test1", "Test"),
-                "<?php\nclass Test1 \n {\n}\nclass Test \n {\n} ?>"),
+                "<?php\nclass Test1 \n {\n}\nclass Test \n {\n} ?>"
+            ),
 	        array(
                 array("Test1", "Test"),
-                "<?php\nclass Test1 \n {\n}\interface Test \n {\n} ?>"),
+                "<?php\nclass Test1 \n {\n}\interface Test \n {\n} ?>"
+            ),
 	        array(
                 array("Test1", "Test"),
-                "<?php\nabstract class Test1 \n {\n}\interface Test \n {\n} ?>"),
+                "<?php\nabstract class Test1 \n {\n}\interface Test \n {\n} ?>"
+            ),
 	        array(
                 array("Test1", "Test"),
-                "<?php\ninterface Test1 \n {\n}\interface Test \n {\n} ?>")
+                "<?php\ninterface Test1 \n {\n}\interface Test \n {\n} ?>"
+            ),
+
+            
+            array(
+                array(
+                    'de\malkusch\autoloader\test\ns\bracket\Test1',
+                    'de\malkusch\autoloader\test\ns\bracket\Test2'
+                ),
+                file_get_contents(__DIR__ . "/namespaceDefinitions/Bracket.php")
+            ),
+            array(
+                array(
+                    'de\malkusch\autoloader\test\ns\multibracket\A\Test1',
+                    'de\malkusch\autoloader\test\ns\multibracket\A\Test2',
+                    'de\malkusch\autoloader\test\ns\multibracket\B\Test1',
+                    'de\malkusch\autoloader\test\ns\multibracket\B\Test2',
+                ),
+                file_get_contents(__DIR__ . "/namespaceDefinitions/MultiBracket.php")
+            ),
+            array(
+                array(
+                    'de\malkusch\autoloader\test\ns\multinobracket\A\Test1',
+                    'de\malkusch\autoloader\test\ns\multinobracket\A\Test2',
+                    'de\malkusch\autoloader\test\ns\multinobracket\B\Test1',
+                    'de\malkusch\autoloader\test\ns\multinobracket\B\Test2',
+                ),
+                file_get_contents(__DIR__ . "/namespaceDefinitions/MultiNoBracket.php")
+            ),
+            array(
+                array(
+                    'de\malkusch\autoloader\test\ns\nobracket\Test1',
+                    'de\malkusch\autoloader\test\ns\nobracket\Test2'
+                ),
+                file_get_contents(__DIR__ . "/namespaceDefinitions/NoBracket.php")
+            )
         );
 	}
 

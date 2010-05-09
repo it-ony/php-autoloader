@@ -1,3 +1,8 @@
+2010-05-09 Markus Malkusch <markus@malkusch.de>
+
+    * classes/parser/AutoloaderFileParser_RegExp (AutoloaderFileParser_RegExp::getClassesInSource()):
+    AutoloaderFileParser_RegExp has support for Namespaces.
+
 2010-05-08 Markus Malkusch <markus@malkusch.de>
 
     * classes/parser/AutoloaderFileParser_Tokenizer (AutoloaderFileParser_Tokenizer::getClassesInSource()):

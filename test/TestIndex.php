@@ -123,8 +123,15 @@ class TestIndex extends PHPUnit_Framework_TestCase {
     public function provideExistingClassesWithPaths() {
         $cases    = array();
         $classes  = array(
-            "TestClassA" => "classes/TestClassA.php",
-            "TestClassB" => "classes/TestClassB.php"
+            "TestClassA"    => "classes/TestClassA.php",
+            "TestClassB"    => "classes/TestClassB.php",
+            "TestClassC1"   => "classes/TestClassC.php",
+            "TestClassC2"   => "classes/TestClassC.php",
+            'de\malkusch\autoloader\test\TestClassA'   => "classes/ns1/TestClassA.php",
+            'de\malkusch\autoloader\test\TestClassB'   => "classes/ns1/TestClassB.php",
+            'de\malkusch\autoloader\test2\TestClassB'  => "classes/ns2/TestClassB.php",
+            'de\malkusch\autoloader\test3\TestClassC1' => "classes/ns3/TestClassC.php",
+            'de\malkusch\autoloader\test3\TestClassC2' => "classes/ns3/TestClassC.php"
         );
         foreach ($classes as $class => $path) {
             // simple test with non persistent state

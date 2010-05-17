@@ -209,12 +209,13 @@ abstract class AbstractAutoloader {
             throw new AutoloaderException_Include_ClassNotDefined($class);
             
         }
-        
+
+        // The optional class constructor __static() will be called.
         try {
             $reflectionClass = new ReflectionClass($class);
             $static = $reflectionClass->getMethod(self::CLASS_CONSTRUCTOR);
             if ($static->isStatic() && $static->getDeclaringClass()->getName() == $reflectionClass->getName()) {
-                eval($class.'::'.self::CLASS_CONSTRUCTOR.'();');
+                $static->invoke(null);
             
             }
             

@@ -1,4 +1,4 @@
-2010-18-09 Markus Malkusch <markus@malkusch.de>
+2010-05-18 Markus Malkusch <markus@malkusch.de>
 
     * classes/AbstractAutoloader.php (AbstractAutoloader::loadClass()):
     The include of the class definition used @ for error suppression. This

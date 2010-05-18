@@ -136,7 +136,6 @@ abstract class AbstractAutoloader {
      * If this Autoloader doesn't find a class defintion it will
      * only raise an error if it is the last Autoloader in the stack.
      * 
-     * @see handleErrors()
      * @param String $class
      */
     public function autoload($class) {
@@ -157,22 +156,17 @@ abstract class AbstractAutoloader {
         	$this->__autoload($class);
             
         } catch (AutoloaderException $exception) {
-            if (! $this->handleErrors()) {
+            // The exception is only thrown if this is the last autoloader.
+            $isLastAutoloader =
+                array_search($this->getCallback(), spl_autoload_functions())
+                === count(spl_autoload_functions()) - 1;
+            if (! $isLastAutoloader) {
                 return;
                 
             }
             throw $exception;
             
         }
-    }
-    
-    
-	/**
-     * @return bool If this autoloader is the last in the stack
-     */
-    private function handleErrors() {
-        return array_search($this->getCallback(), spl_autoload_functions())
-           === count(spl_autoload_functions()) - 1;
     }
    
 
@@ -194,7 +188,7 @@ abstract class AbstractAutoloader {
      * @throws AutoloaderException_Include_ClassNotDefined
      */
     protected function loadClass($class, $path) {
-        if (! @include_once $path) {
+        if (! include_once $path) {
             if (! file_exists($path)) {
                 throw new AutoloaderException_Include_FileNotExists($path);
                 

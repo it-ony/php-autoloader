@@ -1,6 +1,12 @@
+2010-18-09 Markus Malkusch <markus@malkusch.de>
+
+    * classes/AbstractAutoloader.php (AbstractAutoloader::loadClass()):
+    The include of the class definition used @ for error suppression. This
+    avoided the useful output of fatal errors.
+
 2010-05-09 Markus Malkusch <markus@malkusch.de>
 
-    * classes/parser/AutoloaderFileParser_RegExp (AutoloaderFileParser_RegExp::getClassesInSource()):
+    * classes/parser/AutoloaderFileParser_RegExp.php (AutoloaderFileParser_RegExp::getClassesInSource()):
     AutoloaderFileParser_RegExp has support for Namespaces.
 
 2010-05-08 Markus Malkusch <markus@malkusch.de>

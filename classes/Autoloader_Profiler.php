@@ -56,7 +56,7 @@ class Autoloader_Profiler extends Autoloader {
     }
 
 
-    public function buildIndex($class) {
+    public function addClassToIndex($class) {
         $this->normalizeClass($class);
         if ($this->index->hasPath($class)) {
             return;

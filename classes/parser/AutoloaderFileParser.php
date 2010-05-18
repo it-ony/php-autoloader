@@ -48,15 +48,19 @@ abstract class AutoloaderFileParser {
 	
 	
     /**
-     * @return bool True if this implementation is supported by the current PHP environment
-     */
-    abstract static public function isSupported();
-    /**
      * @param String $source
      * @return Array found classes in the source
      * @throws AutoloaderException_Parser
      */
     abstract public function getClassesInSource($source);
+
+
+    /**
+     * @return bool True if this implementation is supported by the current PHP environment
+     */
+    static public function isSupported() {
+        return false;
+    }
     
 	
 	/**

@@ -73,12 +73,12 @@ class TestAutoloaderProfiler extends PHPUnit_Framework_TestCase {
         $alA = new Autoloader_Profiler(
             dirname($this->autoloaderTestHelper->getGeneratedClassPath($classA)));
         $alA->register();
-        $alA->buildIndex($classA);
+        $alA->addClassToIndex($classA);
 
         $alB = new Autoloader_Profiler(
             dirname($this->autoloaderTestHelper->getGeneratedClassPath($classB)));
         $alB->register();
-        $alB->buildIndex($classB);
+        $alB->addClassToIndex($classB);
 
         $this->autoloaderTestHelper->assertLoadable($classA);
         $this->autoloaderTestHelper->assertLoadable($classB);

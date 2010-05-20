@@ -7,7 +7,8 @@
     double underscore.
 
     Code which uses the old class constructor will still work. The autoloader would
-    raise a warning for the deprecated class constructor __static().
+    raise an E_USER_DEPRECATED warning for the deprecated class constructor
+    __static().
 
 2010-05-18 Markus Malkusch <markus@malkusch.de>
 

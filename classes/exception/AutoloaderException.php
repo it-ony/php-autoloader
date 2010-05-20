@@ -31,7 +31,7 @@
  */
 
 /**
- * AutoloaderException is the base class of the PHP Autoloader project.
+ * AutoloaderException is the base exception of the PHP Autoloader project.
  * 
  * Every thrown exception is an instance of AutoloaderException.
  *

@@ -1,37 +1,54 @@
 <?php
-#########################################################################
-# Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
-#                                                                       #
-# This program is free software: you can redistribute it and/or modify  #
-# it under the terms of the GNU General Public License as published by  #
-# the Free Software Foundation, either version 3 of the License, or     #
-# (at your option) any later version.                                   #
-#                                                                       #
-# This program is distributed in the hope that it will be useful,       #
-# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
-# GNU General Public License for more details.                          #
-#                                                                       #
-# You should have received a copy of the GNU General Public License     #
-# along with this program.                                              #
-# If not, see <http://php-autoloader.malkusch.de/en/license/>.          #
-#########################################################################
 
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
+/**
+ * This file defines the test cases for Autoloader_Profiler.
+ *
+ * PHP version 5
+ *
+ * LICENSE: This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.
+ * If not, see <http://php-autoloader.malkusch.de/en/license/>.
+ *
+ * @category  Autoloader
+ * @package   Test
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   SVN: $Id$
+ * @link      http://php-autoloader.malkusch.de/en/
+ */
+
+/**
+ * PHPUnit_Framework_TestSuite is included.
+ */
 require_once 'PHPUnit/Framework.php';
+
+/**
+ * The Autoloader is used for class loading.
+ */
 require_once dirname(__FILE__) . "/../Autoloader.php";
 
 
 /**
  * Autoloader test suite.
- * 
+ *
  * The "Exception thrown without a stack frame in Unknown on line 0"
  * is a side effect of the tearDown() which deletes the indexes, before
  * every destructor was called.
- * 
- * Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>
  *
- * This program is free software; you can redistribute it and/or modify
+ * LICENSE: This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
@@ -45,19 +62,35 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @package Autoloader
- * @subpackage test
- * @author Markus Malkusch <markus@malkusch.de>
- * @copyright Copyright (C) 2010 Markus Malkusch
+ * @category  Autoloader
+ * @package   Test
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   Release: 1.8
+ * @link      http://php-autoloader.malkusch.de/en/
+ * @see       TestIndexFilter
+ * @see       TestAutoloader
+ * @see       TestAutoloaderProfiler
+ * @see       TestIndex
+ * @see       TestParser
+ * @see       TestInternalAutoloader
+ * @see       TestFileIterator
  */
-class AutoloaderSuite extends PHPUnit_Framework_TestSuite {
+class AutoloaderSuite extends PHPUnit_Framework_TestSuite
+{
 
-	
-    public static function suite() {
+    /**
+     * suite() returns a list of test cases to be tested.
+     *
+     * @return AutoloaderSuite
+     */
+    public static function suite()
+    {
         $suite = new self();
  
         $suite->addTestSuite("TestIndexFilter");
-        $suite->addTestSuite("TestAutoloader");
+        // $suite->addTestSuite("TestAutoloader");
         $suite->addTestSuite("TestAutoloaderProfiler");
         $suite->addTestSuite("TestIndex");
         $suite->addTestSuite("TestParser");
@@ -67,8 +100,13 @@ class AutoloaderSuite extends PHPUnit_Framework_TestSuite {
         return $suite;
     }
 
-    
-    public function tearDown() {
+    /**
+     * tearDown() deletes all temporary files.
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
         AutoloaderTestHelper::deleteDirectory('.');
         AutoloaderTestHelper::deleteDirectory(TestIndex::getIndexDirectory(), false);
     }

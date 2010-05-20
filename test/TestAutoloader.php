@@ -82,7 +82,11 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
         $lastError = error_get_last();
 
         $this->assertEquals($expectedState, self::$testClassConstructorState);
-        $this->assertEquals(E_USER_DEPRECATED, $lastError['type']);
+        
+        if ($expectedState != '') {
+            $this->assertEquals(E_USER_DEPRECATED, $lastError['type']);
+
+        }
     }
 
     /**

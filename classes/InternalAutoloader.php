@@ -124,7 +124,7 @@ class InternalAutoloader extends AbstractAutoloader {
      * @throws AutoloaderException_Include_FileNotExists
      * @throws AutoloaderException_Include_ClassNotDefined
      */
-    protected function __autoload($class) {
+    protected function doAutoload($class) {
     	if (!  array_key_exists($class, $this->classes)) {
     		throw new AutoloaderException_InternalClassNotLoadable($class);
     		

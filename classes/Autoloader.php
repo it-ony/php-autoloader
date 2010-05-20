@@ -472,7 +472,7 @@ class Autoloader extends AbstractAutoloader {
      * @param String $class
      * @throws AutoloaderException
      */
-    protected function __autoload($class) {
+    protected function doAutoload($class) {
         if (empty($this->index)) {
             throw new AutoloaderException_Index_NotDefined();
                 

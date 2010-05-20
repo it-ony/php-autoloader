@@ -51,7 +51,7 @@ abstract class AbstractAutoloader
      * @param String $class
      * @throws AutoloaderException
      */
-    abstract protected function __autoload($class);
+    abstract protected function doAutoload($class);
 
     
 	/**
@@ -159,7 +159,7 @@ abstract class AbstractAutoloader
         
 
         try {
-        	$this->__autoload($class);
+        	$this->doAutoload($class);
             
         } catch (AutoloaderException $exception) {
             // The exception is only thrown if this is the last autoloader.

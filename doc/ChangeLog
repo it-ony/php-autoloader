@@ -179,4 +179,5 @@
 2009-11-27 Markus Malkusch <markus@malkusch.de>
 
     * classes/index/AutoloaderIndex_SerializedHashtable.php (AutoloaderIndex_SerializedHashtable::save()):
-    Raceconditions were possible during saving the index. Saving is done now atomically.
+    Raceconditions were possible during saving the index. Saving is done now
+    atomically.

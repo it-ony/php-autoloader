@@ -241,7 +241,7 @@ class Autoloader extends AbstractAutoloader {
 
     	parent::register();
     	
-    	self::normalizeSearchPaths();
+    	self::_normalizeSearchPaths();
     }
 
 
@@ -320,7 +320,7 @@ class Autoloader extends AbstractAutoloader {
      * @see normalizeSearchPaths()
      * @see remove()
      */
-    private function removeByNormalization() {
+    private function _removeByNormalization() {
     	parent::remove();
     	
     	self::$unregisteredNormalizedAutoloaders[$this->getPath()] = $this;
@@ -363,14 +363,14 @@ class Autoloader extends AbstractAutoloader {
      * For example a /var/tmp would be removed if /var is already
      * a search path.
      */
-    private static function normalizeSearchPaths() {
+    private static function _normalizeSearchPaths() {
         foreach (self::getRegisteredAutoloaders() as $removalCandidate) {
         	foreach (self::getRegisteredAutoloaders() as $parentCandidate) {
         		$isIncluded =
                     strpos($removalCandidate->getPath(), $parentCandidate->getPath()) === 0
         		    && $removalCandidate !== $parentCandidate;
         		if ($isIncluded) {
-        			$removalCandidate->removeByNormalization();
+        			$removalCandidate->_removeByNormalization();
         			
         		}
         	}

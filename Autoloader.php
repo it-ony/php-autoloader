@@ -55,7 +55,7 @@
  * </code>
  *
  * If you have the possibility to enable PHP's tokenizer you should do
- * this. Otherwise the Autoloader has to use a Parser based on PCRE
+ * this. Otherwise the Autoloader has to use a parser based on PCRE
  * which is not as reliable as PHP's tokenizer.
  *
  * The Autoloader assumes that a class name is unique. If you have classes with
@@ -87,7 +87,14 @@
  * @see       Autoloader
  */
 
-// Another library might use this Autoloader in another package as well.
+/**
+ * Another library might use this Autoloader in another package as well. In that
+ * case a copy of the Autoloader package exists at a different location in the
+ * file system. If the Autoloader classes are already loaded by that copy an
+ * include_once would still include the files of this copy, which would lead
+ * to a fatal error. To avoid this, the classes are only loaded if the class
+ * Autoloader is not defined yet.
+ */
 if (! class_exists('Autoloader')) {
     include_once dirname(__FILE__) . "/classes/OldPHPAPI.php";
     $__oldAPI = new OldPHPAPI();
@@ -98,7 +105,15 @@ if (! class_exists('Autoloader')) {
 
 }
 
+/**
+ * A new instance of Autoloader is created and registered into the spl_autoload()
+ * stack. The class path of that instance is the directory of the file which
+ * has included this file.
+ *
+ * @see Autoloader::__construct()
+ * @see Autoloader::getCallersPath()
+ * @see Autoloader::register()
+ */
 $__autoloader = new Autoloader();
 $__autoloader->register();
-
 unset($__autoloader);

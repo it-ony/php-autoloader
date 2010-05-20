@@ -1,74 +1,106 @@
 <?php
-#########################################################################
-# Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
-#                                                                       #
-# This program is free software: you can redistribute it and/or modify  #
-# it under the terms of the GNU General Public License as published by  #
-# the Free Software Foundation, either version 3 of the License, or     #
-# (at your option) any later version.                                   #
-#                                                                       #
-# This program is distributed in the hope that it will be useful,       #
-# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
-# GNU General Public License for more details.                          #
-#                                                                       #
-# You should have received a copy of the GNU General Public License     #
-# along with this program.                                              #
-# If not, see <http://php-autoloader.malkusch.de/en/license/>.          #
-#########################################################################
 
-
-InternalAutoloader::getInstance()->registerClass(
-    'AutoloaderException',
-    dirname(__FILE__).'/AutoloaderException.php'
-);
-
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This exception occurs during a collision while building the index.
+ * This file defines the AutoloaderException_IndexBuildCollision.
  *
- * @see Autoloader::buildIndex()
+ * PHP version 5
+ *
+ * LICENSE: This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.
+ * If not, see <http://php-autoloader.malkusch.de/en/license/>.
+ *
+ * @category  Autoloader
+ * @package   Exception
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   SVN: $Id$
+ * @link      http://php-autoloader.malkusch.de/en/
  */
-class AutoloaderException_IndexBuildCollision extends AutoloaderException {
 
+/**
+ * The parent class must be loaded.
+ */
+InternalAutoloader::getInstance()->registerClass(
+    'AutoloaderException',
+    dirname(__FILE__) . '/AutoloaderException.php'
+);
+
+/**
+ * AutoloaderException_IndexBuildCollision occurs during a collision
+ * while building the index.
+ *
+ * A collision happens if a class definition is not unique in a class path.
+ *
+ * @category  Autoloader
+ * @package   Exception
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   Release: 1.8
+ * @link      http://php-autoloader.malkusch.de/en/
+ * @see       Autoloader::buildIndex()
+ */
+class AutoloaderException_IndexBuildCollision extends AutoloaderException
+{
 
     private
     /**
      * @var Array
      */
-    $paths = array(),
+    $_paths = array(),
     /**
      * @var String
      */
-    $class = '';
-
+    $_class = '';
 
     /**
-     * @param String $class
+     * The Exceptions knows the ambiguous class and its definitions.
+     *
+     * @param String $class The ambiguous class name
+     * @param Array  $paths The paths for the found class definitions
      */
-    public function __construct($class, array $paths) {
+    public function __construct($class, array $paths)
+    {
         parent::__construct(
-            "class $class was defined in several files:". implode(', ', $paths));
+            "class $class was defined in several files:" . implode(', ', $paths)
+        );
 
-        $this->class    = $class;
-        $this->paths    = $paths;
+        $this->_class = $class;
+        $this->_paths = $paths;
     }
 
-
     /**
+     * getClass() returns the ambiguous class name which caused this exception.
+     *
      * @return String
      */
-    public function getClass() {
-        return $this->class;
+    public function getClass()
+    {
+        return $this->_class;
     }
-
 
     /**
+     * getPaths() returns a list of files which provide class definitions to the
+     * ambiguous class.
+     *
      * @return Array
      */
-    public function getPaths() {
-        return $this->paths;
+    public function getPaths()
+    {
+        return $this->_paths;
     }
 
-	
 }

@@ -76,7 +76,7 @@ class AutoloaderSuite extends PHPUnit_Framework_TestSuite
         $suite = new self();
  
         $suite->addTestSuite("TestIndexFilter");
-        // $suite->addTestSuite("TestAutoloader");
+        $suite->addTestSuite("TestAutoloader");
         $suite->addTestSuite("TestAutoloaderProfiler");
         $suite->addTestSuite("TestIndex");
         $suite->addTestSuite("TestParser");

@@ -3,7 +3,7 @@
 class ClassA extends ClassB {
 
 
-    static public function __static() {
+    static public function classConstructor() {
         echo __CLASS__, " loaded.\n";
     }
     

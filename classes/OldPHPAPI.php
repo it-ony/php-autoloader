@@ -41,6 +41,7 @@ class OldPHPAPI {
 
         $this->define('T_NAMESPACE');
         $this->define('T_NS_SEPARATOR');
+        $this->define('E_USER_DEPRECATED', E_USER_WARNING);
 	}
 
 

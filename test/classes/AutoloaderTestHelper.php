@@ -44,7 +44,7 @@ class AutoloaderTestHelper {
 	$test;
 	
 	
-    static public function __static() {
+    static public function classConstructor() {
         if (! file_exists(self::getClassDirectory())) {
             mkdir(self::getClassDirectory());
             

@@ -22,7 +22,7 @@
 require dirname(__FILE__) . "/../Autoloader.php";
 
 
-AutoloaderBenchmark::__static();
+AutoloaderBenchmark::classConstructor();
 
 
 class AutoloaderBenchmark {
@@ -78,7 +78,7 @@ class AutoloaderBenchmark {
 	$sqliteFile;
 	
 	
-	static public function __static() {
+	static public function classConstructor() {
 		$cases = array(
             array(10,    1),
             array(100,   1),

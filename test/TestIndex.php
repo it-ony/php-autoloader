@@ -1,34 +1,57 @@
 <?php
-#########################################################################
-# Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
-#                                                                       #
-# This program is free software: you can redistribute it and/or modify  #
-# it under the terms of the GNU General Public License as published by  #
-# the Free Software Foundation, either version 3 of the License, or     #
-# (at your option) any later version.                                   #
-#                                                                       #
-# This program is distributed in the hope that it will be useful,       #
-# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
-# GNU General Public License for more details.                          #
-#                                                                       #
-# You should have received a copy of the GNU General Public License     #
-# along with this program.                                              #
-# If not, see <http://php-autoloader.malkusch.de/en/license/>.          #
-#########################################################################
 
-
-require_once dirname(__FILE__) . "/../Autoloader.php";
-
-TestIndex::__static();
-
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * AutoloaderIndex test cases.
- * 
- * Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>
+ * This file defines the test cases for implementations of AutoloaderIndex.
  *
- * This program is free software; you can redistribute it and/or modify
+ * PHP version 5
+ *
+ * LICENSE: This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.
+ * If not, see <http://php-autoloader.malkusch.de/en/license/>.
+ *
+ * @category  Autoloader
+ * @package   Test
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   SVN: $Id$
+ * @link      http://php-autoloader.malkusch.de/en/
+ * @see       AutoloaderIndex
+ * @see       AutoloaderIndex_CSV
+ * @see       AutoloaderIndex_Dummy
+ * @see       AutoloaderIndex_IniFile
+ * @see       AutoloaderIndex_PDO
+ * @see       AutoloaderIndex_PHPArrayCode
+ * @see       AutoloaderIndex_SerializedHashtable
+ * @see       AutoloaderIndex_SerializedHashtable_GZ
+ */
+
+/**
+ * The Autoloader is used for class loading.
+ */
+require_once dirname(__FILE__) . "/../Autoloader.php";
+
+/**
+ * The tests need an one-time initialisation.
+ */
+TestIndex::classConstructor();
+
+/**
+ * AutoloaderIndex test cases
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
@@ -42,130 +65,217 @@ TestIndex::__static();
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @package Autoloader
- * @subpackage test
- * @author Markus Malkusch <markus@malkusch.de>
- * @copyright Copyright (C) 2010 Markus Malkusch
+ * @category  Autoloader
+ * @package   Test
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   Release: 1.8
+ * @link      http://php-autoloader.malkusch.de/en/
  */
-class TestIndex extends PHPUnit_Framework_TestCase {
-	
-	
-	const INDEX_DIRECTORY = 'index';
-	
-	
-	static public function __static() {
-	    if (! file_exists(self::getIndexDirectory())) {
-            mkdir(self::getIndexDirectory());
-            
-        }
-	}
-	
-	
-	public function testGetDefaultSQLiteIndex() {
-		$index = AutoloaderIndex_PDO::getSQLiteInstance();
-		$this->initIndex($index);
-	}
-	
-	
+class TestIndex extends PHPUnit_Framework_TestCase
+{
+
     /**
-     * @dataProvider provideExistingClassesWithPaths
+     * Test files are stored in __DIR__ . '/' . INDEX_DIRECTORY.
      */
-    public function testGetPath(AutoloaderIndex $index, $class, $path) {
+    const INDEX_DIRECTORY = 'index';
+
+    /**
+     * The class contructor creates the directory for the test classes.
+     *
+     * @return void
+     */
+    static public function classConstructor()
+    {
+        if (! file_exists(self::getIndexDirectory())) {
+            mkdir(self::getIndexDirectory());
+
+        }
+    }
+
+
+    /**
+     * testGetDefaultSQLiteIndex() asserts that
+     * AutoloaderIndex_PDO::getSQLiteInstance() doesn't throw any exception.
+     *
+     * @see initIndex()
+     * @see AutoloaderIndex_PDO::getSQLiteInstance()
+     * @return void
+     */
+    public function testGetDefaultSQLiteIndex()
+    {
+        $index = AutoloaderIndex_PDO::getSQLiteInstance();
+        $this->_initIndex($index);
+    }
+
+    /**
+     * testGetPath() asserts that AutoloaderIndex::getPath() returns the expected
+     * path for a class.
+     *
+     * @param AutoloaderIndex $index The tested index
+     * @param String          $class The searched class
+     * @param String          $path  The expected path for $class
+     *
+     * @dataProvider provideExistingClassesWithPaths
+     * @see AutoloaderIndex::getPath()
+     * @return void
+     */
+    public function testGetPath(AutoloaderIndex $index, $class, $path)
+    {
         $this->assertEquals($path, $index->getPath($class));
     }
-    
-    
-	/**
+
+    /**
+     * testFailGetPath() asserts that the index will throw an
+     * AutoloaderException_Index_NotFound Exception for an unknown class.
+     *
+     * @param AutoloaderIndex $index The tested AutoloaderIndex object
+     *
      * @dataProvider provideIndexes
      * @expectedException AutoloaderException_Index_NotFound
+     * @see AutoloaderIndex::getPath()
+     * @see AutoloaderException_Index_NotFound
+     * @return void
      */
-    public function testFailGetPath(AutoloaderIndex $index) {
+    public function testFailGetPath(AutoloaderIndex $index)
+    {
         $index->getPath("ClassWhichDoesntExist" . uniqid());
     }
-    
-    
-	/**
+
+    /**
+     * testHasNotPath() asserts that AutoloaderIndex::hasPath() returns false
+     * for a not existing class.
+     *
+     * @param AutoloaderIndex $index The tested AutoloaderIndex object
+     *
      * @dataProvider provideIndexes
+     * @see AutoloaderIndex::hasPath()
+     * @return void
      */
-    public function testHasNotPath(AutoloaderIndex $index) {
+    public function testHasNotPath(AutoloaderIndex $index)
+    {
         $this->assertFalse($index->hasPath("ClassWhichDoesntExist" . uniqid()));
     }
-    
-    
-	/**
+
+    /**
+     * testHasPath() asserts that AutoloaderIndex::hasPath() returns true
+     * for a existing class.
+     *
+     * @param AutoloaderIndex $index The tested AutoloaderIndex object
+     * @param String          $class A class which exists in $index
+     *
      * @dataProvider provideExistingClassesWithPaths
+     * @see AutoloaderIndex::hasPath()
+     * @return void
      */
-    public function testHasPath(AutoloaderIndex $index, $class) {
+    public function testHasPath(AutoloaderIndex $index, $class)
+    {
         $this->assertTrue($index->hasPath($class));
     }
-    
-    
-	/**
+
+    /**
+     * testUnsetPath() asserts that AutoloaderIndex::unsetPath() removes an
+     * existing class from an index.
+     *
+     * @param AutoloaderIndex $index The tested AutoloaderIndex object
+     * @param String          $class A class which exists in $index
+     *
      * @dataProvider provideExistingClassesWithPaths
+     * @see AutoloaderIndex::unsetPath()
+     * @return void
      */
-    public function testUnsetPath(AutoloaderIndex $index, $class) {
-    	$this->assertTrue($index->hasPath($class));
-    	$path = $index->getPath($class);
-    	$index->unsetPath($class);
+    public function testUnsetPath(AutoloaderIndex $index, $class)
+    {
+        $this->assertTrue($index->hasPath($class));
+        $path = $index->getPath($class);
+        $index->unsetPath($class);
         $this->assertFalse($index->hasPath($class));
-        
+
         if ($index instanceof AutoloaderIndex_SerializedHashtable) {
-        	$index = $this->getIndexFromPersistence($index);
-        	$this->assertFalse($index->hasPath($class));
-        	
+            $index = $this->_getIndexFromPersistence($index);
+            $this->assertFalse($index->hasPath($class));
+
         }
         $index->setPath($class, $path);
     }
-    
-    
+
+
     /**
+     * provideExistingClassesWithPaths() provides test cases for classes which
+     * exists in an index with an expected path.
+     *
+     * A test case consists of an index, a class which exists in that index
+     * and the path which the index would return for that class.
+     *
+     * @see testGetPath()
+     * @see testHasPath()
+     * @see testUnsetPath()
      * @return Array array($index, $class, $path)
      */
-    public function provideExistingClassesWithPaths() {
+    public function provideExistingClassesWithPaths()
+    {
         $cases    = array();
         $classes  = array(
-            "TestClassA"    => "classes/TestClassA.php",
-            "TestClassB"    => "classes/TestClassB.php",
-            "TestClassC1"   => "classes/TestClassC.php",
-            "TestClassC2"   => "classes/TestClassC.php",
-            'de\malkusch\autoloader\test\TestClassA'   => "classes/ns1/TestClassA.php",
-            'de\malkusch\autoloader\test\TestClassB'   => "classes/ns1/TestClassB.php",
-            'de\malkusch\autoloader\test2\TestClassB'  => "classes/ns2/TestClassB.php",
-            'de\malkusch\autoloader\test3\TestClassC1' => "classes/ns3/TestClassC.php",
-            'de\malkusch\autoloader\test3\TestClassC2' => "classes/ns3/TestClassC.php"
+            "TestClassA"
+                => "classes/TestClassA.php",
+
+            "TestClassB"
+                => "classes/TestClassB.php",
+
+            "TestClassC1"
+                => "classes/TestClassC.php",
+
+            "TestClassC2"
+                => "classes/TestClassC.php",
+
+            'de\malkusch\autoloader\test\TestClassA'
+                => "classes/ns1/TestClassA.php",
+
+            'de\malkusch\autoloader\test\TestClassB'
+                => "classes/ns1/TestClassB.php",
+
+            'de\malkusch\autoloader\test2\TestClassB'
+                => "classes/ns2/TestClassB.php",
+
+            'de\malkusch\autoloader\test3\TestClassC1'
+                => "classes/ns3/TestClassC.php",
+
+            'de\malkusch\autoloader\test3\TestClassC2'
+                => "classes/ns3/TestClassC.php"
         );
         foreach ($classes as $class => $path) {
             // simple test with non persistent state
-            foreach ($this->getIndexes() as $index) {
+            foreach ($this->_getIndexes() as $index) {
                 $cases[] = array(
                     $index,
                     $class,
                     $path
                 );
                 $index->setPath($class, $path);
-                
+
             }
-            
+
             // test with persistent state
-            foreach ($this->getPersistentIndexes() as $index) {
+            foreach ($this->_getPersistentIndexes() as $index) {
                 $index->setPath($class, $path);
                 $cases[] = array(
-                    $this->getIndexFromPersistence($index),
+                    $this->_getIndexFromPersistence($index),
                     $class,
                     $path
                 );
-                
+
             }
-            
-            // test both with persistent and non persistent state 
-            foreach ($this->getPersistentIndexes() as $index) {
+
+            // test both with persistent and non persistent state
+            foreach ($this->_getPersistentIndexes() as $index) {
                 $index->setPath($class, $path);
-                $persistentIndex = $this->getIndexFromPersistence($index);
-                
+                $persistentIndex = $this->_getIndexFromPersistence($index);
+
                 $class2 = "{$class}_NonPersistent";
                 $path2  = "{$path}/NonPersistent";
                 $persistentIndex->setPath($class2, $path2);
-                
+
                 $cases[] = array(
                     $persistentIndex,
                     $class,
@@ -176,219 +286,285 @@ class TestIndex extends PHPUnit_Framework_TestCase {
                     $class2,
                     $path2
                 );
-                
+
             }
         }
         return $cases;
     }
-    
-	
+
     /**
-     * @return Array array($index)
+     * provideIndexes() returns Indexes which are tested in all tests.
+     *
+     * @see testFailGetPath()
+     * @see testHasNotPath()
+     * @return Array
      */
-    public function provideIndexes() {
+    public function provideIndexes()
+    {
         $cases = array();
-        foreach ($this->getIndexes() as $index) {
+        foreach ($this->_getIndexes() as $index) {
             $cases[] = array($index);
-            
+
         }
-        foreach ($this->getIndexes() as $index) {
-        	$index->setPath("AnyClass", "AnyPath");
+        foreach ($this->_getIndexes() as $index) {
+            $index->setPath("AnyClass", "AnyPath");
             $cases[] = array($index);
-            
+
         }
-        foreach ($this->getPersistentIndexes() as $index) {
-            $cases[] = array($this->getIndexFromPersistence($index));
-            
+        foreach ($this->_getPersistentIndexes() as $index) {
+            $cases[] = array($this->_getIndexFromPersistence($index));
+
         }
-        foreach ($this->getPersistentIndexes() as $index) {
-        	$index->setPath("AnyClass", "AnyPath");
-            $cases[] = array($this->getIndexFromPersistence($index));
-            
+        foreach ($this->_getPersistentIndexes() as $index) {
+            $index->setPath("AnyClass", "AnyPath");
+            $cases[] = array($this->_getIndexFromPersistence($index));
+
         }
         return $cases;
     }
-	
-	
+
     /**
+     * _createAutoloaderIndexSerializedHashtableGZ() returns an instance of
+     * AutoloaderIndex_SerializedHashtable_GZ which is tested in theses tests.
+     *
      * @return AutoloaderIndex_SerializedHashtable_GZ
      */
-    private function createAutoloaderIndex_SerializedHashtable_GZ() {
+    private function _createAutoloaderIndexSerializedHashtableGZ()
+    {
         $index = new AutoloaderIndex_SerializedHashtable_GZ();
-        $this->initIndex($index);
+        $this->_initIndex($index);
         return $index;
     }
-    
-    
+
     /**
-     * @return createAutoloaderIndex_PDO
+     * _createAutoloaderIndexPDO() returns an instance of AutoloaderIndex_PDO
+     * which is tested in theses tests.
+     *
+     * @param PDO $pdo The PDO object for the AutoloaderIndex_PDO object
+     *
+     * @return AutoloaderIndex_PDO
      */
-    private function createAutoloaderIndex_PDO(PDO $pdo) {
+    private function _createAutoloaderIndexPDO(PDO $pdo)
+    {
         $index = new AutoloaderIndex_PDO($pdo);
-        $this->initIndex($index);
+        $this->_initIndex($index);
         return $index;
     }
-    
-    
+
     /**
-     * @return createAutoloaderIndex_PDO
+     * _createAutoloaderIndexPdoSqLite() returns an instance of AutoloaderIndex_PDO
+     * with a SQLite PDO object which is tested in theses tests.
+     *
+     * @param String $filename The path to the SQLite database
+     *
+     * @return AutoloaderIndex_PDO
      */
-    private function createAutoloaderIndex_PDO_SQLITE($filename = null) {
+    private function _createAutoloaderIndexPdoSqLite($filename = null)
+    {
         $index = AutoloaderIndex_PDO::getSQLiteInstance($filename);
-        $this->initIndex($index);
+        $this->_initIndex($index);
         return $index;
     }
-    
-    
+
     /**
-     * @return createAutoloaderIndex_PDO
+     * _createAutoloaderIndexPdoMySQL() returns an instance of AutoloaderIndex_PDO
+     * with a MySQL PDO object which is tested in theses tests.
+     *
+     * The PDO object is initialized with the test database "mysql:dbname=test".
+     *
+     * @return AutoloaderIndex_PDO
      */
-    private function createAutoloaderIndex_PDO_MySQL() {
+    private function _createAutoloaderIndexPdoMySQL()
+    {
         $index = new AutoloaderIndex_PDO(new PDO("mysql:dbname=test"));
-        $this->initIndex($index);
+        $this->_initIndex($index);
         return $index;
     }
 
-
     /**
+     * _createAutoloaderIndexIniFile() returns an instance of AutoloaderIndex_IniFile
+     * which is tested in theses tests.
+     *
      * @return AutoloaderIndex_IniFile
      */
-    private function createAutoloaderIndex_IniFile() {
+    private function _createAutoloaderIndexIniFile()
+    {
         $index = new AutoloaderIndex_IniFile();
-        $this->initIndex($index);
+        $this->_initIndex($index);
         return $index;
     }
 
-
     /**
+     * _createAutoloaderIndexCSV() returns an instance of AutoloaderIndex_CSV
+     * which is tested in theses tests.
+     *
      * @return AutoloaderIndex_CSV
      */
-    private function createAutoloaderIndex_CSV() {
+    private function _createAutoloaderIndexCSV()
+    {
         $index = new AutoloaderIndex_CSV();
-        $this->initIndex($index);
+        $this->_initIndex($index);
         return $index;
     }
 
-
     /**
+     * _createAutoloaderIndexPHPArrayCode() returns an instance of
+     * AutoloaderIndex_PHPArrayCode which is tested in theses tests.
+     *
      * @return AutoloaderIndex_PHPArrayCode
      */
-    private function createAutoloaderIndex_PHPArrayCode() {
+    private function _createAutoloaderIndexPHPArrayCode()
+    {
         $index = new AutoloaderIndex_PHPArrayCode();
-        $this->initIndex($index);
+        $this->_initIndex($index);
         return $index;
     }
-    
-    
+
     /**
+     * _createAutoloaderIndexSerializedHashtable() returns an instance of
+     * AutoloaderIndex_SerializedHashtable which is tested in theses tests.
+     *
      * @return AutoloaderIndex_SerializedHashtable
      */
-    private function createAutoloaderIndex_SerializedHashtable() {
+    private function _createAutoloaderIndexSerializedHashtable()
+    {
         $index = new AutoloaderIndex_SerializedHashtable();
-        $this->initIndex($index);
+        $this->_initIndex($index);
         return $index;
     }
-    
-    
+
     /**
+     * _createAutoloaderIndexDummy() returns an instance of AutoloaderIndex_Dummy
+     * which is tested in theses tests.
+     *
      * @return AutoloaderIndex_Dummy
      */
-    private function createAutoloaderIndex_Dummy() {
+    private function _createAutoloaderIndexDummy()
+    {
         $index = new AutoloaderIndex_Dummy();
-        $this->initIndex($index);
+        $this->_initIndex($index);
         return $index;
     }
-    
-    
+
     /**
-     * @return AutoloaderIndex_SerializedHashtable
+     * _getIndexFromPersistence() returns an index of the same class as $index.
+     * The state of the returned index is loaded from its persistance layer.
+     *
+     * This applies only to instances of AutoloaderIndex_File.
+     *
+     * @param AutoloaderIndex $index The index which should load its state
+     *
+     * @return AutoloaderIndex_File
      */
-    private function getIndexFromPersistence(AutoloaderIndex $index) {
-    	if ($index instanceof AutoloaderIndex_File) {
-	        $indexClass = get_class($index);
-	        $indexPath  = $index->getIndexPath();
-	        
-	        // Index should save its state now
-	        $index->__destruct();
-	        unset($index);
-	                
-	        $index = new $indexClass();
-	        $this->initIndex($index);
-	        $index->setIndexPath($indexPath);
-	        
-    	}
-        
+    private function _getIndexFromPersistence(AutoloaderIndex $index)
+    {
+        if ($index instanceof AutoloaderIndex_File) {
+            $indexClass = get_class($index);
+            $indexPath  = $index->getIndexPath();
+
+            // Index should save its state now
+            $index->__destruct();
+            unset($index);
+
+            $index = new $indexClass();
+            $this->_initIndex($index);
+            $index->setIndexPath($indexPath);
+
+        }
+
         return $index;
     }
-    
-    
-    private function initIndex(AutoloaderIndex $index) {
+
+    /**
+     * _initIndex() initializes an index with an Autoloader and for
+     * AutoloaderIndex_File instances with an index path.
+     *
+     * @param AutoloaderIndex $index The index which should be initialized
+     *
+     * @return void
+     */
+    private function _initIndex(AutoloaderIndex $index)
+    {
         $index->setAutoloader(new Autoloader());
         if ($index instanceof AutoloaderIndex_File) {
-            $index->setIndexPath($this->getIndexFile());
-            
+            $index->setIndexPath($this->_getIndexFile());
+
         }
     }
-    
-    
+
     /**
+     * _getIndexes() returns a list of different AutoloaderIndex objects which
+     * are testet in all tests.
+     *
      * @return Array
      */
-    private function getIndexes() {
-    	$indeces =  array(
-            $this->createAutoloaderIndex_Dummy(),
-            $this->createAutoloaderIndex_PHPArrayCode(),
-            $this->createAutoloaderIndex_CSV(),
-            $this->createAutoloaderIndex_IniFile(),
-            $this->createAutoloaderIndex_SerializedHashtable(),
-            $this->createAutoloaderIndex_SerializedHashtable_GZ(),
-            $this->createAutoloaderIndex_PDO_SQLITE(tempnam(sys_get_temp_dir(), "PDOTest"))
+    private function _getIndexes()
+    {
+        $indeces =  array(
+            $this->_createAutoloaderIndexDummy(),
+            $this->_createAutoloaderIndexPHPArrayCode(),
+            $this->_createAutoloaderIndexCSV(),
+            $this->_createAutoloaderIndexIniFile(),
+            $this->_createAutoloaderIndexSerializedHashtable(),
+            $this->_createAutoloaderIndexSerializedHashtableGZ(),
+            $this->_createAutoloaderIndexPdoSqLite(
+                tempnam(sys_get_temp_dir(), "PDOTest")
+            )
         );
-        
+
         try {
-        	$indeces[] = $this->createAutoloaderIndex_PDO_MySQL();
-        	
+            $indeces[] = $this->_createAutoloaderIndexPdoMySQL();
+
         } catch (PDOException $e) {
-        	trigger_error($e->getMessage());
-        	
+            trigger_error($e->getMessage());
+
         }
-        
+
         return $indeces;
     }
-    
-    
+
     /**
+     * _getPersistentIndexes() returns the same list as _getIndexes()
+     * without AutoloaderIndex_Dummy instances.
+     *
+     * @see _getIndexes()
      * @return Array
      */
-    private function getPersistentIndexes() {
-    	$indexes = array();
-    	foreach ($this->getIndexes() as $index) {
+    private function _getPersistentIndexes()
+    {
+        $indexes = array();
+        foreach ($this->_getIndexes() as $index) {
             if ($index instanceof AutoloaderIndex_Dummy) {
                 continue;
-                    
+
             }
             $indexes[] = $index;
-            
-    	}
-    	return $indexes;
+
+        }
+        return $indexes;
     }
-    
-    
+
     /**
+     * _getIndexFile() returns a generated path for a new index file.
+     *
+     * AutoloaderIndex_File instances will use such a generated path.
+     *
      * @return String
      */
-    private function getIndexFile() {
+    private function _getIndexFile()
+    {
         return self::getIndexDirectory() . DIRECTORY_SEPARATOR . uniqid();
     }
-    
-    
+
     /**
+     * getIndexDirectory() returns the path where index files are stored
+     * for these tests.
+     *
      * @return String
      */
-    static public function getIndexDirectory() {
-    	return dirname(__FILE__) . DIRECTORY_SEPARATOR
-             . self::INDEX_DIRECTORY;
+    static public function getIndexDirectory()
+    {
+        return dirname(__FILE__) . DIRECTORY_SEPARATOR . self::INDEX_DIRECTORY;
     }
-	
-	
+
 }

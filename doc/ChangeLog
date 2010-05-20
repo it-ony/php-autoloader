@@ -1,3 +1,14 @@
+2010-05-20 Markus Malkusch <markus@malkusch.de>
+
+    * classes/AbstractAutoloader.php (AbstractAutoloader::CLASS_CONSTRUCTOR):
+    The class constructor __static() is deprecated. The new class constructor is
+    called classConstructor(). A method which is called __static() would violate
+    the PEAR coding standard. Only PHP magic methods should be prefixed with a
+    double underscore.
+
+    Code which uses the old class constructor will still work. The autoloader would
+    raise a warning for the deprecated class constructor __static().
+
 2010-05-18 Markus Malkusch <markus@malkusch.de>
 
     * classes/AbstractAutoloader.php (AbstractAutoloader::loadClass()):

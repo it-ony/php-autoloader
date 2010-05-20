@@ -63,6 +63,96 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 
 
     /**
+     * testDeprecatedClassConstructor() tests the deprecated class constructor
+     * __static(). The autoloader loads the class $class and the test expects
+     * from the autoloader, that it sets the value of $testClassConstructorState
+     * to $expectedState. Additionally an E_USER_DEPRECATED warning is expected.
+     *
+     * @param String $expectedState The class constructor sets this state
+     * @param String $class         A class with a deprecated class constructor
+     *
+     * @dataProvider provideTestDeprecatedClassConstructor
+     * @see $testClassConstructorState
+     * @return void
+     */
+    public function testDeprecatedClassConstructor($expectedState, $class)
+    {
+        self::$testClassConstructorState = '';
+        @$this->autoloaderTestHelper->assertLoadable($class);
+        $lastError = error_get_last();
+
+        $this->assertEquals($expectedState, self::$testClassConstructorState);
+        $this->assertEquals(E_USER_DEPRECATED, $lastError['type']);
+    }
+
+    /**
+     * provideTestDeprecatedClassConstructor() provide test cases for
+     * testDeprecatedClassConstructor().
+     *
+     * A test case is an expected state and a not loaded class with a
+     * deprecated class constructor. The class constructor should set the
+     * value of $testClassConstructorState to the expected state.
+     *
+     * @see testDeprecatedClassConstructor()
+     * @see $testClassConstructorState
+     * @return Array
+     */
+    public function provideTestDeprecatedClassConstructor()
+    {
+        $this->autoloaderTestHelper = new AutoloaderTestHelper($this);
+
+        return array(
+            array(
+                'da',
+                $this->autoloaderTestHelper->makeClass(
+                    'test',
+                    '',
+                    '<?php class %name% {
+
+                        static public function __static() {
+                            TestAutoloader::$testClassConstructorState = "da";
+                        }
+                    } ?>'
+                )
+            ),
+
+            array(
+                '',
+                $this->autoloaderTestHelper->makeClass(
+                    'test',
+                    '',
+                    '<?php class %name% {
+
+                        public function __static() {
+                            TestAutoloader::$testClassConstructorState = "db";
+                        }
+                    } ?>'
+                )
+            ),
+
+            array(
+                'dc',
+                $this->autoloaderTestHelper->makeClassInNamespace(
+                    'de\malkusch\autoloader\test',
+                    'test',
+                    '',
+                    '<?php
+                        namespace %namespace%;
+
+                        class %name% {
+
+                            static public function __static() {
+                                \TestAutoloader::$testClassConstructorState = "dc";
+                            }
+                        }
+                    ?>'
+                )
+            )
+        );
+    }
+
+
+    /**
      * @dataProvider provideTestClassConstructor
      */
     public function testClassConstructor($expectedState, $class) {
@@ -83,7 +173,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
                     '',
                     '<?php class %name% {
 
-                        static public function __static() {
+                        static public function classConstructor() {
                             TestAutoloader::$testClassConstructorState = "a";
                         }
                     } ?>'
@@ -97,7 +187,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
                     '',
                     '<?php class %name% {
 
-                        public function __static() {
+                        public function classConstructor() {
                             TestAutoloader::$testClassConstructorState = "b";
                         }
                     } ?>'
@@ -115,7 +205,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
                         
                         class %name% {
 
-                            static public function __static() {
+                            static public function classConstructor() {
                                 \TestAutoloader::$testClassConstructorState = "c";
                             }
                         }

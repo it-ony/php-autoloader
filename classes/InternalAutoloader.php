@@ -47,7 +47,7 @@ class InternalAutoloader extends AbstractAutoloader {
     $classes = array();
     
 	
-	static public function __static() {
+	static public function classConstructor() {
 		self::$instance = new self();
 		self::$instance->register();
 	} 
@@ -136,4 +136,4 @@ class InternalAutoloader extends AbstractAutoloader {
 }
 
 
-InternalAutoloader::__static();
+InternalAutoloader::classConstructor();

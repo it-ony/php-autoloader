@@ -32,14 +32,20 @@ require_once dirname(__FILE__).'/exception/AutoloaderException_Include_ClassNotD
  * @copyright Copyright (C) 2010 Markus Malkusch
  * @version 1.0
  */
-abstract class AbstractAutoloader {
+abstract class AbstractAutoloader
+{
 
-	
 	/**
-	 * The name of the class constructor is __static.
+     * The name of the deprecated class constructor is __static().
+     *
+     * @deprecated PEAR coding standards forbid the usage of a double underscore.
 	 */
-    const CLASS_CONSTRUCTOR = '__static';
+    const CLASS_CONSTRUCTOR_DEPRECATED = '__static';
 
+    /**
+	 * The name of the class constructor is classConstructor().
+	 */
+    const CLASS_CONSTRUCTOR            = 'classConstructor';
     
 	/**
      * @param String $class
@@ -180,14 +186,24 @@ abstract class AbstractAutoloader {
     
     /**
      * Includes the class definition and calls the class constructor.
+     *
+     * If the class $class has the method public static classConstructor(), it
+     * will be called.
+     *
+     * The old class constructor __static() violates the PEAR coding standard.
+     * It is still supported but would raise an E_USER_DEPRECATED warning.
      * 
-     * @param String $class
-     * @param String $path
+     * @param String $class The classname
+     * @param String $path  The path to the class definition
+     *
      * @throws AutoloaderException_Include
      * @throws AutoloaderException_Include_FileNotExists
      * @throws AutoloaderException_Include_ClassNotDefined
+     *
+     * @return void
      */
-    protected function loadClass($class, $path) {
+    protected function loadClass($class, $path)
+    {
         if (! include_once $path) {
             if (! file_exists($path)) {
                 throw new AutoloaderException_Include_FileNotExists($path);
@@ -205,20 +221,69 @@ abstract class AbstractAutoloader {
             
         }
 
-        // The optional class constructor __static() will be called.
-        try {
-            $reflectionClass = new ReflectionClass($class);
-            $static = $reflectionClass->getMethod(self::CLASS_CONSTRUCTOR);
-            if ($static->isStatic() && $static->getDeclaringClass()->getName() == $reflectionClass->getName()) {
-                $static->invoke(null);
+
+        // The class constructor would be called.
+        $isClassConstructorCalled = $this->_callClassConstructor(
+            $class,
+            self::CLASS_CONSTRUCTOR
+        );
+
+        // If there is no class constructor, there might be a deprecated __static().
+        if (! $isClassConstructorCalled) {
+            $isDeprecatedClassConstructorCalled = $this->_callClassConstructor(
+                $class,
+                self::CLASS_CONSTRUCTOR_DEPRECATED
+            );
             
+            /**
+             * A call of the deprecated __static() raises an E_USER_DEPRECATED
+             * warning.
+             */
+            if ($isDeprecatedClassConstructorCalled) {
+                $warning
+                    = "The class constructor"
+                    . " $class::" . self::CLASS_CONSTRUCTOR_DEPRECATED . "()"
+                    . " is deprecated."
+                    . " Use $class::" . self::CLASS_CONSTRUCTOR . "() instead!";
+
+                trigger_error($warning, E_USER_DEPRECATED);
+
             }
-            
-        } catch (ReflectionException $e) {
-            // No class constructor
-            
         }
     }
-    
+
+    /**
+     * _loadCallClassConstructor() will call the class constructor.
+     *
+     * If the class $class has the method public static $constructor, it
+     * will be called.
+     *
+     * @param String $class       A class which might have a class constructor
+     * @param String $constructor the method name of the class constructor
+     *
+     * @return bool true if the class constructor was called
+     */
+    private function _callClassConstructor($class, $constructor)
+    {
+        $reflectionClass = new ReflectionClass($class);
+        if (! $reflectionClass->hasMethod($constructor)) {
+            return false;
+
+        }
+
+        $static = $reflectionClass->getMethod($constructor);
+        if (! $static->isStatic()) {
+            return false;
+
+        }
+
+        if ($static->getDeclaringClass()->getName() != $reflectionClass->getName()) {
+            return false;
+
+        }
+
+        $static->invoke(null);
+        return true;
+    }
     
 }

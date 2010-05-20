@@ -3,8 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the test cases for implementations of
- * AutoloaderIndexFilter.
+ * This file defines the test cases for implementations of AutoloaderIndexFilter.
  *
  * PHP version 5
  *

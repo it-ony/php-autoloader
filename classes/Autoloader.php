@@ -34,8 +34,8 @@ require_once dirname(__FILE__).'/exception/AutoloaderException_PathNotRegistered
  * defined class paths for a class definition.
  * 
  * Additionally it provides PHP with the class constructor
- * __static(). If a class has a public and static method
- * __static() the Autoloader will call this method.
+ * classConstructor(). If a class has a public and static method
+ * classConstructor() the Autoloader will call this method.
  * 
  * Actually there's no need to define a class path with
  * Autoloader->addPath() as the constructor uses the path

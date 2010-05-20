@@ -1,208 +1,293 @@
 #! /usr/bin/php
 <?php
-#########################################################################
-# Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
-#                                                                       #
-# This program is free software: you can redistribute it and/or modify  #
-# it under the terms of the GNU General Public License as published by  #
-# the Free Software Foundation, either version 3 of the License, or     #
-# (at your option) any later version.                                   #
-#                                                                       #
-# This program is distributed in the hope that it will be useful,       #
-# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
-# GNU General Public License for more details.                          #
-#                                                                       #
-# You should have received a copy of the GNU General Public License     #
-# along with this program.                                              #
-# If not, see <http://php-autoloader.malkusch.de/en/license/>.          #
-#########################################################################
 
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
+/**
+ * This file starts an index benchmark.
+ *
+ * PHP version 5
+ *
+ * LICENSE: This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.
+ * If not, see <http://php-autoloader.malkusch.de/en/license/>.
+ *
+ * @category  Autoloader
+ * @package   Benchmark
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   SVN: $Id$
+ * @link      http://php-autoloader.malkusch.de/en/
+ * @see       AutoloaderIndex
+ * @see       AutoloaderIndex_CSV
+ * @see       AutoloaderIndex_IniFile
+ * @see       AutoloaderIndex_PDO
+ * @see       AutoloaderIndex_PHPArrayCode
+ * @see       AutoloaderIndex_SerializedHashtable
+ * @see       AutoloaderIndex_SerializedHashtable_GZ
+ */
+
+/**
+ * The Autoloader is used for class loading.
+ */
 require dirname(__FILE__) . "/../Autoloader.php";
 
-
+/**
+ * The class constructor serves as entry point of this script.
+ */
 AutoloaderBenchmark::classConstructor();
 
+/**
+ * AutoloaderBenchmark class
+ *
+ * @category  Autoloader
+ * @package   Benchmark
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   Release: 1.8
+ * @link      http://php-autoloader.malkusch.de/en/
+ */
+class AutoloaderBenchmark
+{
 
-class AutoloaderBenchmark {
-	
-	
-	private static
+    private static
     /**
      * @var Array
      */
-    $pdoPool = array();
-    
-	
-	private
-	/**
-	 * @var int
-	 */
-	$getPathCount = 0,
-	/**
-	 * @var array
-	 */
-	$durations = array(),
-	/**
-	 * @var int
-	 */
-	$iterations = 0,
-	/**
-	 * @var int
-	 */
-	$indexSize = 0,
-	/**
-	 * @var String
-	 */
-	$hashtable,
-	/**
-	 * @var String
-	 */
-	$hashtableGZ,
-	/**
-	 * @var String
-	 */
-	$hashtableCSV,
-	/**
-	 * @var String
-	 */
-	$hashtableIni,
-	/**
-	 * @var String
-	 */
-	$hashtablePHP,
-	/**
-	 * @var String
-	 */
-	$sqliteFile;
-	
-	
-	static public function classConstructor() {
-		$cases = array(
+    $_pdoPool = array();
+
+    private
+    /**
+     * @var int
+     */
+    $_getPathCount = 0,
+    /**
+     * @var array
+     */
+    $_durations = array(),
+    /**
+     * @var int
+     */
+    $_iterations = 0,
+    /**
+     * @var int
+     */
+    $_indexSize = 0,
+    /**
+     * @var String
+     */
+    $_hashtable,
+    /**
+     * @var String
+     */
+    $_hashtableGZ,
+    /**
+     * @var String
+     */
+    $_hashtableCSV,
+    /**
+     * @var String
+     */
+    $_hashtableIni,
+    /**
+     * @var String
+     */
+    $_hashtablePHP,
+    /**
+     * @var String
+     */
+    $_sqliteFile;
+
+    /**
+     * The class constructor serves as entry point for this script. It runs
+     * several benchmark iteratios.
+     *
+     * @return void
+     */
+    static public function classConstructor()
+    {
+        $cases = array(
             array(10,    1),
             array(100,   1),
             array(1000,  1),
             array(10000, 1),
-            
+
             array(10,    10),
             array(100,   10),
             array(1000,  10),
             array(10000, 10),
-            
+
             array(100,   100),
             array(1000,  100),
             array(10000, 100),
 
             array(1000,  1000),
             array(10000, 1000),
-            
+
             array(10000, 10000),
-		);
-		
-		foreach ($cases as $case) {
-			$benchmark = new self($case[0], $case[1]);
-	        $benchmark->run();
-	        echo $benchmark;
-	        
-		}
-	}
-	
-	
-	public function __construct($indexSize, $getPathCount, $iterations = 10000) {
-		$this->indexSize      = $indexSize;
-        $this->iterations     = $iterations;
-        $this->getPathCount   = $getPathCount;
-		$this->sqliteFile     = tempnam("/var/tmp/", "AutoloaderBenchmarkSQLite_");
-		$this->hashtable      = tempnam("/var/tmp/", "AutoloaderBenchmarkHT_Serialized_");
-		$this->hashtableGZ    = tempnam("/var/tmp/", "AutoloaderBenchmarkHT_Serialized_GZ_");
-		$this->hashtableCSV   = tempnam("/var/tmp/", "AutoloaderBenchmarkHT_CSV_");
-		$this->hashtableIni   = tempnam("/var/tmp/", "AutoloaderBenchmarkHT_Ini_");
-		$this->hashtablePHP   = tempnam("/var/tmp/", "AutoloaderBenchmarkHT_PHP_");
-		
-		unlink($this->sqliteFile);
-		unlink($this->hashtable);
-		unlink($this->hashtableGZ);
-		unlink($this->hashtableCSV);
-		unlink($this->hashtableIni);
-		unlink($this->hashtablePHP);
-	}
-	
-	
-	public function run() {
-		$indexes = $this->createIndexes();
-		foreach ($indexes as $name => $index) {
-			$this->fillIndex($index, $this->indexSize);
-			
-		}
-		
-		for ($i = 0; $i < $this->iterations; $i++) {
-            foreach ($this->createIndexes() as $name => $index) {
-            	if (! isset($this->durations[$name])) {
-                    $this->durations[$name] = 0;
-                    
-            	}
-				$classSet = $this->getClassSet();
-				clearstatcache();
-				
-				$startTime = microtime(true);
-				$this->runBenchmark($index, $classSet);
-				$stopTime = microtime(true);
-				
-				$this->durations[$name] += $stopTime - $startTime;
-				
-			}
-			
-		}
-		
-		foreach ($indexes as $index) {
-			$index->delete();
-			
-		}
-		unlink($this->sqliteFile);
-	}
-	
-	
-	protected function runBenchmark(AutoloaderIndex $index, Array $classSet) {
-		foreach ($classSet as $classNumber) {
-			$index->getPath($this->getIndexedClassName($classNumber));
-			
-		}
-	}
-	
-	
-	/**
-	 * @return Array
-	 */
-	private function getClassSet() {
-		$allClasses = array();
-		$classes    = array();
-		for ($i = 0; $i < $this->indexSize; $i++) {
-			$allClasses[] = $i;
-			
-		}
-		for ($i = 0; $i < $this->getPathCount; $i++) {
-			$index = (int) mt_rand(0, count($allClasses) - 1);
-			$classes[] = $allClasses[$index];
-			unset($allClasses[$index]);
-			$allClasses = array_values($allClasses);
-			
-		}
-		return $classes;
-	}
-	
-	
-	public function __toString() {
-		$durations = array();
+        );
+
+        foreach ($cases as $case) {
+            $benchmark = new self($case[0], $case[1]);
+            $benchmark->run();
+            echo $benchmark;
+
+        }
+    }
+
+    /**
+     * The constructor creates a new benchmark.
+     *
+     * @param int $indexSize    The size of the index
+     * @param int $getPathCount The amount of AutoloaderIndex::getPath() calls
+     * @param int $iterations   10000 iterations per default
+     */
+    public function __construct($indexSize, $getPathCount, $iterations = 10000)
+    {
+        $this->_indexSize      = $indexSize;
+        $this->_iterations     = $iterations;
+        $this->_getPathCount   = $getPathCount;
+        $this->_sqliteFile     = tempnam(
+            "/var/tmp/", "AutoloaderBenchmarkSQLite_"
+        );
+        $this->_hashtable = tempnam(
+            "/var/tmp/", "AutoloaderBenchmarkHT_Serialized_"
+        );
+        $this->_hashtableGZ = tempnam(
+            "/var/tmp/", "AutoloaderBenchmarkHT_Serialized_GZ_"
+        );
+        $this->_hashtableCSV = tempnam(
+            "/var/tmp/", "AutoloaderBenchmarkHT_CSV_"
+        );
+        $this->_hashtableIni = tempnam(
+            "/var/tmp/", "AutoloaderBenchmarkHT_Ini_"
+        );
+        $this->_hashtablePHP = tempnam(
+            "/var/tmp/", "AutoloaderBenchmarkHT_PHP_"
+        );
+
+        unlink($this->_sqliteFile);
+        unlink($this->_hashtable);
+        unlink($this->_hashtableGZ);
+        unlink($this->_hashtableCSV);
+        unlink($this->_hashtableIni);
+        unlink($this->_hashtablePHP);
+    }
+
+    /**
+     * run() starts the benchmark.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $indexes = $this->_createIndexes();
+        foreach ($indexes as $name => $index) {
+            $this->_fillIndex($index, $this->_indexSize);
+
+        }
+
+        for ($i = 0; $i < $this->_iterations; $i++) {
+            foreach ($this->_createIndexes() as $name => $index) {
+                if (! isset($this->_durations[$name])) {
+                    $this->_durations[$name] = 0;
+
+                }
+                $classSet = $this->_getClassSet();
+                clearstatcache();
+
+                $startTime = microtime(true);
+                $this->runBenchmark($index, $classSet);
+                $stopTime = microtime(true);
+
+                $this->_durations[$name] += $stopTime - $startTime;
+
+            }
+
+        }
+
+        foreach ($indexes as $index) {
+            $index->delete();
+
+        }
+        unlink($this->_sqliteFile);
+    }
+
+    /**
+     * runBenchmark() runs one iteration of the benchmark.
+     *
+     * @param AutoloaderIndex $index    The AutoloaderIndex instance
+     * @param array           $classSet The list of classes to fetch
+     *
+     * @return void
+     */
+    protected function runBenchmark(AutoloaderIndex $index, Array $classSet)
+    {
+        foreach ($classSet as $classNumber) {
+            $index->getPath($this->_getIndexedClassName($classNumber));
+
+        }
+    }
+
+
+    /**
+     * _getClassSet() returns a random set of class numbers, which the index
+     * contains.
+     *
+     * The count of this is $_getPathCount. To get the class name of a class
+     * number you can use _getIndexedClassName().
+     *
+     * @see $_getPathCount
+     * @see _getIndexedClassName()
+     * @return Array
+     */
+    private function _getClassSet()
+    {
+        $allClasses = array();
+        $classes    = array();
+        for ($i = 0; $i < $this->_indexSize; $i++) {
+            $allClasses[] = $i;
+
+        }
+        for ($i = 0; $i < $this->_getPathCount; $i++) {
+            $index = (int) mt_rand(0, count($allClasses) - 1);
+            $classes[] = $allClasses[$index];
+            unset($allClasses[$index]);
+            $allClasses = array_values($allClasses);
+
+        }
+        return $classes;
+    }
+
+    /**
+     * __toString() returns the human readable output of the benchmark.
+     *
+     * @return String
+     */
+    public function __toString()
+    {
+        $durations = array();
         $sortIndex = array();
-		foreach ($this->durations as $name => $duration) {
-			$paddedName  = str_pad($name . ":", 13);
+        foreach ($this->_durations as $name => $duration) {
+            $paddedName  = str_pad($name . ":", 13);
             $avgDuration = $this->getAverageDuration($name);
 
-			$durations[$name] = "$paddedName {$avgDuration}";
+            $durations[$name] = "$paddedName {$avgDuration}";
             $sortIndex[$name] = $duration;
-			
-		}
+
+        }
 
         // Sort the result by duration
         asort($sortIndex);
@@ -212,102 +297,125 @@ class AutoloaderBenchmark {
 
         }
 
-		return "==================================\n"
-		     . "Index size:      $this->indexSize\n"
-		     . "getPath() count: $this->getPathCount\n"
-		     . "Iterations:      $this->iterations\n"
-		     . "----------------------------------\n"
-		     . implode("\n", $sortedDurations) . "\n"
-		     . "==================================\n"; 
-	}
-	
-	
-	/**
-	 * @return Array
-	 */
-	public function getDurations() {
-		return $this->durations;
-	}
-	
-	
-	/**
-	 * @return Array
-	 */
-	public function getAverageDurations() {
-		$durations = array();
-		foreach ($this->durations as $name => $duration) {
-			$durations[$name] = $duration / $this->iterations;
-			
-		}
-		return $durations;
-	}
-	
-	
-	/**
-	 * @return float
-	 */
-	public function getAverageDuration($name) {
-		$durations = $this->getAverageDurations();
-		return $durations[$name];
-	}
-	
-	
-	/**
-	 * @return Array
-	 */
-	private function createIndexes() {
-		try {
-            self::$pdoPool['mysql'] = new PDO("mysql:dbname=test");
-            
-		} catch (PDOException $e) {
-			/*
-			 * This happens when too many connections are open.
-			 * We will reuse the last connection.
-			 */
-			
-		}
-		
-		
-		$indexes = array(
-            "sqlite"        => AutoloaderIndex_PDO::getSQLiteInstance($this->sqliteFile),
-            "mysql"         => new AutoloaderIndex_PDO(self::$pdoPool['mysql']),
-            "hashtable"     => new AutoloaderIndex_SerializedHashtable(),
-            "hashtableGZ"   => new AutoloaderIndex_SerializedHashtable_GZ(),
-            "hashtableCSV"  => new AutoloaderIndex_CSV(),
-            "hashtableIni"  => new AutoloaderIndex_IniFile(),
-            "hashtablePHP"  => new AutoloaderIndex_PHPArrayCode()
-        );
-        $indexes["hashtable"]->setIndexPath($this->hashtable);
-        $indexes["hashtableGZ"]->setIndexPath($this->hashtableGZ);
-        $indexes["hashtableCSV"]->setIndexPath($this->hashtableCSV);
-        $indexes["hashtableIni"]->setIndexPath($this->hashtableIni);
-        $indexes["hashtablePHP"]->setIndexPath($this->hashtablePHP);
-        
-        foreach ($indexes as $index) {
-        	Autoloader::getRegisteredAutoloader()->setIndex($index);
-        	
-        }
-        
-        return $indexes;
-	}
-	
-	
-	private function fillIndex(AutoloaderIndex $index, $count) {
-		for ($i = 0; $i < $count; $i++) {
-			$index->setPath($this->getIndexedClassName($i), uniqid());
-			
-		}
-		$index->save();
-	}
-	
-	
-	/**
-	 * @param int $count
-	 * @return String
-	 */
-	private function getIndexedClassName($count) {
-		return "class$count";
-	}
+        return "==================================\n"
+             . "Index size:      $this->_indexSize\n"
+             . "getPath() count: $this->_getPathCount\n"
+             . "Iterations:      $this->_iterations\n"
+             . "----------------------------------\n"
+             . implode("\n", $sortedDurations) . "\n"
+             . "==================================\n";
+    }
 
-	
+    /**
+     * getDurations() returns the durations array.
+     *
+     * @return Array
+     */
+    public function getDurations()
+    {
+        return $this->_durations;
+    }
+
+    /**
+     * getAverageDurations() returns the avarage duration Array.
+     *
+     * @return Array
+     */
+    public function getAverageDurations()
+    {
+        $durations = array();
+        foreach ($this->_durations as $name => $duration) {
+            $durations[$name] = $duration / $this->_iterations;
+
+        }
+        return $durations;
+    }
+
+    /**
+     * getAverageDuration() returns the avarage duration for one index.
+     *
+     * @param String $name The index name
+     *
+     * @return float
+     */
+    public function getAverageDuration($name)
+    {
+        $durations = $this->getAverageDurations();
+        return $durations[$name];
+    }
+
+    /**
+     * _createIndexes() creates new indexes which are tested in this benchmark.
+     *
+     * @see _fillIndex()
+     * @return Array
+     */
+    private function _createIndexes()
+    {
+        try {
+            self::$_pdoPool['mysql'] = new PDO("mysql:dbname=test");
+
+        } catch (PDOException $e) {
+            /*
+             * This happens when too many connections are open.
+             * We will reuse the last connection.
+             */
+
+        }
+
+
+        $indexes = array(
+            "sqlite" => AutoloaderIndex_PDO::getSQLiteInstance($this->_sqliteFile),
+            "mysql"  => new AutoloaderIndex_PDO(self::$_pdoPool['mysql']),
+            "hashtable"    => new AutoloaderIndex_SerializedHashtable(),
+            "hashtableGZ"  => new AutoloaderIndex_SerializedHashtable_GZ(),
+            "hashtableCSV" => new AutoloaderIndex_CSV(),
+            "hashtableIni" => new AutoloaderIndex_IniFile(),
+            "hashtablePHP" => new AutoloaderIndex_PHPArrayCode()
+        );
+        $indexes["hashtable"]->setIndexPath($this->_hashtable);
+        $indexes["hashtableGZ"]->setIndexPath($this->_hashtableGZ);
+        $indexes["hashtableCSV"]->setIndexPath($this->_hashtableCSV);
+        $indexes["hashtableIni"]->setIndexPath($this->_hashtableIni);
+        $indexes["hashtablePHP"]->setIndexPath($this->_hashtablePHP);
+
+        foreach ($indexes as $index) {
+            Autoloader::getRegisteredAutoloader()->setIndex($index);
+
+        }
+
+        return $indexes;
+    }
+
+    /**
+     * _fillIndex() inserts an amount of classes into an empty index.
+     *
+     * @param AutoloaderIndex $index An instance of AutoloaderIndex
+     * @param int             $count the amount of classes for the index
+     *
+     * @see _createIndexes()
+     * @return void
+     */
+    private function _fillIndex(AutoloaderIndex $index, $count)
+    {
+        for ($i = 0; $i < $count; $i++) {
+            $index->setPath($this->_getIndexedClassName($i), uniqid());
+
+        }
+        $index->save();
+    }
+
+    /**
+     * _getIndexedClassName() returns a class name for a class number.
+     *
+     * @param int $number The class number
+     *
+     * @see _getClassSet()
+     * @return String
+     */
+    private function _getIndexedClassName($number)
+    {
+        return "class$number";
+    }
+
 }

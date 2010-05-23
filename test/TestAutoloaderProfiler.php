@@ -39,7 +39,7 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
 /**
  * Autoloader_Profiler is not not registered in the InternalAutoloader.
  */
-require_once dirname(__FILE__) . "/../classes/Autoloader_Profiler.php";
+require_once dirname(__FILE__) . "/classes/Autoloader_Profiler.php";
 
 /**
  * Autoloader_Profiler test cases
@@ -60,7 +60,6 @@ class TestAutoloaderProfiler extends PHPUnit_Framework_TestCase
      * @var AutoloaderTestHelper
      */
     $_autoloaderTestHelper;
-
 
     /**
      * setUp() removes all Autoloaders from the stack and initializes

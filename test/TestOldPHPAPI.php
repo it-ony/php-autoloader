@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the test cases for Autoloader_Profiler.
+ * This file defines the test cases for TestOldPHPAPI.
  *
  * PHP version 5
  *
@@ -28,25 +28,16 @@
  * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version   SVN: $Id$
  * @link      http://php-autoloader.malkusch.de/en/
+ * @see       Autoloader
  */
-
-/**
- * PHPUnit_Framework_TestSuite is included.
- */
-require_once 'PHPUnit/Framework.php';
 
 /**
  * The Autoloader is used for class loading.
  */
 require_once dirname(__FILE__) . "/../Autoloader.php";
 
-
 /**
- * Autoloader test suite.
- *
- * The "Exception thrown without a stack frame in Unknown on line 0"
- * is a side effect of the tearDown() which deletes the indexes, before
- * every destructor was called.
+ * TestOldPHPAPI tests OldPHPAPI.
  *
  * @category  Autoloader
  * @package   Test
@@ -55,49 +46,50 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
  * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version   Release: 1.8
  * @link      http://php-autoloader.malkusch.de/en/
- * @see       TestIndexFilter
- * @see       TestAutoloader
- * @see       TestAutoloaderProfiler
- * @see       TestIndex
- * @see       TestParser
- * @see       TestInternalAutoloader
- * @see       TestFileIterator
- * @see       TestOldPHPAPI
+ * @see       OldPHPAPI
  */
-class AutoloaderSuite extends PHPUnit_Framework_TestSuite
+class TestOldPHPAPI extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * suite() returns a list of test cases to be tested.
+     * testCheckAPI() asserts that a function is defined and returns the expected
+     * result.
      *
-     * @return AutoloaderSuite
+     * @param String $function The function name
+     * @param Array  $params   The parameters
+     * @param Mixed  $result   The expected result
+     *
+     * @dataProvider provideTestCheckAPI
+     * @return void
      */
-    public static function suite()
+    public function testCheckAPI($function, Array $params, $result)
     {
-        $suite = new self();
- 
-        $suite->addTestSuite("TestOldPHPAPI");
-        $suite->addTestSuite("TestIndexFilter");
-        $suite->addTestSuite("TestAutoloader");
-        $suite->addTestSuite("TestAutoloaderProfiler");
-        $suite->addTestSuite("TestIndex");
-        $suite->addTestSuite("TestParser");
-        $suite->addTestSuite("TestInternalAutoloader");
-        $suite->addTestSuite("TestFileIterator");
- 
-        return $suite;
+        $api = new OldPHPAPI();
+        $api->checkAPI();
+
+        $this->assertTrue(
+            function_exists($function),
+            "Function $function is not defined."
+        );
+
+        $reflection = new ReflectionFunction($function);
+        $this->assertEquals($result, $reflection->invokeArgs($params));
     }
 
     /**
-     * tearDown() deletes all temporary files.
+     * provideTestCheckAPI provides test cases for testCheckAPI().
      *
-     * @return void
+     * A test case is a function name, a list of parameters and the expected result.
+     *
+     * @see testCheckAPI()
+     * @return Array
      */
-    public function tearDown()
+    public function provideTestCheckAPI()
     {
-        AutoloaderTestHelper::deleteDirectory('.');
-        AutoloaderTestHelper::deleteDirectory(TestIndex::getIndexDirectory(), false);
+        return array(
+            array('test_function_no_parameters',   array(),     true),
+            array('test_function_with_parameters', array(1, 2), 3)
+        );
     }
-    
-    
+
 }

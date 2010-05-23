@@ -93,16 +93,17 @@ class OldPHPAPI
             $parameters = implode(', ', $parametersArray);
 
             // The function is defined.
+            $apiClass   = get_class($this);
             $definition = "function $function($parameters)
                 {
                     \$parameters = func_get_args();
                     return call_user_func_array(
-                        array('OldPHPAPI', '{$method->getName()}'),
+                        array('$apiClass', '{$method->getName()}'),
                         \$parameters
                     );
                 }
             ";
-            eval ($definition);
+            eval($definition);
 
         }
     }
@@ -211,37 +212,6 @@ class OldPHPAPI
         $csv = fgetcsv($fp);
         fclose($fp);
         return $csv;
-    }
-
-    /**
-     * testFunctionNoParameters() defines test_function_no_parameters().
-     *
-     * test_function_no_parameters() is needed for testing this class.
-     *
-     * @define test_function_no_parameters
-     * @see TestOldPHPAPI
-     * @return bool
-     */
-    public static function testFunctionNoParameters()
-    {
-        return true;
-    }
-
-    /**
-     * testFunctionWithParameters() defines test_function_with_parameters().
-     *
-     * test_function_with_parameters() is needed for testing this class.
-     *
-     * @param int $a an integer
-     * @param int $b an integer
-     *
-     * @define test_function_with_parameters
-     * @see TestOldPHPAPI
-     * @return int The sum of $a plus $b
-     */
-    public static function testFunctionWithParameters($a, $b)
-    {
-        return $a + $b;
     }
 
 }

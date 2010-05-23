@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the test cases for TestOldPHPAPI.
+ * This file defines the class OldPHPAPI_Test.
  *
  * PHP version 5
  *
@@ -28,16 +28,10 @@
  * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version   SVN: $Id$
  * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader
  */
 
 /**
- * The Autoloader is used for class loading.
- */
-require_once dirname(__FILE__) . "/../Autoloader.php";
-
-/**
- * TestOldPHPAPI tests OldPHPAPI.
+ * OldPHPAPI_Test implements some functions for testing OldPHPAPI.
  *
  * @category  Autoloader
  * @package   Test
@@ -46,50 +40,40 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
  * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version   Release: 1.8
  * @link      http://php-autoloader.malkusch.de/en/
- * @see       OldPHPAPI
+ * @see       TestOldPHPAPI
  */
-class TestOldPHPAPI extends PHPUnit_Framework_TestCase
+class OldPHPAPI_Test extends OldPHPAPI
 {
 
     /**
-     * testCheckAPI() asserts that a function is defined and returns the expected
-     * result.
+     * testFunctionNoParameters() defines test_function_no_parameters().
      *
-     * @param String $function The function name
-     * @param Array  $params   The parameters
-     * @param Mixed  $result   The expected result
+     * test_function_no_parameters() is needed for testing this class.
      *
-     * @dataProvider provideTestCheckAPI
-     * @return void
+     * @define test_function_no_parameters
+     * @see TestOldPHPAPI
+     * @return bool
      */
-    public function testCheckAPI($function, Array $params, $result)
+    public static function testFunctionNoParameters()
     {
-        $api = new OldPHPAPI_Test();
-        $api->checkAPI();
-
-        $this->assertTrue(
-            function_exists($function),
-            "Function $function is not defined."
-        );
-
-        $reflection = new ReflectionFunction($function);
-        $this->assertEquals($result, $reflection->invokeArgs($params));
+        return true;
     }
 
     /**
-     * provideTestCheckAPI provides test cases for testCheckAPI().
+     * testFunctionWithParameters() defines test_function_with_parameters().
      *
-     * A test case is a function name, a list of parameters and the expected result.
+     * test_function_with_parameters() is needed for testing this class.
      *
-     * @see testCheckAPI()
-     * @return Array
+     * @param int $a an integer
+     * @param int $b an integer
+     *
+     * @define test_function_with_parameters
+     * @see TestOldPHPAPI
+     * @return int The sum of $a plus $b
      */
-    public function provideTestCheckAPI()
+    public static function testFunctionWithParameters($a, $b)
     {
-        return array(
-            array('test_function_no_parameters',   array(),     true),
-            array('test_function_with_parameters', array(1, 2), 3)
-        );
+        return $a + $b;
     }
 
 }

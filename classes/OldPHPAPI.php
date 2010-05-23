@@ -34,7 +34,8 @@
  * OldPHPAPI implements missing PHP5 functions and constants.
  *
  * A missing function is implemented by a static method of this class with
- * a @define annotation.
+ * an @implement annotation. The @implement annotation gives the name of the
+ * function.
  *
  * @category  Autoloader
  * @package   Base
@@ -59,15 +60,18 @@ class OldPHPAPI
         $this->_define('T_NS_SEPARATOR');
         $this->_define('E_USER_DEPRECATED', E_USER_WARNING);
 
-        // Every static public method with a @define annotation defines a function.
+        /*
+         * Every static public method with an @implement annotation defines
+         * a function.
+         */
         $reflectionObject = new ReflectionObject($this);
         $methods = $reflectionObject->getMethods(
             ReflectionMethod::IS_STATIC | ReflectionMethod::IS_PUBLIC
         );
         foreach ($methods as $method) {
-            // The method comment is parsed for the @define annotation
+            // The method comment is parsed for the @implement annotation
             $isAnnotated = preg_match(
-                '/\s*\*\s*@define\s+(\S+)/',
+                '/\s*\*\s*@implement\s+(\S+)/',
                 $method->getDocComment(),
                 $matches
             );
@@ -128,9 +132,9 @@ class OldPHPAPI
     }
 
     /**
-     * errorGetLast() defines error_get_last().
+     * errorGetLast() implements error_get_last().
      *
-     * @define error_get_last
+     * @implement error_get_last
      * @see error_get_last()
      * @return array
      */
@@ -147,9 +151,9 @@ class OldPHPAPI
     }
 
     /**
-     * sysGetTempDir() defines sys_get_temp_dir().
+     * sysGetTempDir() implements sys_get_temp_dir().
      *
-     * @define sys_get_temp_dir
+     * @implement sys_get_temp_dir
      * @see sys_get_temp_dir()
      * @throws LogicException It's not expected to fail
      * @return String
@@ -176,11 +180,11 @@ class OldPHPAPI
     }
 
     /**
-     * parseIniString() defines parse_ini_string().
+     * parseIniString() implements parse_ini_string().
      *
      * @param String $data The parsable ini string
      *
-     * @define parse_ini_string
+     * @implement parse_ini_string
      * @see parse_ini_string()
      * @see AutoloaderIndex_IniFile
      * @return Array
@@ -195,11 +199,11 @@ class OldPHPAPI
     }
 
     /**
-     * strGetcsv() defines str_getcsv().
+     * strGetcsv() implements str_getcsv().
      *
      * @param String $data The parsable csv string
      *
-     * @define str_getcsv
+     * @implement str_getcsv
      * @see str_getcsv()
      * @see AutoloaderIndex_CSV
      * @return Array

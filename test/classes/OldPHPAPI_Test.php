@@ -46,11 +46,11 @@ class OldPHPAPI_Test extends OldPHPAPI
 {
 
     /**
-     * testFunctionNoParameters() defines test_function_no_parameters().
+     * testFunctionNoParameters() implements test_function_no_parameters().
      *
      * test_function_no_parameters() is needed for testing this class.
      *
-     * @define test_function_no_parameters
+     * @implement test_function_no_parameters
      * @see TestOldPHPAPI
      * @return bool
      */
@@ -60,14 +60,14 @@ class OldPHPAPI_Test extends OldPHPAPI
     }
 
     /**
-     * testFunctionWithParameters() defines test_function_with_parameters().
+     * testFunctionWithParameters() implements test_function_with_parameters().
      *
      * test_function_with_parameters() is needed for testing this class.
      *
      * @param int $a an integer
      * @param int $b an integer
      *
-     * @define test_function_with_parameters
+     * @implement test_function_with_parameters
      * @see TestOldPHPAPI
      * @return int The sum of $a plus $b
      */

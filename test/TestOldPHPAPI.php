@@ -52,8 +52,8 @@ class TestOldPHPAPI extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * testCheckAPI() asserts that a function is defined and returns the expected
-     * result.
+     * testCheckAPI() asserts that a function is implemented and returns
+     * the expected result.
      *
      * @param String $function The function name
      * @param Array  $params   The parameters

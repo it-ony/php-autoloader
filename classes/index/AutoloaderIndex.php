@@ -1,288 +1,357 @@
 <?php
-#########################################################################
-# Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
-#                                                                       #
-# This program is free software: you can redistribute it and/or modify  #
-# it under the terms of the GNU General Public License as published by  #
-# the Free Software Foundation, either version 3 of the License, or     #
-# (at your option) any later version.                                   #
-#                                                                       #
-# This program is distributed in the hope that it will be useful,       #
-# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
-# GNU General Public License for more details.                          #
-#                                                                       #
-# You should have received a copy of the GNU General Public License     #
-# along with this program.                                              #
-# If not, see <http://php-autoloader.malkusch.de/en/license/>.          #
-#########################################################################
 
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
+/**
+ * This file defines the class AutoloaderIndex.
+ *
+ * PHP version 5
+ *
+ * LICENSE: This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.
+ * If not, see <http://php-autoloader.malkusch.de/en/license/>.
+ *
+ * @category  Autoloader
+ * @package   Index
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   SVN: $Id$
+ * @link      http://php-autoloader.malkusch.de/en/
+ */
 
 /**
  * The AutoloaderIndex stores the location of class defintions for speeding up
  * recurring searches.
- * 
+ *
  * Searching a class definition in the filesystem takes a lot of time, as every
  * file is read. To avoid these long searches, a found class definition will be
  * stored in an index. The next search for an already found class definition
  * will take no time.
- * 
- * @package autoloader
- * @subpackage index
- * @author Markus Malkusch <markus@malkusch.de>
- * @copyright Copyright (C) 2010 Markus Malkusch
- * @version 1.2
+ *
+ * @category  Autoloader
+ * @package   Index
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   Release: 1.8
+ * @link      http://php-autoloader.malkusch.de/en/
+ * @see       Autoloader::setIndex()
+ * @see       Autoloader::getIndex()
  */
-abstract class AutoloaderIndex implements Countable {
-    
-    
+abstract class AutoloaderIndex implements Countable
+{
+
     private
     /**
      * @var Array
      */
-    $getFilters = array(),
+    $_getFilters = array(),
     /**
      * @var Array
      */
-    $setFilters = array(),
+    $_setFilters = array(),
     /**
      * @var int counts how often getPath() is called
      * @see getPath()
      */
-    $getPathCallCounter = 0,
+    $_getPathCallCounter = 0,
     /**
      * @var bool
      */
-    $isChanged = false;
-    
-    
+    $_isChanged = false;
+
     protected
     /**
      * @var Autoloader
      */
     $autoloader;
-    
-    
+
     /**
-     * @param String $class
+     * getRawPath() returns the unfiltered path to the class definition of $class.
+     *
+     * @param String $class The class name
+     *
      * @throws AutoloaderException_Index
      * @throws AutoloaderException_Index_NotFound the class is not in the index
      * @return String The absolute path of the found class $class
      * @see getPath()
      */
-    abstract protected function _getPath($class);
+    abstract protected function getRawPath($class);
+
     /**
-     * @param String $class
+     * hasPath() returns true if the class $class is already stored in the index.
+     *
+     * @param String $class The class name
+     *
      * @throws AutoloaderException_Index
-     * @return bool True if the class $class is already stored in the index 
+     * @return bool
      */
     abstract public function hasPath($class);
+
     /**
+     * getPaths() returns all paths of the index.
+     *
+     * The returned array has the class name as keys and the paths as values.
+     *
      * @throws AutoloaderException_Index
      * @return Array() All paths in the index
      */
     abstract public function getPaths();
+
     /**
-     * Deletes the index
-     * 
+     * delete() deletes the index.
+     *
      * @throws AutoloaderException_Index
+     * @return void
      */
     abstract public function delete();
+
     /**
      * Set the path for the class $class to $path
-     * 
+     *
      * This must not yet be persistent to the index. The Destructor
      * will call save() to make it persistent.
-     * 
-     * @param String $class
-     * @param String $path
+     *
+     * @param String $class The class name
+     * @param String $path  The path
+     *
      * @throws AutoloaderException_Index
      * @see save()
-     * @see _unsetPath()
+     * @see unsetRawPath()
+     * @return void
      */
-    abstract protected function _setPath($class, $path);
+    abstract protected function setRawPath($class, $path);
+
     /**
      * Unset the path for the class $class.
-     * 
+     *
      * This must not yet be persistent to the index. The Destructor
      * will call save() to make it persistent.
-     * 
-     * @param String $class
+     *
+     * @param String $class The class name
+     *
      * @throws AutoloaderException_Index
-     * @see _setPath()
+     * @see setRawPath()
      * @see save()
+     * @return void
      */
-    abstract protected function _unsetPath($class);
+    abstract protected function unsetRawPath($class);
+
     /**
      * Makes the changes to the index persistent.
-     * 
+     *
      * The destructor is calling this method.
-     * 
+     *
      * @throws AutoloaderException_Index
      * @see save()
+     * @return void
      */
-    abstract protected function _save();
-
+    abstract protected function saveRaw();
 
     /**
      * You can add a filter which modifies the path which is read
      * from the index. This could for example produce absolute paths from
      * relative paths.
      *
+     * @param AutoloaderIndexGetFilter $getFilter An AutoloaderIndexGetFilter object
+     *
      * @see addSetFilter()
+     * @return void
      */
-    public function addGetFilter(AutoloaderIndexGetFilter $getFilter) {
-        $this->getFilters[] = $getFilter;
+    public function addGetFilter(AutoloaderIndexGetFilter $getFilter)
+    {
+        $this->_getFilters[] = $getFilter;
     }
-
 
     /**
      * You can add a filter which modifies the path which is stored
      * into the index. This could for example store relative paths instead
      * of absolute paths.
      *
+     * @param AutoloaderIndexSetFilter $setFilter An AutoloaderIndexSetFilter object
+     *
      * @see addGetFilter()
+     * @return void
      */
-    public function addSetFilter(AutoloaderIndexSetFilter $setFilter) {
-        $this->setFilters[] = $setFilter;
+    public function addSetFilter(AutoloaderIndexSetFilter $setFilter)
+    {
+        $this->_setFilters[] = $setFilter;
     }
 
-
     /**
+     * addFilter() adds an AutoloaderIndexFilter instance.
+     * 
+     * These filters are used to modify the stored and read paths.
+     *
+     * @param AutoloaderIndexFilter $filter An AutoloaderIndexFilter filter
+     *
      * @see addGetFilter()
      * @see addSetFilter()
+     * @return void
      */
-    public function addFilter(AutoloaderIndexFilter $filter) {
+    public function addFilter(AutoloaderIndexFilter $filter)
+    {
         $this->addSetFilter($filter);
         $this->addGetFilter($filter);
     }
 
-    
     /**
-     * @param String $class
+     * getPath() returns the path of a class definition.
+     *
+     * All AutoloaderIndexGetFilter instances are applied on the returned path.
+     *
+     * If no path is stored in der index, an AutoloaderException_Index_NotFound
+     * is thrown.
+     *
+     * @param String $class The class name
+     *
      * @throws AutoloaderException_Index
      * @throws AutoloaderException_Index_NotFound the class is not in the index
      * @return String The absolute path of the found class $class
-     * @see _getPath()
+     * @see getRawPath()
      * @see addGetFilter()
      */
-    final public function getPath($class) {
-    	$this->getPathCallCounter++;
-    	$path = $this->_getPath($class);
-        foreach ($this->getFilters as $filter) {
+    final public function getPath($class)
+    {
+        $this->_getPathCallCounter++;
+        $path = $this->getRawPath($class);
+        foreach ($this->_getFilters as $filter) {
             $path = $filter->filterGetPath($path);
 
         }
         return $path;
     }
-    
-    
+
     /**
+     * getGetPathCallCounter() returns how often class definitions were read
+     * from the index.
+     *
      * @return int A counter how often getPath() has been called
      * @see getPath()
      */
-    public function getGetPathCallCounter() {
-    	return $this->getPathCallCounter;
-    }
-    
-    
-    
-    /**
-     * Makes the changes to the index persistent.
-     * 
-     * The destructor is calling this method.
-     * 
-     * @throws AutoloaderException_Index
-     * @see _setPath()
-     * @see _unsetPath()
-     * @see __destruct()
-     * @see _save()
-     */
-    public function save() {
-    	if (! $this->isChanged) {
-    		return;
-    		
-    	}
-    	$this->_save();
-    	$this->isChanged = false;
+    public function getGetPathCallCounter()
+    {
+        return $this->_getPathCallCounter;
     }
 
-    
+    /**
+     * save() makes the changes to the index persistent.
+     *
+     * The destructor is calling this method.
+     *
+     * @throws AutoloaderException_Index
+     * @see setRawPath()
+     * @see unsetRawPath()
+     * @see __destruct()
+     * @see saveRaw()
+     * @return void
+     */
+    public function save()
+    {
+        if (! $this->_isChanged) {
+            return;
+
+        }
+        $this->saveRaw();
+        $this->_isChanged = false;
+    }
+
     /**
      * The Autoloader calls this to set itself to this index.
-     * 
+     *
+     * @param Autoloader $autoloader an Autoloader instance
+     *
      * @see Autoloader::setIndex()
+     * @see $autoloader
+     * @return void
      */
-    public function setAutoloader(Autoloader $autoloader) {        
+    public function setAutoloader(Autoloader $autoloader)
+    {
         $this->autoloader = $autoloader;
     }
-    
-    
+
     /**
      * Destruction of this index will make changes persistent.
-     * 
+     *
      * @throws AutoloaderException_Index
      * @see save()
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         $this->save();
     }
-    
-    
+
     /**
-     * Set the path for the class $class to $path
-     * 
+     * setPath() sets the path for the class $class to $path.
+     *
      * This must not yet be persistent to the index. The Destructor
      * will call save() to make it persistent.
-     * 
-     * @param String $class
-     * @param String $path
+     *
+     * All AutoloaderIndexSetFilter are applied before saving.
+     *
+     * @param String $class The class name
+     * @param String $path  The path to the class definition
+     *
      * @throws AutoloaderException_Index
      * @see save()
      * @see __destruct()
-     * @see _setPath()
+     * @see setRawPath()
      * @see unsetPath()
      * @see addSetFilter()
+     * @return void
      */
-    final public function setPath($class, $path) {
-        foreach ($this->setFilters as $filter) {
+    final public function setPath($class, $path)
+    {
+        foreach ($this->_setFilters as $filter) {
             $path = $filter->filterSetPath($path);
 
         }
-        $this->_setPath($class, $path);
-        $this->isChanged = true;
+        $this->setRawPath($class, $path);
+        $this->_isChanged = true;
     }
-    
-    
-	/**
-	 * Unset the path for the class
-     * 
+
+    /**
+     * Unset the path for the class
+     *
      * This must not yet be persistent to the index. The Destructor
      * will call save() to make it persistent.
-     * 
-     * @param String $class
+     *
+     * @param String $class The class name
+     *
      * @throws AutoloaderException_Index
-     * @see _unsetPath()
+     * @see unsetRawPath()
      * @see __destruct()
      * @see setPath()
      * @see save()
+     * @return void
      */
-    public function unsetPath($class) {
-        $this->_unsetPath($class);
-        $this->isChanged = true;
+    public function unsetPath($class)
+    {
+        $this->unsetRawPath($class);
+        $this->_isChanged = true;
     }
-    
-    
+
     /**
      * The Autoloader class path context
-     * 
+     *
      * Only Autoloaders with an equal class path work in the same context.
-     * 
+     *
      * @return String A context to distinguish different autoloaders
      */
-    protected function getContext() {
+    protected function getContext()
+    {
         return md5($this->autoloader->getPath());
     }
-    
-    
+
 }

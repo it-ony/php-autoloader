@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_ClassPath.
+ * This file defines the class OldPHPAPI_Test.
  *
  * PHP version 5
  *
@@ -22,7 +22,7 @@
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
  * @category  Autoloader
- * @package   Exception
+ * @package   Test
  * @author    Markus Malkusch <markus@malkusch.de>
  * @copyright 2009 - 2010 Markus Malkusch
  * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
@@ -31,26 +31,49 @@
  */
 
 /**
- * The parent class must be loaded.
- */
-InternalAutoloader::getInstance()->registerClass(
-    'AutoloaderException',
-    dirname(__FILE__) . '/AutoloaderException.php'
-);
-
-/**
- * AutoloaderException_ClassPath indicates an error during setting the class path.
+ * OldPHPAPI_Test implements some functions for testing OldPHPAPI.
  *
  * @category  Autoloader
- * @package   Exception
+ * @package   Test
  * @author    Markus Malkusch <markus@malkusch.de>
  * @copyright 2009 - 2010 Markus Malkusch
  * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version   Release: 1.8
  * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::__construct()
+ * @see       TestOldPHPAPI
  */
-class AutoloaderException_ClassPath extends AutoloaderException
+class OldPHPAPI_Test extends OldPHPAPI
 {
+
+    /**
+     * testFunctionNoParameters() implements test_function_no_parameters().
+     *
+     * test_function_no_parameters() is needed for testing this class.
+     *
+     * @implement test_function_no_parameters
+     * @see TestOldPHPAPI
+     * @return bool
+     */
+    public static function testFunctionNoParameters()
+    {
+        return true;
+    }
+
+    /**
+     * testFunctionWithParameters() implements test_function_with_parameters().
+     *
+     * test_function_with_parameters() is needed for testing this class.
+     *
+     * @param int $a an integer
+     * @param int $b an integer
+     *
+     * @implement test_function_with_parameters
+     * @see TestOldPHPAPI
+     * @return int The sum of $a plus $b
+     */
+    public static function testFunctionWithParameters($a, $b)
+    {
+        return $a + $b;
+    }
 
 }

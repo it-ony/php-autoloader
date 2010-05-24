@@ -1,34 +1,15 @@
 <?php
-#########################################################################
-# Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
-#                                                                       #
-# This program is free software: you can redistribute it and/or modify  #
-# it under the terms of the GNU General Public License as published by  #
-# the Free Software Foundation, either version 3 of the License, or     #
-# (at your option) any later version.                                   #
-#                                                                       #
-# This program is distributed in the hope that it will be useful,       #
-# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
-# GNU General Public License for more details.                          #
-#                                                                       #
-# You should have received a copy of the GNU General Public License     #
-# along with this program.                                              #
-# If not, see <http://php-autoloader.malkusch.de/en/license/>.          #
-#########################################################################
 
-
-require_once dirname(__FILE__) . "/../Autoloader.php";
-
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Autoloader test cases.
- * 
- * Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>
+ * This file defines the test cases for Autoloader.
  *
- * This program is free software; you can redistribute it and/or modify
+ * PHP version 5
+ *
+ * LICENSE: This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -37,53 +18,189 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * along with this program.
+ * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @package Autoloader
- * @subpackage test
- * @author Markus Malkusch <markus@malkusch.de>
- * @copyright Copyright (C) 2010 Markus Malkusch
+ * @category  Autoloader
+ * @package   Test
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   SVN: $Id$
+ * @link      http://php-autoloader.malkusch.de/en/
+ * @see       Autoloader
  */
-class TestAutoloader extends PHPUnit_Framework_TestCase {
 
+/**
+ * The Autoloader is used for class loading.
+ */
+require_once dirname(__FILE__) . "/../Autoloader.php";
+
+/**
+ * Autoloader test cases
+ *
+ * @category  Autoloader
+ * @package   Test
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   Release: 1.8
+ * @link      http://php-autoloader.malkusch.de/en/
+ */
+class TestAutoloader extends PHPUnit_Framework_TestCase
+{
 
     static public
     /**
      * @var String
      */
     $testClassConstructorState = '';
-	
-	
-	private
-	/**
-	 * @var AutoloaderTestHelper
-	 */
-	$autoloaderTestHelper;
 
+    private
+    /**
+     * @var AutoloaderTestHelper
+     */
+    $_autoloaderTestHelper;
 
     /**
-     * @dataProvider provideTestClassConstructor
+     * testDeprecatedClassConstructor() tests the deprecated class constructor
+     * __static(). The autoloader loads the class $class and the test expects
+     * from the autoloader, that it sets the value of $testClassConstructorState
+     * to $expectedState. Additionally an E_USER_DEPRECATED warning is expected.
+     *
+     * @param String $expectedState The class constructor sets this state
+     * @param String $class         A class with a deprecated class constructor
+     *
+     * @dataProvider provideTestDeprecatedClassConstructor
+     * @see $testClassConstructorState
+     * @return void
      */
-    public function testClassConstructor($expectedState, $class) {
+    public function testDeprecatedClassConstructor($expectedState, $class)
+    {
         self::$testClassConstructorState = '';
-        $this->autoloaderTestHelper->assertLoadable($class);
+        @$this->_autoloaderTestHelper->assertLoadable($class);
+        $lastError = error_get_last();
+
         $this->assertEquals($expectedState, self::$testClassConstructorState);
+
+        if ($expectedState != '') {
+            $this->assertEquals(E_USER_DEPRECATED, $lastError['type']);
+
+        }
     }
 
+    /**
+     * provideTestDeprecatedClassConstructor() provide test cases for
+     * testDeprecatedClassConstructor().
+     *
+     * A test case is an expected state and a not loaded class with a
+     * deprecated class constructor. The class constructor should set the
+     * value of $testClassConstructorState to the expected state.
+     *
+     * @see testDeprecatedClassConstructor()
+     * @see $testClassConstructorState
+     * @return Array
+     */
+    public function provideTestDeprecatedClassConstructor()
+    {
+        $this->_autoloaderTestHelper = new AutoloaderTestHelper($this);
 
-    public function provideTestClassConstructor() {
-        $this->autoloaderTestHelper = new AutoloaderTestHelper($this);
-        
         return array(
             array(
-                'a',
-                $this->autoloaderTestHelper->makeClass(
+                'da',
+                $this->_autoloaderTestHelper->makeClass(
                     'test',
                     '',
                     '<?php class %name% {
 
                         static public function __static() {
+                            TestAutoloader::$testClassConstructorState = "da";
+                        }
+                    } ?>'
+                )
+            ),
+
+            array(
+                '',
+                $this->_autoloaderTestHelper->makeClass(
+                    'test',
+                    '',
+                    '<?php class %name% {
+
+                        public function __static() {
+                            TestAutoloader::$testClassConstructorState = "db";
+                        }
+                    } ?>'
+                )
+            ),
+
+            array(
+                'dc',
+                $this->_autoloaderTestHelper->makeClassInNamespace(
+                    'de\malkusch\autoloader\test',
+                    'test',
+                    '',
+                    '<?php
+                        namespace %namespace%;
+
+                        class %name% {
+
+                            static public function __static() {
+                                \TestAutoloader::$testClassConstructorState = "dc";
+                            }
+                        }
+                    ?>'
+                )
+            )
+        );
+    }
+
+    /**
+     * testClassConstructor() asserts that after loading the a new class its class
+     * constructor is called.
+     *
+     * The class constructor is expected to set the public atribute
+     * $testClassConstructorState to an expected value.
+     *
+     * @param String $expectedState The expected value of $testClassConstructorState
+     * @param String $class         A new class
+     *
+     * @dataProvider provideTestClassConstructor
+     * @see $testClassConstructorState
+     * @return void
+     */
+    public function testClassConstructor($expectedState, $class)
+    {
+        self::$testClassConstructorState = '';
+        $this->_autoloaderTestHelper->assertLoadable($class);
+        $this->assertEquals($expectedState, self::$testClassConstructorState);
+    }
+
+    /**
+     * provideTestClassConstructor() provides test cases for testClassConstructor().
+     *
+     * A test case consists of an expected value for $testClassConstructorState and
+     * a new class name. The class constructor of a test case should change the
+     * value of $testClassConstructorState to the expected value. If nothing will
+     * happen '' is expected.
+     *
+     * @see $testClassConstructorState
+     * @see testClassConstructor()
+     * @return Array
+     */
+    public function provideTestClassConstructor()
+    {
+        $this->_autoloaderTestHelper = new AutoloaderTestHelper($this);
+
+        return array(
+            array(
+                'a',
+                $this->_autoloaderTestHelper->makeClass(
+                    'test',
+                    '',
+                    '<?php class %name% {
+
+                        static public function classConstructor() {
                             TestAutoloader::$testClassConstructorState = "a";
                         }
                     } ?>'
@@ -92,12 +209,12 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 
             array(
                 '',
-                $this->autoloaderTestHelper->makeClass(
+                $this->_autoloaderTestHelper->makeClass(
                     'test',
                     '',
                     '<?php class %name% {
 
-                        public function __static() {
+                        public function classConstructor() {
                             TestAutoloader::$testClassConstructorState = "b";
                         }
                     } ?>'
@@ -106,16 +223,16 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
 
             array(
                 'c',
-                $this->autoloaderTestHelper->makeClassInNamespace(
+                $this->_autoloaderTestHelper->makeClassInNamespace(
                     'de\malkusch\autoloader\test',
                     'test',
                     '',
                     '<?php
                         namespace %namespace%;
-                        
+
                         class %name% {
 
-                            static public function __static() {
+                            static public function classConstructor() {
                                 \TestAutoloader::$testClassConstructorState = "c";
                             }
                         }
@@ -125,11 +242,19 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
         );
     }
 
-
     /**
+     * testBuildIndex() asserts that Autoloader::buildIndex() stores all class
+     * definitions in its index.
+     *
+     * @param Autoloader $autoloader    The tested Autoloader instance
+     * @param Array      $expectedPaths A list of all class definitions
+     *
      * @dataProvider provideTestBuildIndex
+     * @see Autoloader::buildIndex()
+     * @return void
      */
-    public function testBuildIndex(Autoloader $autoloader, $expectedPaths) {
+    public function testBuildIndex(Autoloader $autoloader, Array $expectedPaths)
+    {
         $autoloader->buildIndex();
         $foundPaths = $autoloader->getIndex()->getPaths();
         ksort($foundPaths);
@@ -138,8 +263,17 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expectedPaths, $foundPaths);
     }
 
-
-    public function provideTestBuildIndex() {
+    /**
+     * provideTestBuildIndex() provides test cases for testBuildIndex().
+     *
+     * A test case is a Autoloader for a certain class path and a list of all
+     * class definitions in that class path.
+     *
+     * @see testBuildIndex()
+     * @return Array
+     */
+    public function provideTestBuildIndex()
+    {
         $cases      = array();
         $testHelper = new AutoloaderTestHelper($this);
 
@@ -160,7 +294,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
         );
         $cases[] = array(
             new Autoloader($testHelper->getClassDirectory('testBuildIndex')),
-            $this->getPaths($classes, $testHelper));
+            $this->_getPaths($classes, $testHelper));
 
 
         $testHelper->deleteDirectory('testBuildIndex2/');
@@ -169,7 +303,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
         );
         $cases[] = array(
             new Autoloader($testHelper->getClassDirectory('testBuildIndex2')),
-            $this->getPaths($classes, $testHelper));
+            $this->_getPaths($classes, $testHelper));
 
 
         $testHelper->deleteDirectory('testBuildIndex3/');
@@ -179,7 +313,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
         );
         $cases[] = array(
             new Autoloader($testHelper->getClassDirectory('testBuildIndex3')),
-            $this->getPaths($classes, $testHelper));
+            $this->_getPaths($classes, $testHelper));
 
 
         $testHelper->deleteDirectory('testBuildIndex4/');
@@ -189,14 +323,23 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
         );
         $cases[] = array(
             new Autoloader($testHelper->getClassDirectory('testBuildIndex4')),
-            $this->getPaths($classes, $testHelper));
+            $this->_getPaths($classes, $testHelper));
 
 
         return $cases;
     }
 
-
-    private function getPaths(Array $testClasses, AutoloaderTestHelper $testHelper) {
+    /**
+     * _getPaths() returns a list of paths for the list of classes.
+     *
+     * @param array                $testClasses A list of classes
+     * @param AutoloaderTestHelper $testHelper  A helper which generated the classes
+     *
+     * @see provideTestBuildIndex()
+     * @return Array
+     */
+    private function _getPaths(Array $testClasses, AutoloaderTestHelper $testHelper)
+    {
         $paths = array();
         foreach ($testClasses as $class) {
             $paths[$class] = realpath($testHelper->getGeneratedClassPath($class));
@@ -205,19 +348,32 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
         return $paths;
     }
 
-
     /**
-     * Building an index fails if class definitions are not unique.
+     * Building an index should fail if class definitions are not unique.
+     *
+     * @param Autoloader $autoloader An Autoloader which should fail
      *
      * @dataProvider provideTestFailBuildIndex
      * @expectedException AutoloaderException_IndexBuildCollision
+     * @see Autoloader::buildIndex()
+     * @return void
      */
-    public function testFailBuildIndex(Autoloader $autoloader) {
+    public function testFailBuildIndex(Autoloader $autoloader)
+    {
         $autoloader->buildIndex();
     }
 
-
-    public function provideTestFailBuildIndex() {
+    /**
+     * provideTestFailBuildIndex() provides test cases for testFailBuildIndex().
+     *
+     * A test case is an Autoloader instance. The class path of that instance
+     * should contain multiple class definitions for the same class name.
+     *
+     * @see testFailBuildIndex()
+     * @return Array
+     */
+    public function provideTestFailBuildIndex()
+    {
         $cases = array();
 
         $definition = "<?php class XXXTest".uniqid()." {} ?>";
@@ -240,397 +396,574 @@ class TestAutoloader extends PHPUnit_Framework_TestCase {
         return $cases;
     }
 
-
     /**
      * In this case you have several packages of this autoloader.
      * This might happen if you use libraries which come with this
      * autoloader in their own class path. The Autoloader should
      * define its classes only once no matter how often it is required
      * and where it has class definitions.
+     *
+     * @return void
      */
-    public function testRequire_onceMultipleAutoloaders() {
+    public function testRequireOnceMultipleAutoloaders()
+    {
         $copyPath   = '/var/tmp/' . __FUNCTION__;
         $sourcePath = dirname(__FILE__) . "/..";
         `cp -r --link $sourcePath $copyPath`;
 
-        require dirname(__FILE__) . "/../Autoloader.php";
-        require "$copyPath/Autoloader.php";
+        include dirname(__FILE__) . "/../Autoloader.php";
+        include "$copyPath/Autoloader.php";
 
         `rm -rf $copyPath`;
     }
 
-	
-	
     /**
      * This Test checks if a normalized Autolader will registered
      * again, after removing its parent Autoloader.
+     *
+     * @return void
      */
-    public function testReregisteringAfterRemoval() {
-    	Autoloader::removeAll();
-    	
-    	
-    	$classA = $this->autoloaderTestHelper->makeClass("A", "testReregisteringAfterRemoval");
-        $classB = $this->autoloaderTestHelper->makeClass("B", "testReregisteringAfterRemoval/B");
-    	
-    	
-        $autoloaderB = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/testReregisteringAfterRemoval/B");
+    public function testReregisteringAfterRemoval()
+    {
+        Autoloader::removeAll();
+
+
+        $classA = $this->_autoloaderTestHelper->makeClass(
+            "A", "testReregisteringAfterRemoval"
+        );
+        $classB = $this->_autoloaderTestHelper->makeClass(
+            "B", "testReregisteringAfterRemoval/B"
+        );
+
+
+        $autoloaderB = new Autoloader(
+            AutoloaderTestHelper::getClassDirectory()
+            . "/testReregisteringAfterRemoval/B"
+        );
         $autoloaderB->register();
-        
-        
+
+
         $this->assertTrue($autoloaderB->isRegistered());
-        
-        $autoloaderA = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/testReregisteringAfterRemoval");
+
+        $autoloaderA = new Autoloader(
+            AutoloaderTestHelper::getClassDirectory()
+            . "/testReregisteringAfterRemoval"
+        );
         $autoloaderA->register();
-        
-        
+
+
         $this->assertTrue($autoloaderA->isRegistered());
         $this->assertFalse($autoloaderB->isRegistered());
 
         $autoloaderA->remove();
-        
+
         $this->assertFalse($autoloaderA->isRegistered());
         $this->assertTrue($autoloaderB->isRegistered());
-        
-        $this->autoloaderTestHelper->assertNotLoadable($classA);
-        $this->autoloaderTestHelper->assertLoadable($classB);
-        
+
+        $this->_autoloaderTestHelper->assertNotLoadable($classA);
+        $this->_autoloaderTestHelper->assertLoadable($classB);
+
         Autoloader::removeAll();
     }
-    
-    
-    public function testNormalizedClassPaths() {
-    	$autoloader = Autoloader::getRegisteredAutoloader();
-		Autoloader::removeAll();
-    	
-    	$classA = $this->autoloaderTestHelper->makeClass("A", "testNormalizedClassPaths");
-    	$classB = $this->autoloaderTestHelper->makeClass("B", "testNormalizedClassPaths/B");
-    	
-    	$autoloaderA = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/testNormalizedClassPaths");
-    	$autoloaderA->register();
-    	
-    	$autoloaderB = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/testNormalizedClassPaths/B");
-    	$autoloaderB->register();
-    	
-    	$this->assertTrue($autoloaderA->isRegistered());
-        $this->assertFalse($autoloaderB->isRegistered());
-        $this->autoloaderTestHelper->assertLoadable($classA);
-        $this->autoloaderTestHelper->assertLoadable($classB);
-    	
-    	Autoloader::removeAll();
 
-    	
-    	$classA = $this->autoloaderTestHelper->makeClass("A", "testNormalizedClassPaths");
-    	$classB = $this->autoloaderTestHelper->makeClass("B", "testNormalizedClassPaths/B");
-    	
-    	
-    	$autoloaderB = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/testNormalizedClassPaths/B");
-    	$autoloaderB->register();
-    	
-    	$autoloaderA = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/testNormalizedClassPaths");
-    	$autoloaderA->register();
-    	
-    	$this->autoloaderTestHelper->assertLoadable($classA);
-    	$this->autoloaderTestHelper->assertLoadable($classB);
-    	$this->assertTrue($autoloaderA->isRegistered());
+    /**
+     * An autoloader will unregister itself automatically if another autoloader
+     * would include it. On the other hand, if including autoloader is unregistered
+     * all automatically unregistered autoloaders should be registered again.
+     *
+     * @see Autoloader::register()
+     * @see Autoloader::remove()
+     * @see Autoloader::_normalizeSearchPaths()
+     * @see Autoloader::_removeByNormalization()
+     * @return void
+     */
+    public function testNormalizedClassPaths()
+    {
+        $autoloader = Autoloader::getRegisteredAutoloader();
+        Autoloader::removeAll();
+
+        $classA = $this->_autoloaderTestHelper->makeClass(
+            "A", "testNormalizedClassPaths"
+        );
+        $classB = $this->_autoloaderTestHelper->makeClass(
+            "B", "testNormalizedClassPaths/B"
+        );
+
+        $autoloaderA = new Autoloader(
+            AutoloaderTestHelper::getClassDirectory() . "/testNormalizedClassPaths"
+        );
+        $autoloaderA->register();
+
+        $autoloaderB = new Autoloader(
+            AutoloaderTestHelper::getClassDirectory()
+            . "/testNormalizedClassPaths/B"
+        );
+        $autoloaderB->register();
+
+        $this->assertTrue($autoloaderA->isRegistered());
         $this->assertFalse($autoloaderB->isRegistered());
-    	
-    	Autoloader::removeAll();
-    	
-    	$autoloader->register();
+        $this->_autoloaderTestHelper->assertLoadable($classA);
+        $this->_autoloaderTestHelper->assertLoadable($classB);
+
+        Autoloader::removeAll();
+
+
+        $classA = $this->_autoloaderTestHelper->makeClass(
+            "A", "testNormalizedClassPaths"
+        );
+        $classB = $this->_autoloaderTestHelper->makeClass(
+            "B", "testNormalizedClassPaths/B"
+        );
+
+
+        $autoloaderB = new Autoloader(
+            AutoloaderTestHelper::getClassDirectory()
+            . "/testNormalizedClassPaths/B"
+        );
+        $autoloaderB->register();
+
+        $autoloaderA = new Autoloader(
+            AutoloaderTestHelper::getClassDirectory()
+            . "/testNormalizedClassPaths"
+        );
+        $autoloaderA->register();
+
+        $this->_autoloaderTestHelper->assertLoadable($classA);
+        $this->_autoloaderTestHelper->assertLoadable($classB);
+        $this->assertTrue($autoloaderA->isRegistered());
+        $this->assertFalse($autoloaderB->isRegistered());
+
+        Autoloader::removeAll();
+
+        $autoloader->register();
     }
-	
-	
-	/**
-	 * @dataProvider provideTestClassPath
-	 */
-	public function testClassPath(Autoloader $autoloader, $expectedPath) {
-		$this->assertEquals(realpath($expectedPath), realpath($autoloader->getPath()));
-	}
-	
-	
-	/**
-	 * @dataProvider provideClassNames
-	 */
-	public function testLoadClass($class) {
-		$this->autoloaderTestHelper->assertLoadable($class);
-	}
-	
-	
-	public function testFailLoadClass() {
-		$this->autoloaderTestHelper->assertNotLoadable("ClassDoesNotExist");
-	}
-	
-	
-	public function testGetRegisteredAutoloader() {
-		$autoloader = Autoloader::getRegisteredAutoloader();
-		$autoloader->remove();
-		
-		$autoloaders = array();
-		
-		$path = AutoloaderTestHelper::getClassDirectory() . "/testGetRegisteredAutoloaderA";
-		@mkdir($path);
-		@mkdir($path."/sub");
-		$tmpAutoloader = new Autoloader($path);
-		$tmpAutoloader->register();
-		$autoloaders[] = $tmpAutoloader;
-		
-		$path = AutoloaderTestHelper::getClassDirectory() . "/testGetRegisteredAutoloaderB";
-		@mkdir($path);
-		@mkdir($path."/sub");
-		$tmpAutoloader2 = new Autoloader($path);
-		$tmpAutoloader2->register();
-		$autoloaders[] = $tmpAutoloader2;
-		
-		foreach ($tmpAutoloader2 as $autoloader) {
-			Autoloader::getRegisteredAutoloader($autoloader->getPath());
-			Autoloader::getRegisteredAutoloader($autoloader->getPath()."/sub");
-			
-		}
-		
-		$tmpAutoloader->remove();
-		$tmpAutoloader2->remove();
-		
-		$autoloader->register();
-	}
-	
-	
-	/**
-	 * @expectedException AutoloaderException_PathNotRegistered
-	 * @dataProvider provideTestGetRegisteredAutoloaderFailure
-	 */
-	public function testGetRegisteredAutoloaderFailure($path) {
-		Autoloader::getRegisteredAutoloader($path);
-	}
-	
-	
-	/**
-	 */
-	public function testGetDefaultRegisteredAutoloaderFailure() {
-		$autoloader = Autoloader::getRegisteredAutoloader();
-		$autoloader->remove();
-		$path = realpath(dirname(__FILE__));
-		
-		try {
-			
-			Autoloader::getRegisteredAutoloader();
-			$this->fail("did not expect an Autoloader for $path.");
-			
-		} catch (AutoloaderException_PathNotRegistered $e) {
-			$this->assertEquals($path, $e->getPath());
-			
-		}
-		$autoloader->register();
-	}
-	
-	
-	public function testUnregisterAutoloader() {
-		$class = $this->autoloaderTestHelper->makeClass("TestUnregisterAutoloader", "testUnregisterAutoloader");
-		
-		$autoloader = Autoloader::getRegisteredAutoloader();
-		$autoloader->remove();
-		$this->autoloaderTestHelper->assertNotLoadable($class);
-		
-		$autoloader->register();
-		$this->autoloaderTestHelper->assertLoadable($class);
-	}
-	
-	
-	public function testDifferentClassPaths() {
-		$pathA = "testDifferentClassPathsA";
-		$pathB = "testDifferentClassPathsB";
-		
-		$classA = $this->autoloaderTestHelper->makeClass("A", $pathA); 
-		$classB = $this->autoloaderTestHelper->makeClass("B", $pathB); 
-		
-		$defaultAutoloader = Autoloader::getRegisteredAutoloader();
-		$defaultAutoloader->remove();
-		
-		$tempLoaderA = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/" . $pathA);
-		$tempLoaderB = new Autoloader(AutoloaderTestHelper::getClassDirectory() . "/" . $pathB);
 
-		$this->autoloaderTestHelper->assertNotLoadable($classA);
-		$this->autoloaderTestHelper->assertNotLoadable($classB);
-		
-		$tempLoaderA->register();
-		$tempLoaderB->register();
-		$this->autoloaderTestHelper->assertLoadable($classA);
-        $this->autoloaderTestHelper->assertLoadable($classB);
-        
-		$tempLoaderA->remove();
-		$tempLoaderB->remove();
-		$defaultAutoloader->register();
-	}
-	
-	
-	public function testGetRegisteredAutoloaders() {
-		$autoloaders = array();
+    /**
+     * testClassPath() asserts that an autoloader has the expected class path.
+     *
+     * @param Autoloader $autoloader   An instance of Autoloader
+     * @param String     $expectedPath The expected class path
+     *
+     * @dataProvider provideTestClassPath
+     * @see Autoloader::getPath()
+     * @return void
+     */
+    public function testClassPath(Autoloader $autoloader, $expectedPath)
+    {
+        $this->assertEquals(
+            realpath($expectedPath), realpath($autoloader->getPath())
+        );
+    }
+
+    /**
+     * provideTestClassPath() provides testClassPath().
+     *
+     * A test case is an instance of Autoloader and its expected class path.
+     *
+     * @return Array
+     * @see testClassPath()
+     */
+    public function provideTestClassPath()
+    {
+        $autoPath = realpath(dirname(__FILE__));
+
+        $defaultLoader = new Autoloader();
+
+        $outsidePath = AutoloaderTestHelper::getClassDirectory();
+        $loaderWithOutsideOfThisPath = new Autoloader($outsidePath);
+
+        return array(
+            array($defaultLoader,                     $autoPath),
+            array($loaderWithOutsideOfThisPath,       $outsidePath),
+        );
+    }
+
+    /**
+     * testLoadClass() asserts that $class is loadable.
+     *
+     * @param String $class A loadable class name
+     *
+     * @dataProvider provideClassNames
+     * @return void
+     */
+    public function testLoadClass($class)
+    {
+        $this->_autoloaderTestHelper->assertLoadable($class);
+    }
+
+    /**
+     * provideClassNames() provides testLoadClass() with loadable class names.
+     *
+     * @see testLoadClass()
+     * @return Array
+     */
+    public function provideClassNames()
+    {
+        $this->_autoloaderTestHelper = new AutoloaderTestHelper($this);
+
+        $classes = array();
+        $classes[] = $this->_autoloaderTestHelper->makeClass("TestA", "");
+        $classes[] = $this->_autoloaderTestHelper->makeClass("TestB", "");
+        $classes[] = $this->_autoloaderTestHelper->makeClass("TestC1", "c");
+        $classes[] = $this->_autoloaderTestHelper->makeClass("TestC2", "c");
+        $classes[] = $this->_autoloaderTestHelper->makeClass("TestD", "d");
+        $classes[] = $this->_autoloaderTestHelper->makeClass("TestE", "e");
+        $classes[] = $this->_autoloaderTestHelper->makeClass("TestF1", "e/f");
+        $classes[] = $this->_autoloaderTestHelper->makeClass("TestF2", "e/f");
+
+        $classes[] = $this->_autoloaderTestHelper->makeClass(
+            "TestInterface", "g", "<?php interface %name%{}?>"
+        );
+        $classes[] = $this->_autoloaderTestHelper->makeClass(
+            "TestAbstract", "g", "<?php abstract class %name%{}?>"
+        );
+        $classes[] = $this->_autoloaderTestHelper->makeClass(
+            "TestG1", "g", "<?php\nclass %name% {\n}?>"
+        );
+        $classes[] = $this->_autoloaderTestHelper->makeClass(
+            "TestG2", "g", "<?php\n class %name% {\n}?>"
+        );
+        $classes[] = $this->_autoloaderTestHelper->makeClass(
+            "TestG3", "g", "<?php\nclass %name%\n {\n}?>"
+        );
+        $classes[] = $this->_autoloaderTestHelper->makeClass(
+            "TestG4", "g", "<?php\nclass %name% \n {\n}?>"
+        );
+        $classes[] = $this->_autoloaderTestHelper->makeClass(
+            "TestG5", "g", "<?php\nClass %name% \n {\n}?>"
+        );
+        $classes[] = $this->_autoloaderTestHelper->makeClass(
+            "TestG6", "g", "<?php\nclass %name% \n {\n}?>"
+        );
+
+        $classes[] = $this->_autoloaderTestHelper->makeClassInNamespace(
+            "a", "Test", ""
+        );
+        $classes[] = $this->_autoloaderTestHelper->makeClassInNamespace(
+            "a\b", "Test", ""
+        );
+        $classes[] = $this->_autoloaderTestHelper->makeClassInNamespace(
+            "a\b", "Test", ""
+        );
+        $classes[] = $this->_autoloaderTestHelper->makeClassInNamespace(
+            "a\b\c", "Test", ""
+        );
+
+        $return = array();
+        foreach ($classes as $class) {
+            $return[] = array($class);
+
+        }
+        return $return;
+    }
+
+    /**
+     * testFailLoadClass() asserts that an undefined class is not loadable.
+     *
+     * @return void
+     */
+    public function testFailLoadClass()
+    {
+        $this->_autoloaderTestHelper->assertNotLoadable("ClassDoesNotExist");
+    }
+
+    /**
+     * testGetRegisteredAutoloader() asserts that getRegisteredAutoloader() is
+     * working.
+     *
+     * @see Autoloader::getRegisteredAutoloader()
+     * @return void
+     */
+    public function testGetRegisteredAutoloader()
+    {
+        $autoloader = Autoloader::getRegisteredAutoloader();
+        $autoloader->remove();
+
+        $autoloaders = array();
+
+        $path = AutoloaderTestHelper::getClassDirectory()
+            . "/testGetRegisteredAutoloaderA";
+        @mkdir($path);
+        @mkdir($path."/sub");
+        $tmpAutoloader = new Autoloader($path);
+        $tmpAutoloader->register();
+        $autoloaders[] = $tmpAutoloader;
+
+        $path = AutoloaderTestHelper::getClassDirectory()
+            . "/testGetRegisteredAutoloaderB";
+        @mkdir($path);
+        @mkdir($path."/sub");
+        $tmpAutoloader2 = new Autoloader($path);
+        $tmpAutoloader2->register();
+        $autoloaders[] = $tmpAutoloader2;
+
+        foreach ($tmpAutoloader2 as $autoloader) {
+            Autoloader::getRegisteredAutoloader($autoloader->getPath());
+            Autoloader::getRegisteredAutoloader($autoloader->getPath()."/sub");
+
+        }
+
+        $tmpAutoloader->remove();
+        $tmpAutoloader2->remove();
+
+        $autoloader->register();
+    }
+
+    /**
+     * testGetRegisteredAutoloaderFailure() asserts that calling
+     * Autoloader::getRegisteredAutoloader() for a not registered path will
+     * fail.
+     *
+     * @param String $path A path wich is not registered
+     *
+     * @expectedException AutoloaderException_PathNotRegistered
+     * @dataProvider provideTestGetRegisteredAutoloaderFailure
+     * @see Autoloader::getRegisteredAutoloader()
+     * @return void
+     */
+    public function testGetRegisteredAutoloaderFailure($path)
+    {
+        Autoloader::getRegisteredAutoloader($path);
+    }
+
+    /**
+     * provideTestGetRegisteredAutoloaderFailure() provides
+     * testGetRegisteredAutoloaderFailure() with paths where no autoloader is
+     * registered.
+     *
+     * @see testGetRegisteredAutoloaderFailure
+     * @return Array
+     */
+    public function provideTestGetRegisteredAutoloaderFailure()
+    {
+        return array(array(sys_get_temp_dir()));
+    }
+
+    /**
+     * testGetDefaultRegisteredAutoloaderFailure() provides
+     * testGetRegisteredAutoloaderFailure() with class paths which are not
+     * registered.
+     *
+     * @see testGetRegisteredAutoloaderFailure()
+     * @return void
+     */
+    public function testGetDefaultRegisteredAutoloaderFailure()
+    {
+        $autoloader = Autoloader::getRegisteredAutoloader();
+        $autoloader->remove();
+        $path = realpath(dirname(__FILE__));
+
+        try {
+
+            Autoloader::getRegisteredAutoloader();
+            $this->fail("did not expect an Autoloader for $path.");
+
+        } catch (AutoloaderException_PathNotRegistered $e) {
+            $this->assertEquals($path, $e->getPath());
+
+        }
+        $autoloader->register();
+    }
+
+    /**
+     * testUnregisterAutoloader() asserts that an Autoloader can unregister itself
+     * from the stack.
+     *
+     * @see Autoloader::remove()
+     * @return void
+     */
+    public function testUnregisterAutoloader()
+    {
+        $class = $this->_autoloaderTestHelper->makeClass(
+            "TestUnregisterAutoloader", "testUnregisterAutoloader"
+        );
+
+        $autoloader = Autoloader::getRegisteredAutoloader();
+        $autoloader->remove();
+        $this->_autoloaderTestHelper->assertNotLoadable($class);
+
+        $autoloader->register();
+        $this->_autoloaderTestHelper->assertLoadable($class);
+    }
+
+    /**
+     * testDifferentClassPaths() tests if Autoloaders with disjunct class paths
+     * can be registered and can find their classes.
+     *
+     * @return void
+     */
+    public function testDifferentClassPaths()
+    {
+        $pathA = "testDifferentClassPathsA";
+        $pathB = "testDifferentClassPathsB";
+
+        $classA = $this->_autoloaderTestHelper->makeClass("A", $pathA);
+        $classB = $this->_autoloaderTestHelper->makeClass("B", $pathB);
+
+        $defaultAutoloader = Autoloader::getRegisteredAutoloader();
+        $defaultAutoloader->remove();
+
+        $tempLoaderA = new Autoloader(
+            AutoloaderTestHelper::getClassDirectory() . "/" . $pathA
+        );
+        $tempLoaderB = new Autoloader(
+            AutoloaderTestHelper::getClassDirectory() . "/" . $pathB
+        );
+
+        $this->_autoloaderTestHelper->assertNotLoadable($classA);
+        $this->_autoloaderTestHelper->assertNotLoadable($classB);
+
+        $tempLoaderA->register();
+        $tempLoaderB->register();
+        $this->_autoloaderTestHelper->assertLoadable($classA);
+        $this->_autoloaderTestHelper->assertLoadable($classB);
+
+        $tempLoaderA->remove();
+        $tempLoaderB->remove();
+        $defaultAutoloader->register();
+    }
+
+    /**
+     * testGetRegisteredAutoloaders() asserts that
+     * Autoloader::getRegisteredAutoloaders() returns all registered
+     * instances of Autoloaders.
+     *
+     * @see Autoloader::getRegisteredAutoloaders()
+     * @return void
+     */
+    public function testGetRegisteredAutoloaders()
+    {
+        $autoloaders = array();
         $autoloaders[] = Autoloader::getRegisteredAutoloader();
-        
+
         $newAutoloader = new Autoloader(sys_get_temp_dir());
         $newAutoloader->register();
         $autoloaders[] = $newAutoloader;
-        
+
         foreach ($autoloaders as $expectedAutoloader) {
-			foreach (Autoloader::getRegisteredAutoloaders() as $autoloader) {
-				if ($autoloader === $expectedAutoloader) {
-					continue 2;
-					
-				}
-			}
+            foreach (Autoloader::getRegisteredAutoloaders() as $autoloader) {
+                if ($autoloader === $expectedAutoloader) {
+                    continue 2;
+
+                }
+            }
             $this->fail("Autoloader wasn't registered.");
         }
         $newAutoloader->remove();
-	}
-	
-	
-	public function setUp() {
-		$autoloader = new Autoloader();
-		$autoloader->register();
-		
-		$this->autoloaderTestHelper = new AutoloaderTestHelper($this);
-	}
-	
-	
-	public function tearDown() {
-		Autoloader::removeAll();
-	}
-	
-	
+    }
+
     /**
+     * In each test a new Autoloader is registered.
+     *
+     * @return void
      */
-    public function testRemoveAllAutoloaders() {
-        $registeredAutoloaders = Autoloader::getRegisteredAutoloaders();
-        
+    public function setUp()
+    {
         $autoloader = new Autoloader();
         $autoloader->register();
-        
-        $this->assertEquals(count($registeredAutoloaders), count(Autoloader::getRegisteredAutoloaders()));
-        
+
+        $this->_autoloaderTestHelper = new AutoloaderTestHelper($this);
+    }
+
+    /**
+     * Each test leaves no Autoloader behind.
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
         Autoloader::removeAll();
-        
+    }
+
+    /**
+     * testRemoveAllAutoloaders() asserts that Autoloader::removeAll() removes
+     * all instances of Autoloader from the stack.
+     * 
+     * @see Autoloader::removeAll()
+     * @return void
+     */
+    public function testRemoveAllAutoloaders()
+    {
+        $registeredAutoloaders = Autoloader::getRegisteredAutoloaders();
+
+        $autoloader = new Autoloader();
+        $autoloader->register();
+
+        $this->assertEquals(
+            count($registeredAutoloaders),
+            count(Autoloader::getRegisteredAutoloaders())
+        );
+
+        Autoloader::removeAll();
+
         $this->assertEquals(0, count(Autoloader::getRegisteredAutoloaders()));
 
         $autoloader = new Autoloader();
         $autoloader->register();
-        
+
         $this->assertEquals(1, count(Autoloader::getRegisteredAutoloaders()));
-        
+
         $autoloader = new Autoloader(sys_get_temp_dir());
         $autoloader->register();
-        
+
         $this->assertEquals(2, count(Autoloader::getRegisteredAutoloaders()));
-        
+
         Autoloader::removeAll();
         foreach ($registeredAutoloaders as $autoloader) {
-        	$autoloader->register();
-        	
+            $autoloader->register();
+
         }
     }
-	
-	
-	/**
-	 */
-	public function testSeveralRequiredAutoloaders() {
-		$autoloaders = Autoloader::getRegisteredAutoloaders();
-		Autoloader::removeAll();
-		
-		$autoloaderPath = dirname(__FILE__) . "/../Autoloader.php";
-		
-		$classA   = $this->autoloaderTestHelper->makeClass("A",         "a");
-		$classA2  = $this->autoloaderTestHelper->makeClass("A2",        "a");
-		$requireA = $this->autoloaderTestHelper->makeClass("requireA",  "a", "<?php require '$autoloaderPath' ?>");
-		
-		$classB   = $this->autoloaderTestHelper->makeClass("B",         "b");
-		$requireB = $this->autoloaderTestHelper->makeClass("requireB",  "b", "<?php require '$autoloaderPath' ?>");
-		
-		
-		$this->autoloaderTestHelper->assertNotLoadable($classA);
-		$this->autoloaderTestHelper->assertNotLoadable($classA2);
-		
-		require AutoloaderTestHelper::getClassDirectory() . DIRECTORY_SEPARATOR
-		      . "a" . DIRECTORY_SEPARATOR . "$requireA.test.php";
-		      
-		$this->autoloaderTestHelper->assertLoadable($classA);
-		$this->autoloaderTestHelper->assertNotLoadable($classB);
-		
-		require AutoloaderTestHelper::getClassDirectory() . DIRECTORY_SEPARATOR
+
+    /**
+     * testSeveralRequiredAutoloaders() asserts that including the file
+     * Autoloader.php will register each time an instance of Autoloader with
+     * the correct class path.
+     * 
+     * @see Autoloader.php
+     * @return void
+     */
+    public function testSeveralRequiredAutoloaders()
+    {
+        $autoloaders = Autoloader::getRegisteredAutoloaders();
+        Autoloader::removeAll();
+
+        $autoloaderPath = dirname(__FILE__) . "/../Autoloader.php";
+
+        $classA   = $this->_autoloaderTestHelper->makeClass("A", "a");
+        $classA2  = $this->_autoloaderTestHelper->makeClass("A2", "a");
+        $requireA = $this->_autoloaderTestHelper->makeClass(
+            "requireA", "a", "<?php require '$autoloaderPath' ?>"
+        );
+
+        $classB   = $this->_autoloaderTestHelper->makeClass("B", "b");
+        $requireB = $this->_autoloaderTestHelper->makeClass(
+            "requireB", "b", "<?php require '$autoloaderPath' ?>"
+        );
+
+
+        $this->_autoloaderTestHelper->assertNotLoadable($classA);
+        $this->_autoloaderTestHelper->assertNotLoadable($classA2);
+
+        include AutoloaderTestHelper::getClassDirectory() . DIRECTORY_SEPARATOR
+              . "a" . DIRECTORY_SEPARATOR . "$requireA.test.php";
+
+        $this->_autoloaderTestHelper->assertLoadable($classA);
+        $this->_autoloaderTestHelper->assertNotLoadable($classB);
+
+        include AutoloaderTestHelper::getClassDirectory() . DIRECTORY_SEPARATOR
               . "b" . DIRECTORY_SEPARATOR . "$requireB.test.php";
-              
-        $this->autoloaderTestHelper->assertLoadable($classA);              
-        $this->autoloaderTestHelper->assertLoadable($classA2);              
-        $this->autoloaderTestHelper->assertLoadable($classB);
+
+        $this->_autoloaderTestHelper->assertLoadable($classA);
+        $this->_autoloaderTestHelper->assertLoadable($classA2);
+        $this->_autoloaderTestHelper->assertLoadable($classB);
 
         Autoloader::removeAll();
-		
+
         foreach ($autoloaders as $autoloader) {
             $autoloader->register();
-            
+
         }
-	}
-	
-	
-	public function provideTestGetRegisteredAutoloaderFailure() {
-		return array(array(sys_get_temp_dir()));
-	}
-	
-	
-	/**
-	 * @return Array
-	 */
-	public function provideClassNames() {
-		$this->autoloaderTestHelper = new AutoloaderTestHelper($this);
-		
-		$classes = array();
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestA",     "");
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestB",     "");
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestC1",    "c");
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestC2",    "c");
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestD",     "d");
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestE",     "e");
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestF1",    "e/f");
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestF2",    "e/f");
-		
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestInterface", "g", "<?php interface %name%{}?>");
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestAbstract", "g", "<?php abstract class %name%{}?>");
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestG1", "g", "<?php\nclass %name% {\n}?>");
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestG2", "g", "<?php\n class %name% {\n}?>");
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestG3", "g", "<?php\nclass %name%\n {\n}?>");
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestG4", "g", "<?php\nclass %name% \n {\n}?>");
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestG5", "g", "<?php\nClass %name% \n {\n}?>");
-		$classes[] = $this->autoloaderTestHelper->makeClass("TestG6", "g", "<?php\nclass %name% \n {\n}?>");
+    }
 
-        $classes[] = $this->autoloaderTestHelper->makeClassInNamespace("a",     "Test", "");
-        $classes[] = $this->autoloaderTestHelper->makeClassInNamespace("a\b",   "Test", "");
-        $classes[] = $this->autoloaderTestHelper->makeClassInNamespace("a\b",   "Test", "");
-        $classes[] = $this->autoloaderTestHelper->makeClassInNamespace("a\b\c", "Test", "");
-
-		$return = array();
-		foreach ($classes as $class) {
-			$return[] = array($class);
-			
-		}
-		return $return;
-	}
-	
-	
-	/**
-	 * @return Array
-	 */
-	public function provideTestClassPath() {
-		require_once dirname(__FILE__) . "/../Autoloader.php";
-		
-		$autoPath = realpath(dirname(__FILE__));
-		
-		$defaultLoader = new Autoloader();
-		
-		$outsidePath = AutoloaderTestHelper::getClassDirectory(); 
-		$loaderWithOutsideOfThisPath = new Autoloader($outsidePath);
-		
-		return array(
-		    array($defaultLoader,                     $autoPath),
-		    array($loaderWithOutsideOfThisPath,       $outsidePath),
-		);
-	}
-	
-	
 }

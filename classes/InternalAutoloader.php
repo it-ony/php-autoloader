@@ -1,139 +1,187 @@
 <?php
-#########################################################################
-# Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
-#                                                                       #
-# This program is free software: you can redistribute it and/or modify  #
-# it under the terms of the GNU General Public License as published by  #
-# the Free Software Foundation, either version 3 of the License, or     #
-# (at your option) any later version.                                   #
-#                                                                       #
-# This program is distributed in the hope that it will be useful,       #
-# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
-# GNU General Public License for more details.                          #
-#                                                                       #
-# You should have received a copy of the GNU General Public License     #
-# along with this program.                                              #
-# If not, see <http://php-autoloader.malkusch.de/en/license/>.          #
-#########################################################################
 
-
-require_once dirname(__FILE__).'/AbstractAutoloader.php';
-require_once dirname(__FILE__).'/exception/AutoloaderException_InternalClassNotLoadable.php';
-
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * An Autoloader for internal classes
- * 
- * @package autoloader
- * @author Markus Malkusch <markus@malkusch.de>
- * @copyright Copyright (C) 2010 Markus Malkusch
- * @version 1.0
+ * This file defines the class InternalAutoloader.
+ *
+ * PHP version 5
+ *
+ * LICENSE: This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.
+ * If not, see <http://php-autoloader.malkusch.de/en/license/>.
+ *
+ * @category  Autoloader
+ * @package   Base
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   SVN: $Id$
+ * @link      http://php-autoloader.malkusch.de/en/
  */
-class InternalAutoloader extends AbstractAutoloader {
 
-	
-	static private
-	/**
-	 * @var InternalAutoloader
-	 */
-	$instance;
-	
-	
-	private
-	/**
+/**
+ * These classes are needed. As autoloading does not work here,
+ * they have to be required traditionally.
+ */
+require_once
+    dirname(__FILE__) . '/AbstractAutoloader.php';
+require_once
+    dirname(__FILE__)
+    . '/exception/AutoloaderException_InternalClassNotLoadable.php';
+
+/**
+ * InternalAutoloader is the autoloader for internal classes.
+ *
+ * @category  Autoloader
+ * @package   Base
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   Release: 1.8
+ * @link      http://php-autoloader.malkusch.de/en/
+ */
+class InternalAutoloader extends AbstractAutoloader
+{
+
+    static private
+    /**
+     * @var InternalAutoloader
+     */
+    $_instance;
+
+    private
+    /**
      * @var array
      */
-    $classes = array();
-    
-	
-	static public function __static() {
-		self::$instance = new self();
-		self::$instance->register();
-	} 
-	
-	/**
-	 * @return InternalAutoloader
-	 */
-	static public function getInstance() {
-		return self::$instance;
-	}
-	
-	
-	/**
-     * @return Array all registered Autoloader instances which are doing their jobs
+    $_classes = array();
+
+    /**
+     * The class constructor creates the only instance of this class and registeres
+     * it to the autoload stack.
+     *
      * @see register()
+     * @see getInstance()
+     * @return void
      */
-    static public function getRegisteredAutoloaders() {
-    	$autoloaders = array();
-    	foreach(parent::getRegisteredAutoloaders() as $autoloader) {
-    		if ($autoloader instanceof self) {
-    			$autoloaders[] = $autoloader;
-    			
-    		}
-    	}
-    	return $autoloaders;
+    static public function classConstructor()
+    {
+        self::$_instance = new self();
+        self::$_instance->register();
     }
-    
-    
+
     /**
-     * All instances of Autoloader will be removed from the stack.
-     * 
+     * getInstance() returns the only instance of this class.
+     *
+     * @see classConstructor()
+     * @return InternalAutoloader
+     */
+    static public function getInstance()
+    {
+        return self::$_instance;
+    }
+
+    /**
+     * getRegisteredAutoloaders() returns all registered InternalAutoloader
+     * instances which are doing their jobs
+     *
+     * @see register()
+     * @return Array
+     */
+    static public function getRegisteredAutoloaders()
+    {
+        $autoloaders = array();
+        foreach (parent::getRegisteredAutoloaders() as $autoloader) {
+            if ($autoloader instanceof self) {
+                $autoloaders[] = $autoloader;
+
+            }
+        }
+        return $autoloaders;
+    }
+
+    /**
+     * All instances of InternalAutoloader will be removed from the stack.
+     *
      * @see remove()
+     * @return void
      */
-    static public function removeAll() {
-    	foreach (self::getRegisteredAutoloaders() as $autoloader) { //TODO use __CLASS__ in PHP 5.3 and remove the other implementations
-    		$autoloader->remove();
-    		
-    	}
+    static public function removeAll()
+    {
+        //TODO use static:: in PHP 5.3 and remove the other implementations
+        foreach (self::getRegisteredAutoloaders() as $autoloader) {
+            $autoloader->remove();
+
+        }
     }
-    
 
     /**
-     * This is a Singleton
+     * The constructor is private as this is a singleton.
      */
-    private function __construct() {
-	}
-	
+    private function __construct()
+    {
 
-	/**
-     * This is a Singleton
+    }
+
+    /**
+     * __clone() is private as this is a singleton.
+     *
+     * @return void
      */
-	private function __clone() {
-	}
-	
-	
-	/**
+    private function __clone()
+    {
+
+    }
+
+    /**
      * This is used for internal classes, which cannot
-     * use the Autoloader. They will be required in a 
+     * use the Autoloader. They will be required in a
      * traditional way without any index or searching.
-     * 
-     * @param String $class
-     * @param String $path
+     *
+     * @param String $class The class name
+     * @param String $path  The path of the class
+     *
+     * @return void
      */
-    public function registerClass($class, $path) {
+    public function registerClass($class, $path)
+    {
         Autoloader::normalizeClass($class);
-        $this->classes[$class] = $path;
+        $this->_classes[$class] = $path;
     }
-    
-    
+
     /**
-     * @param String $class
+     * doAutoload() implements autoloading for internal classes.
+     *
+     * @param String $class The class name
+     *
      * @throws AutoloaderException_InternalClassNotLoadable
      * @throws AutoloaderException_Include
      * @throws AutoloaderException_Include_FileNotExists
      * @throws AutoloaderException_Include_ClassNotDefined
+     * @return void
      */
-    protected function __autoload($class) {
-    	if (!  array_key_exists($class, $this->classes)) {
-    		throw new AutoloaderException_InternalClassNotLoadable($class);
-    		
-    	}
-    	$this->loadClass($class, $this->classes[$class]);
+    protected function doAutoload($class)
+    {
+        if (!  array_key_exists($class, $this->_classes)) {
+            throw new AutoloaderException_InternalClassNotLoadable($class);
+
+        }
+        $this->loadClass($class, $this->_classes[$class]);
     }
-	
-	
+
 }
 
-
-InternalAutoloader::__static();
+/**
+ * The class constructor is called.
+ */
+InternalAutoloader::classConstructor();

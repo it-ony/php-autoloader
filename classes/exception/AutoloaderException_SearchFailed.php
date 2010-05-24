@@ -1,66 +1,84 @@
 <?php
-#########################################################################
-# Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
-#                                                                       #
-# This program is free software: you can redistribute it and/or modify  #
-# it under the terms of the GNU General Public License as published by  #
-# the Free Software Foundation, either version 3 of the License, or     #
-# (at your option) any later version.                                   #
-#                                                                       #
-# This program is distributed in the hope that it will be useful,       #
-# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
-# GNU General Public License for more details.                          #
-#                                                                       #
-# You should have received a copy of the GNU General Public License     #
-# along with this program.                                              #
-# If not, see <http://php-autoloader.malkusch.de/en/license/>.          #
-#########################################################################
 
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
+/**
+ * This file defines the AutoloaderException_SearchFailed.
+ *
+ * PHP version 5
+ *
+ * LICENSE: This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.
+ * If not, see <http://php-autoloader.malkusch.de/en/license/>.
+ *
+ * @category  Autoloader
+ * @package   Exception
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   SVN: $Id$
+ * @link      http://php-autoloader.malkusch.de/en/
+ */
+
+/**
+ * The parent class must be loaded.
+ */
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException',
     dirname(__FILE__).'/AutoloaderException.php'
 );
 
-
 /**
- * Indicates Exceptions during class search.
- * 
- * AutoloaderException_SearchFailed is thrown internally by the Autoloader
- * if it fails during autoloading to find a class.
- * 
- * @version 1.1
+ * AutoloaderException_SearchFailed is raised if searching for a class fails.
+ *
+ * @category  Autoloader
+ * @package   Exception
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   Release: 1.8
+ * @link      http://php-autoloader.malkusch.de/en/
+ * @see       Autoloader::searchPath()
  */
-class AutoloaderException_SearchFailed extends AutoloaderException {
-	
-	
-	private
-	/**
-	 * @var String
-	 */
-    $class = '';
-    
-    
+class AutoloaderException_SearchFailed extends AutoloaderException
+{
+
+    private
     /**
-     * @param String $class
+     * @var String The class which couldn't be found
      */
-    public function __construct($class) {
-    	parent::__construct("Couldn't find class $class.");
-    	
-    	$this->class = $class;
+    $_class = '';
+
+    /**
+     * The exception knows the class which couldn't be found.
+     *
+     * @param String $class The class which couldn't be found
+     */
+    public function __construct($class)
+    {
+        parent::__construct("The class '$class' could not be found.");
+
+        $this->_class = $class;
     }
-    
-    
+
     /**
      * The class which wasn't found.
-     * 
+     *
      * @return String
-     * @since 1.1
      */
-    public function getClass() {
-    	return $this->class;
+    public function getClass()
+    {
+        return $this->_class;
     }
 
-    
 }

@@ -2,7 +2,7 @@
 
 echo "InterfaceB loaded.\n";
 
-interface InterfaceB {
-	
-	
+interface InterfaceB
+{
+
 }

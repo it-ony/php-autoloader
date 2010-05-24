@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_IndexBuildCollision.
+ * This file defines the class Autoloader_Profiler.
  *
  * PHP version 5
  *
@@ -22,7 +22,7 @@
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
  * @category  Autoloader
- * @package   Exception
+ * @package   Base
  * @author    Markus Malkusch <markus@malkusch.de>
  * @copyright 2009 - 2010 Markus Malkusch
  * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
@@ -31,76 +31,75 @@
  */
 
 /**
- * The parent class must be loaded.
+ * The parent class is needed. As autoloading does not work here,
+ * it has to be required traditionally.
  */
-InternalAutoloader::getInstance()->registerClass(
-    'AutoloaderException',
-    dirname(__FILE__) . '/AutoloaderException.php'
-);
+require_once dirname(__FILE__) . '/../../classes/Autoloader.php';
 
 /**
- * AutoloaderException_IndexBuildCollision occurs during a collision
- * while building the index.
- *
- * A collision happens if a class definition is not unique in a class path.
+ * This Autoloader is only for profiling during development of the
+ * Autoloaderpackage itself used.
  *
  * @category  Autoloader
- * @package   Exception
+ * @package   Base
  * @author    Markus Malkusch <markus@malkusch.de>
  * @copyright 2009 - 2010 Markus Malkusch
  * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version   Release: 1.8
  * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::buildIndex()
  */
-class AutoloaderException_IndexBuildCollision extends AutoloaderException
+class Autoloader_Profiler extends Autoloader
 {
 
     private
     /**
      * @var Array
      */
-    $_paths = array(),
-    /**
-     * @var String
-     */
-    $_class = '';
+    $_searchedClasses = array();
 
     /**
-     * The Exceptions knows the ambiguous class and its definitions.
+     * searchPath() is overwritten to keep track which classes are searched in the
+     * file system.
      *
-     * @param String $class The ambiguous class name
-     * @param Array  $paths The paths for the found class definitions
-     */
-    public function __construct($class, array $paths)
-    {
-        parent::__construct(
-            "class $class was defined in several files:" . implode(', ', $paths)
-        );
-
-        $this->_class = $class;
-        $this->_paths = $paths;
-    }
-
-    /**
-     * getClass() returns the ambiguous class name which caused this exception.
-     *
+     * @param String $class the class name
+     * 
      * @return String
      */
-    public function getClass()
+    protected function searchPath($class)
     {
-        return $this->_class;
+        $this->_searchedClasses[] = $class;
+        return parent::searchPath($class);
     }
 
     /**
-     * getPaths() returns a list of files which provide class definitions to the
-     * ambiguous class.
+     * getSearchedClasses() returns a list of class names which have been searched
+     * in the file system.
      *
      * @return Array
      */
-    public function getPaths()
+    public function getSearchedClasses()
     {
-        return $this->_paths;
+        return $this->_searchedClasses;
+    }
+
+    /**
+     * The test will add manually classes to the index.
+     *
+     * The test will assert with this method, that a class in the index is not
+     * searched by the file system.
+     *
+     * @param String $class The class name
+     * 
+     * @return void
+     */
+    public function addClassToIndex($class)
+    {
+        $this->normalizeClass($class);
+        if ($this->index->hasPath($class)) {
+            return;
+
+        }
+        $this->index->setPath($class, parent::searchPath($class));
     }
 
 }

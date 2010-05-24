@@ -1,8 +1,10 @@
 <?php
 
-namespace de\malkusch\autoloader\test\ns\multibracket\A {
+namespace de\malkusch\autoloader\test\ns\multibracket\A
+{
 
-    class Test1 {
+    class Test1
+    {
 
     }
 
@@ -15,7 +17,8 @@ namespace de\malkusch\autoloader\test\ns\multibracket\A {
 
 namespace de\malkusch\autoloader\test\ns\multibracket\B {
 
-    class Test1 {
+    class Test1
+    {
 
     }
 

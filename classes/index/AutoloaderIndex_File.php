@@ -1,292 +1,378 @@
 <?php
-#########################################################################
-# Copyright (C) 2010  Markus Malkusch <markus@malkusch.de>              #
-#                                                                       #
-# This program is free software: you can redistribute it and/or modify  #
-# it under the terms of the GNU General Public License as published by  #
-# the Free Software Foundation, either version 3 of the License, or     #
-# (at your option) any later version.                                   #
-#                                                                       #
-# This program is distributed in the hope that it will be useful,       #
-# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
-# GNU General Public License for more details.                          #
-#                                                                       #
-# You should have received a copy of the GNU General Public License     #
-# along with this program.                                              #
-# If not, see <http://php-autoloader.malkusch.de/en/license/>.          #
-#########################################################################
 
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
+/**
+ * This file implements the class AutoloaderIndex_Dummy.
+ *
+ * PHP version 5
+ *
+ * LICENSE: This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.
+ * If not, see <http://php-autoloader.malkusch.de/en/license/>.
+ *
+ * @category  Autoloader
+ * @package   Index
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   SVN: $Id$
+ * @link      http://php-autoloader.malkusch.de/en/
+ */
+
+/**
+ * These classes are needed.
+ */
 InternalAutoloader::getInstance()->registerClass(
-	'AutoloaderIndex',
-    dirname(__FILE__).'/AutoloaderIndex.php'
+    'AutoloaderIndex',
+    dirname(__FILE__) . '/AutoloaderIndex.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Index',
-    dirname(__FILE__).'/exception/AutoloaderException_Index.php'
+    dirname(__FILE__) . '/exception/AutoloaderException_Index.php'
 );
 InternalAutoloader::getInstance()->registerClass(
-	'AutoloaderException_Index_NotFound',
-    dirname(__FILE__).'/exception/AutoloaderException_Index_NotFound.php'
+    'AutoloaderException_Index_NotFound',
+    dirname(__FILE__) . '/exception/AutoloaderException_Index_NotFound.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Index_IO',
-    dirname(__FILE__).'/exception/AutoloaderException_Index_IO.php'
+    dirname(__FILE__) . '/exception/AutoloaderException_Index_IO.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Index_IO_FileNotExists',
-    dirname(__FILE__).'/exception/AutoloaderException_Index_IO_FileNotExists.php'
+    dirname(__FILE__) . '/exception/AutoloaderException_Index_IO_FileNotExists.php'
 );
-
 
 /**
  * The index is a hashtable.
- * 
+ *
  * This index is working in every PHP environment. It should be fast enough
  * for most applications. The index is a file in the temporary directory.
  * The content of this generates a Hashtable.
- * 
+ *
  * This implementation is threadsafe.
- * 
- * @see serialize()
- * @see unserialize()
+ *
+ * @category  Autoloader
+ * @package   Index
+ * @author    Markus Malkusch <markus@malkusch.de>
+ * @copyright 2009 - 2010 Markus Malkusch
+ * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version   Release: 1.8
+ * @link      http://php-autoloader.malkusch.de/en/
+ * @see       Autoloader::setIndex()
+ * @see       Autoloader::getIndex()
+ * @see       serialize()
+ * @see       unserialize()
  */
-abstract class AutoloaderIndex_File extends AutoloaderIndex {
-    
-    
+abstract class AutoloaderIndex_File extends AutoloaderIndex
+{
+
     private
     /**
      * @var String
      */
-    $path = '',
+    $_path = '',
     /**
      * @var Array
      */
-    $index = null;
-
+    $_index = null;
 
     /**
-     * @param String $data
+     * buildIndex() generates the index array from the string $data.
+     *
+     * The index array has the class names as keys and the path as values.
+     *
+     * @param String $data The content of the index file
+     *
      * @return Array
      * @throws AutoloaderException_Index
      */
     abstract protected function buildIndex($data);
+
     /**
+     * serializeIndex() creates the content of the index file from the index
+     * array.
+     *
+     * The index array has the class names as keys and the path as values.
+     *
+     * @param array $index The index array
+     *
      * @return String
      * @throws AutoloaderException_Index
      */
     abstract protected function serializeIndex(Array $index);
 
-    
     /**
      * Set the path to the index file.
-     * 
+     *
      * Setting the index file path is optional. Per default
      * it will be a file in the temporary directory.
-     * 
+     *
      * @param String $path the path to the index file
+     *
      * @see getIndexPath()
+     * @return void
      */
-    public function setIndexPath($path) {
-    	$this->path  = $path;
-    	$this->index = null;
+    public function setIndexPath($path)
+    {
+        $this->_path  = $path;
+        $this->_index = null;
     }
-    
-    
+
     /**
      * Get the path of the index file.
-     * 
+     *
      * @return String The path to the index file
      * @see setIndexPath()
      */
-    public function getIndexPath() {
-    	if (empty($this->path)) {
-    		$this->setIndexPath(
-    		    sys_get_temp_dir()
-    		    . DIRECTORY_SEPARATOR
-    		    . get_class($this)
-    		    . $this->getContext()
+    public function getIndexPath()
+    {
+        if (empty($this->_path)) {
+            $this->setIndexPath(
+                sys_get_temp_dir()
+                . DIRECTORY_SEPARATOR
+                . get_class($this)
+                . $this->getContext()
             );
-    		
-    	}
-    	return $this->path;
+
+        }
+        return $this->_path;
     }
-    
-    
+
     /**
      * Deletes the index file
-     * 
+     *
      * @throws AutoloaderException_Index Deleting failed
+     * @return void
      */
-    public function delete() {
-    	if (! @unlink($this->getIndexPath())) {
-    		$error = error_get_last();
-    		throw new AutoloaderException_Index("Could not delete {$this->getIndexPath()}: $error[message]");
-    		
-    	}
-    	$this->index = null;
-    }
-    
-    
-	/**
-     * @throws AutoloaderException_Index
-     */
-    private function assertLoadedIndex() {
-        if (is_array($this->index)) {
-            return;
-            
+    public function delete()
+    {
+        if (! @unlink($this->getIndexPath())) {
+            $error = error_get_last();
+            throw new AutoloaderException_Index(
+                "Could not delete {$this->getIndexPath()}: $error[message]"
+            );
+
         }
-        
+        $this->_index = null;
+    }
+
+    /**
+     * if the index was not build it is builded by calling buildIndex().
+     *
+     * @throws AutoloaderException_Index
+     * @see buildIndex()
+     * @return void
+     */
+    private function _assertLoadedIndex()
+    {
+        if (is_array($this->_index)) {
+            return;
+
+        }
+
         try {
             $data = $this->readFile($this->getIndexPath());
-	        $this->index = $this->buildIndex($data);
-	        
-    	} catch (AutoloaderException_Index_IO_FileNotExists $e) {
-    		/*
-    		 * This could happen. The index is reseted to an empty index.
-    		 */
-            $this->index = array();
-    		
-    	}
+            $this->_index = $this->buildIndex($data);
+
+        } catch (AutoloaderException_Index_IO_FileNotExists $e) {
+            /*
+             * This could happen. The index is reseted to an empty index.
+             */
+            $this->_index = array();
+
+        }
     }
-    
-    
+
     /**
+     * readFile() reads the content of the index file.
+     *
+     * @param String $file the path of a file
+     *
      * @return String
      * @throws AutoloaderException_Index_IO
      * @throws AutoloaderException_Index_IO_FileNotExists
      */
-    protected function readFile($file) {
+    protected function readFile($file)
+    {
         $data = @file_get_contents($file);
         if ($data === false) {
-        	if (! file_exists($file)) {
-        		throw new AutoloaderException_Index_IO_FileNotExists($file);
-        		
-        	} else {
-        		$error = error_get_last();
-                throw new AutoloaderException_Index_IO("Could not read '$file': $error[message]");
-                
-        	}
+            if (! file_exists($file)) {
+                throw new AutoloaderException_Index_IO_FileNotExists($file);
+
+            } else {
+                $error = error_get_last();
+                throw new AutoloaderException_Index_IO(
+                    "Could not read '$file': $error[message]"
+                );
+
+            }
         }
         return $data;
     }
-    
-    
+
     /**
+     * saveFile() stores data into a file.
+     *
+     * @param String $file The path of the file
+     * @param String $data The content
+     *
      * @return int written Bytes
      * @throws AutoloaderException_Index_IO
      */
-    protected function saveFile($file, $data) {
-    	return @file_put_contents($file, $data);
+    protected function saveFile($file, $data)
+    {
+        return @file_put_contents($file, $data);
     }
-    
-    
+
     /**
+     * saveRaw() stores the content of the index array threadsafe in the index file.
+     *
+     * @see saveFile()
+     * @see serializeIndex()
      * @throws AutoloaderException_Index_IO
-     * @since 1.1 save() is threadsafe. 
+     * @since 1.1 saveRaw() is threadsafe.
+     * @return void
      */
-    protected function _save() {
-        $data = $this->serializeIndex($this->index);
-        
+    protected function saveRaw()
+    {
+        $data = $this->serializeIndex($this->_index);
+
         /* Avoid race conditions, by writting into a temporary file
          * which will be moved atomically
          */
-        $tmpFile = @tempnam(dirname($this->getIndexPath()), get_class($this) . "_tmp_");
+        $tmpFile = @tempnam(
+            dirname($this->getIndexPath()),
+            get_class($this) . "_tmp_"
+        );
         if (! $tmpFile) {
-        	$error = error_get_last();
+            $error = error_get_last();
             throw new AutoloaderException_Index_IO(
-                "Could not create temporary file in " . dirname($this->getIndexPath())
+                "Could not create temporary file in "
+                . dirname($this->getIndexPath())
                 . " for saving new index atomically: $error[message]"
             );
-            
+
         }
-        
+
         $writtenBytes = $this->saveFile($tmpFile, $data);
         if ($writtenBytes !== strlen($data)) {
-        	$error = error_get_last();
+            $error = error_get_last();
             throw new AutoloaderException_Index_IO(
-                "Could not save new index to $tmpFile. $writtenBytes Bytes written: $error[message]"
+                "Could not save new index to $tmpFile."
+                . " $writtenBytes Bytes written: $error[message]"
             );
-            
+
         }
-        
+
         if (! @rename($tmpFile, $this->getIndexPath())) {
-        	$error = error_get_last();
-        	throw new AutoloaderException_Index_IO(
-                "Could not move new index $tmpFile to {$this->getIndexPath()}: $error[message]"
+            $error = error_get_last();
+            throw new AutoloaderException_Index_IO(
+                "Could not move new index $tmpFile to {$this->getIndexPath()}:"
+                . " $error[message]"
             );
-        	
+
         }
     }
-    
-    
+
     /**
+     * count() returns the size of the index.
+     *
      * @throws AutoloaderException_Index
-     * @return int the size of the index
+     * @see Countable
+     * @return int
      */
-    public function count() {
-    	$this->assertLoadedIndex();
-        return count($this->index);
+    public function count()
+    {
+        $this->_assertLoadedIndex();
+        return count($this->_index);
     }
-    
-    
+
     /**
-     * @param String $class
+     * getRawPath() returns the unfiltered path of the class definition
+     * for the class $class.
+     *
+     * @param String $class The class name
+     *
      * @throws AutoloaderException_Index
      * @throws AutoloaderException_Index_NotFound
-     * @return String The absolute path
+     * @return String
      */
-    protected function _getPath($class) {
-        $this->assertLoadedIndex();
+    protected function getRawPath($class)
+    {
+        $this->_assertLoadedIndex();
         if (! $this->hasPath($class)) {
-            throw new AutoloaderException_Index_NotFound($class);    
-            
+            throw new AutoloaderException_Index_NotFound($class);
+
         }
-        return $this->index[$class];
+        return $this->_index[$class];
     }
 
+    /**
+     * getPaths() returns all paths in the index.
+     *
+     * @throws AutoloaderException_Index
+     * @return Array
+     */
+    public function getPaths()
+    {
+        $this->_assertLoadedIndex();
+        return $this->_index;
+    }
 
     /**
+     * setRawPath() stores the filtered path of a class definition locally in the
+     * index array.
+     *
+     * @param String $class A class name
+     * @param String $path  The path of the class definition
+     *
      * @throws AutoloaderException_Index
-     * @return Array() All paths in the index
+     * @return void
      */
-    public function getPaths() {
-        $this->assertLoadedIndex();
-        return $this->index;
+    protected function setRawPath($class, $path)
+    {
+        $this->_assertLoadedIndex();
+        $this->_index[$class] = $path;
     }
-    
-    
+
     /**
-     * @param String $class
-     * @param String $path
+     * unsetRawPath() removes the class definition for $class from the index array.
+     *
+     * @param String $class A class name
+     * 
      * @throws AutoloaderException_Index
+     * @return void
      */
-    protected function _setPath($class, $path) {
-        $this->assertLoadedIndex();
-        $this->index[$class] = $path;
+    protected function unsetRawPath($class)
+    {
+        $this->_assertLoadedIndex();
+        unset($this->_index[$class]);
     }
-    
-    
-	/**
-     * @param String $class
-     * @throws AutoloaderException_Index
-     */
-    protected function _unsetPath($class) {
-        $this->assertLoadedIndex();
-        unset($this->index[$class]);
-    }
-    
-    
+
     /**
-     * @param String $class
+     * hasPath() returns true if the class $class is contained in the index array.
+     *
+     * @param String $class A class name
+     *
      * @throws AutoloaderException_Index
      * @return bool
      */
-    public function hasPath($class) {
-        $this->assertLoadedIndex();
-        return array_key_exists($class, $this->index);
+    public function hasPath($class)
+    {
+        $this->_assertLoadedIndex();
+        return array_key_exists($class, $this->_index);
     }
-
 
 }

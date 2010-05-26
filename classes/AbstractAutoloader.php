@@ -31,7 +31,7 @@
  */
 
 /**
- * These classes are needed. As autoloading does not work in for the abstract
+ * These classes are needed. As autoloading does not work in the abstract
  * autoloader, they have to be required traditionally.
  */
 require_once
@@ -66,7 +66,7 @@ abstract class AbstractAutoloader
     /**
      * The name of the class constructor is classConstructor().
      */
-    const CLASS_CONSTRUCTOR            = 'classConstructor';
+    const CLASS_CONSTRUCTOR = 'classConstructor';
 
     /**
      * implements autoloading
@@ -312,7 +312,7 @@ abstract class AbstractAutoloader
     }
 
     /**
-     * Calla the class constructor
+     * Calls the class constructor
      *
      * If the class $class has the method public static $constructor, it
      * will be called.

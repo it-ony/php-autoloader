@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file implements the class AutoloaderIndex_PDO.
+ * Implements the class AutoloaderIndex_PDO
  *
  * PHP version 5
  *
@@ -43,22 +43,21 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * The index is a PDO object.
+ * Implements AutoloaderIndex with PDO
  *
  * This index uses a PDO object to store its data in any
  * database wich understands SQL. There is no need to
  * create any table. The index creates its structure by itself.
  *
- * @category  Autoloader
- * @package   Index
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::setIndex()
- * @see       Autoloader::getIndex()
- * @see       PDO
+ * @category Autoloader
+ * @package  Index
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::setIndex()
+ * @see      Autoloader::getIndex()
+ * @see      PDO
  */
 class AutoloaderIndex_PDO extends AutoloaderIndex
 {
@@ -82,7 +81,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
     $_pdo;
 
     /**
-     * Returns an index using a SQLite database.
+     * Returns an index using a SQLite database
      *
      * If no filename is given a default database in the
      * temporary directory will be used.
@@ -104,7 +103,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
     }
 
     /**
-     * Initializes the index.
+     * Initializes the index
      *
      * If the structure doesn't exist in the database it will be
      * created. The relation for the index is autoloadindex.
@@ -138,7 +137,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
     }
 
     /**
-     * getPDO() returns the PDO object of this index.
+     * Returns the PDO object of this index
      *
      * @return PDO
      */
@@ -148,7 +147,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
     }
 
     /**
-     * deletes the relation autoloadindex.
+     * Deletes the relation autoloadindex
      *
      * @throws AutoloaderException_Index
      * @return void
@@ -165,8 +164,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
     }
 
     /**
-     * _getStatement() prepares a PDOStatement and would reuse it if it is
-     * requested again.
+     * Prepares a PDOStatement and would reuse it if it is requested again
      *
      * @param String $sql A SQL statement
      *
@@ -184,7 +182,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
     }
 
     /**
-     * getRawPath() returns the unfiltered path of a class definition.
+     * Returns the unfiltered path of a class definition
      *
      * @param String $class The class name
      *
@@ -220,7 +218,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
     }
 
     /**
-     * getPaths() returns all paths in the index.
+     * Returns all paths in the index
      *
      * @throws AutoloaderException_Index
      * @return Array
@@ -247,7 +245,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
     }
 
     /**
-     * count() returns the size of the index.
+     * Returns the size of the index
      *
      * @throws AutoloaderException_Index
      * @see Countable
@@ -276,7 +274,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
     }
 
     /**
-     * setRawPath() stores the path immediately persistent.
+     * Stores the path immediately persistent
      *
      * There is no sense in making the class paths persistent
      * during {@link save()}. It is stored immediately.
@@ -309,7 +307,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
     }
 
     /**
-     * Deletes the path immediately persistent.
+     * Deletes the path immediately persistent
      *
      * There is no sense in making the class paths persistent
      * during {@link save()}. It is deleted immediately.
@@ -335,7 +333,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
     }
 
     /**
-     * hasPath() returns true if the class is contained in the index.
+     * Returns true if the class is contained in the index
      *
      * @param String $class The class name
      *
@@ -362,7 +360,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
 
     /**
      * Does nothing as {@link setRawPath()} and {@link unsetRawPath()}
-     * store immediately.
+     * store immediately
      *
      * @see setRawPath()
      * @see unsetRawPath()

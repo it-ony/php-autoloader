@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the test cases for the class InternalAutoloader.
+ * Defines the test cases for the class InternalAutoloader
  *
  * PHP version 5
  *
@@ -39,20 +39,19 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
 /**
  * InternalAutoloader test cases.
  *
- * @category  Autoloader
- * @package   Test
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category Autoloader
+ * @package  Test
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
  */
 class TestInternalAutoloader extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * testAutoload() asserts that the class $class is loadable after
-     * registration of its class definition $path.
+     * Asserts that the class $class is loadable after
+     * registration of its class definition $path
      *
      * @param String $class The class which is autoloaded
      * @param String $path  The class defintion
@@ -73,9 +72,9 @@ class TestInternalAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testGetInstance() asserts that InternalAutoloader::getInstance() returns
+     * Asserts that InternalAutoloader::getInstance() returns
      * an instance of InternalAutoloader and that this instance is registered
-     * in the autoloader stack.
+     * in the autoloader stack
      *
      * @return void
      * @see InternalAutoloader::getInstance()
@@ -91,8 +90,7 @@ class TestInternalAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testSingleton() asserts that there exists only one registered instance
-     * of InternalAutoloader.
+     * Asserts that there exists only one registered instance of InternalAutoloader
      *
      * @return void
      */
@@ -105,9 +103,8 @@ class TestInternalAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testRemoveAll() asserts that after calling
-     * InternalAutoloader::removeAll() no instance of InternalAutoloader is
-     * registered.
+     * Asserts that after calling InternalAutoloader::removeAll() no instance of
+     * InternalAutoloader is registered
      *
      * @return void
      * @see InternalAutoloader::removeAll()
@@ -119,9 +116,9 @@ class TestInternalAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testRemove() asserts that after calling
-     * InternalAutoloader::getInstance()->remove() the instance (which is the
-     * only existing one) is removed from the autoloader stack.
+     * Asserts that after calling InternalAutoloader::getInstance()->remove() the
+     * instance (which is the only existing one) is removed from the autoloader
+     * stack
      *
      * @return void
      * @see InternalAutoloader::remove()
@@ -133,7 +130,7 @@ class TestInternalAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestAutoload() returns test cases for testAutoload().
+     * Returns test cases for testAutoload()
      *
      * A test case is class name and a path to the definition of this
      * class name.
@@ -175,8 +172,9 @@ class TestInternalAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _assertRemoved() asserts that no instance of InternalAutoloader is
-     * registered. It also asserts that registration would still work.
+     * Asserts that no instance of InternalAutoloader is registered
+     *
+     * It also asserts that registration would still work.
      *
      * @return void
      */

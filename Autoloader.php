@@ -3,6 +3,8 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
+ * Registers an Autoloader
+ *
  * The Autoloader works out of the box as simple as possible. You have
  * nothing more to do than require this file. Don't bother the time it
  * consumes when it's called the first time. Let it build its index.

@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderFileIterator_SimpleCached.
+ * Defines the AutoloaderFileIterator_SimpleCached
  *
  * PHP version 5
  *
@@ -43,19 +43,18 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * AutoloaderFileIterator_SimpleCached uses AutoloaderFileIterator_Simple.
+ * Extends AutoloaderFileIterator_Simple with caching
  *
  * It caches the result in an array.
  *
- * @category  Autoloader
- * @package   FileIterator
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::searchPath()
- * @see       AutoloaderFileIterator_Simple
+ * @category Autoloader
+ * @package  FileIterator
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::searchPath()
+ * @see      AutoloaderFileIterator_Simple
  */
 class AutoloaderFileIterator_SimpleCached extends AutoloaderFileIterator
 {
@@ -71,6 +70,8 @@ class AutoloaderFileIterator_SimpleCached extends AutoloaderFileIterator
     $_iterator;
 
     /**
+     * Resets the cache
+     *
      * As this implementation uses a cache, any configuration change will discard
      * the cache.
      *
@@ -93,7 +94,7 @@ class AutoloaderFileIterator_SimpleCached extends AutoloaderFileIterator
     }
 
     /**
-     * current() returns the path of the current file.
+     * Returns the path of the current file
      *
      * @see Iterator::current()
      * @return String
@@ -104,8 +105,9 @@ class AutoloaderFileIterator_SimpleCached extends AutoloaderFileIterator
     }
 
     /**
-     * key() returns the key of the current Iterator object. This key
-     * is not meant to be used or to be distinct.
+     * Returns the key of the current Iterator object
+     *
+     * This key is not meant to be used or to be distinct.
      *
      * @see AutoloaderFileIterator_Simple::key()
      * @see Iterator::key()
@@ -117,7 +119,7 @@ class AutoloaderFileIterator_SimpleCached extends AutoloaderFileIterator
     }
 
     /**
-     * next() calls next() on the iterator.
+     * Calls next() on the iterator
      *
      * @see Iterator::next()
      * @return void
@@ -128,7 +130,8 @@ class AutoloaderFileIterator_SimpleCached extends AutoloaderFileIterator
     }
 
     /**
-     * rewind() clears the $_foundFiles Array and calls rewind on the iterator.
+     * Clears the $_foundFiles Array and calls rewind on the iterator
+     *
      * If $_iterator is already an ArrayIterator it won't be discarded.
      *
      * @see Iterator::rewind()
@@ -141,6 +144,8 @@ class AutoloaderFileIterator_SimpleCached extends AutoloaderFileIterator
     }
 
     /**
+     * Puts file paths into the cache during iteration
+     *
      * Found files are put in the Array $_foundFiles. If the
      * AutoloaderFileIterator_Simple becomes invalid the $_iterator becomes an
      * ArrayIterator with all found files of $_foundFiles.

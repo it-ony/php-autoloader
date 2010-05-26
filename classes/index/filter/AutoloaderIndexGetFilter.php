@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderIndexGetFilter.
+ * Defines the AutoloaderIndexGetFilter
  *
  * PHP version 5
  *
@@ -32,6 +32,8 @@
  */
 
 /**
+ * The AutoloaderIndexGetFilter interface
+ *
  * When a path is read from an AutoloaderIndex, this filter is applied on
  * that path.
  *
@@ -51,7 +53,7 @@ interface AutoloaderIndexGetFilter
 {
 
     /**
-     * filterGetPath() returns a filtered path.
+     * Returns a filtered path
      *
      * @param String $path a path
      * 

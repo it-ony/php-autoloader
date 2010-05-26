@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file implements the class AutoloaderIndex_Dummy.
+ * Defines the class AutoloaderIndex_File
  *
  * PHP version 5
  *
@@ -63,17 +63,16 @@ InternalAutoloader::getInstance()->registerClass(
  *
  * This implementation is threadsafe.
  *
- * @category  Autoloader
- * @package   Index
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::setIndex()
- * @see       Autoloader::getIndex()
- * @see       serialize()
- * @see       unserialize()
+ * @category Autoloader
+ * @package  Index
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::setIndex()
+ * @see      Autoloader::getIndex()
+ * @see      serialize()
+ * @see      unserialize()
  */
 abstract class AutoloaderIndex_File extends AutoloaderIndex
 {
@@ -89,7 +88,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     $_index = null;
 
     /**
-     * buildIndex() generates the index array from the string $data.
+     * Generates the index array from the string $data
      *
      * The index array has the class names as keys and the path as values.
      *
@@ -101,8 +100,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     abstract protected function buildIndex($data);
 
     /**
-     * serializeIndex() creates the content of the index file from the index
-     * array.
+     * Creates the content of the index file from the index array
      *
      * The index array has the class names as keys and the path as values.
      *
@@ -114,7 +112,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     abstract protected function serializeIndex(Array $index);
 
     /**
-     * Set the path to the index file.
+     * Sets the path to the index file
      *
      * Setting the index file path is optional. Per default
      * it will be a file in the temporary directory.
@@ -131,7 +129,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     }
 
     /**
-     * Get the path of the index file.
+     * Gets the path of the index file
      *
      * @return String The path to the index file
      * @see setIndexPath()
@@ -169,6 +167,8 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     }
 
     /**
+     * Asserts that the index is loaded
+     *
      * if the index was not build it is builded by calling buildIndex().
      *
      * @throws AutoloaderException_Index
@@ -196,7 +196,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     }
 
     /**
-     * readFile() reads the content of the index file.
+     * Reads the content of the index file
      *
      * @param String $file the path of a file
      *
@@ -223,7 +223,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     }
 
     /**
-     * saveFile() stores data into a file.
+     * Stores data into a file
      *
      * @param String $file The path of the file
      * @param String $data The content
@@ -237,7 +237,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     }
 
     /**
-     * saveRaw() stores the content of the index array threadsafe in the index file.
+     * Stores the content of the index array threadsafe in the index file
      *
      * @see saveFile()
      * @see serializeIndex()
@@ -287,7 +287,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     }
 
     /**
-     * count() returns the size of the index.
+     * Returns the size of the index
      *
      * @throws AutoloaderException_Index
      * @see Countable
@@ -300,8 +300,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     }
 
     /**
-     * getRawPath() returns the unfiltered path of the class definition
-     * for the class $class.
+     * Returns the unfiltered path of the class definition for the class $class
      *
      * @param String $class The class name
      *
@@ -320,7 +319,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     }
 
     /**
-     * getPaths() returns all paths in the index.
+     * Returns all paths in the index
      *
      * @throws AutoloaderException_Index
      * @return Array
@@ -332,8 +331,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     }
 
     /**
-     * setRawPath() stores the filtered path of a class definition locally in the
-     * index array.
+     * Stores the filtered path of a class definition locally in the index array
      *
      * @param String $class A class name
      * @param String $path  The path of the class definition
@@ -348,7 +346,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     }
 
     /**
-     * unsetRawPath() removes the class definition for $class from the index array.
+     * Removes the class definition for $class from the index array
      *
      * @param String $class A class name
      * 
@@ -362,7 +360,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     }
 
     /**
-     * hasPath() returns true if the class $class is contained in the index array.
+     * Returns true if the class $class is contained in the index array
      *
      * @param String $class A class name
      *

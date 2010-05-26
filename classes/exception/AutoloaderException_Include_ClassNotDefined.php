@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_Include_ClassNotDefined.
+ * Defines the AutoloaderException_Include_ClassNotDefined
  *
  * PHP version 5
  *
@@ -37,20 +37,18 @@
 require_once dirname(__FILE__) . '/AutoloaderException_Include.php';
 
 /**
- * AutoloaderException_Include_ClassNotDefined is raised if the class could
- * not be found.
+ * Raised if the class could not be found
  *
  * Only if the Autoloader is the last Autoloader in the stack this exception
  * will be thrown out of the Autoloader context and lead to a termination.
  *
- * @category  Autoloader
- * @package   Exception
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       AbstractAutoloader::loadClass()
+ * @category Autoloader
+ * @package  Exception
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      AbstractAutoloader::loadClass()
  */
 class AutoloaderException_Include_ClassNotDefined extends AutoloaderException_Include
 {

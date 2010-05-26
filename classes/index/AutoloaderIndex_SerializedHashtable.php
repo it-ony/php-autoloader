@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file implements the class AutoloaderIndex_SerializedHashtable.
+ * Implements the class AutoloaderIndex_SerializedHashtable
  *
  * PHP version 5
  *
@@ -39,7 +39,7 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * The index is a serialized hashtable.
+ * Implements AutoloaderIndex_File with a serialized hashtable
  *
  * This index is working in every PHP environment. It should be fast enough
  * for most applications. The index is a file in the temporary directory.
@@ -47,24 +47,22 @@ InternalAutoloader::getInstance()->registerClass(
  *
  * This implementation is threadsafe.
  *
- * @category  Autoloader
- * @package   Index
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::setIndex()
- * @see       Autoloader::getIndex()
- * @see       serialize()
- * @see       unserialize()
+ * @category Autoloader
+ * @package  Index
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::setIndex()
+ * @see      Autoloader::getIndex()
+ * @see      serialize()
+ * @see      unserialize()
  */
 class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex_File
 {
     
     /**
-     * buildIndex() reads the serialized array content and generates the
-     * index array.
+     * Reads the serialized array content and generates the index array
      *
      * @param String $data The serialized content
      *
@@ -85,7 +83,7 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex_File
     }
 
     /**
-     * serializeIndex() serializes the index array.
+     * Serializes the index array
      *
      * @param Array $index The index array
      *

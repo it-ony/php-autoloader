@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the test cases for Autoloader_Profiler.
+ * Defines the class AutoloaderSuite
  *
  * PHP version 5
  *
@@ -42,33 +42,32 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
 
 
 /**
- * Autoloader test suite.
+ * Autoloader test suite
  *
  * The "Exception thrown without a stack frame in Unknown on line 0"
  * is a side effect of the tearDown() which deletes the indexes, before
  * every destructor was called.
  *
- * @category  Autoloader
- * @package   Test
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       TestIndexFilter
- * @see       TestAutoloader
- * @see       TestAutoloaderProfiler
- * @see       TestIndex
- * @see       TestParser
- * @see       TestInternalAutoloader
- * @see       TestFileIterator
- * @see       TestOldPHPAPI
+ * @category Autoloader
+ * @package  Test
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      TestIndexFilter
+ * @see      TestAutoloader
+ * @see      TestAutoloaderProfiler
+ * @see      TestIndex
+ * @see      TestParser
+ * @see      TestInternalAutoloader
+ * @see      TestFileIterator
+ * @see      TestOldPHPAPI
  */
 class AutoloaderSuite extends PHPUnit_Framework_TestSuite
 {
 
     /**
-     * suite() returns a list of test cases to be tested.
+     * Returns a list of test cases to be tested
      *
      * @return AutoloaderSuite
      */
@@ -89,7 +88,7 @@ class AutoloaderSuite extends PHPUnit_Framework_TestSuite
     }
 
     /**
-     * tearDown() deletes all temporary files.
+     * Deletes all temporary files
      *
      * @return void
      */
@@ -98,6 +97,5 @@ class AutoloaderSuite extends PHPUnit_Framework_TestSuite
         AutoloaderTestHelper::deleteDirectory('.');
         AutoloaderTestHelper::deleteDirectory(TestIndex::getIndexDirectory(), false);
     }
-    
     
 }

@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_IndexBuildCollision.
+ * Defines the AutoloaderException_IndexBuildCollision
  *
  * PHP version 5
  *
@@ -39,19 +39,17 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * AutoloaderException_IndexBuildCollision occurs during a collision
- * while building the index.
+ * Occurs during a collision while building the index
  *
  * A collision happens if a class definition is not unique in a class path.
  *
- * @category  Autoloader
- * @package   Exception
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::buildIndex()
+ * @category Autoloader
+ * @package  Exception
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::buildIndex()
  */
 class AutoloaderException_IndexBuildCollision extends AutoloaderException
 {
@@ -67,7 +65,7 @@ class AutoloaderException_IndexBuildCollision extends AutoloaderException
     $_class = '';
 
     /**
-     * The Exceptions knows the ambiguous class and its definitions.
+     * Knows the ambiguous class and its definitions
      *
      * @param String $class The ambiguous class name
      * @param Array  $paths The paths for the found class definitions
@@ -83,7 +81,7 @@ class AutoloaderException_IndexBuildCollision extends AutoloaderException
     }
 
     /**
-     * getClass() returns the ambiguous class name which caused this exception.
+     * Returns the ambiguous class name which caused this exception
      *
      * @return String
      */
@@ -93,8 +91,8 @@ class AutoloaderException_IndexBuildCollision extends AutoloaderException
     }
 
     /**
-     * getPaths() returns a list of files which provide class definitions to the
-     * ambiguous class.
+     * Returns a list of files which provide class definitions to the ambiguous
+     * class
      *
      * @return Array
      */

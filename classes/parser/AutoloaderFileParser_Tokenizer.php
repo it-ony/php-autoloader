@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderFileParser_Tokenizer.
+ * Defines the AutoloaderFileParser_Tokenizer
  *
  * PHP version 5
  *
@@ -43,18 +43,16 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * AutoloaderFileParser_Tokenizer is a reliable AutoloaderFileParser
- * implementation which uses PHP's tokenizer.
+ * A reliable AutoloaderFileParser implementation which uses PHP's tokenizer
  *
- * @category  Autoloader
- * @package   Parser
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::searchPath()
- * @see       token_get_all()
+ * @category Autoloader
+ * @package  Parser
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::searchPath()
+ * @see      token_get_all()
  */
 class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser
 {
@@ -78,6 +76,8 @@ class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser
 
 
     /**
+     * Returns the classes in the code $source
+     *
      * getClassesInSource() uses the tokenizer to return
      * a list of class definitions.
      *

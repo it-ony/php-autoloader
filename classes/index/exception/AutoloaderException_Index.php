@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_Index.
+ * Defines the AutoloaderException_Index
  *
  * PHP version 5
  *
@@ -40,13 +40,12 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * AutoloaderException_Index are thrown by AutoloaderIndex instances.
+ * Thrown by AutoloaderIndex instances
  *
  * @category   Autoloader
  * @package    Index
  * @subpackage Exception
  * @author     Markus Malkusch <markus@malkusch.de>
- * @copyright  2009 - 2010 Markus Malkusch
  * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version    Release: 1.8
  * @link       http://php-autoloader.malkusch.de/en/

@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_SearchFailed.
+ * Defines the AutoloaderException_SearchFailed
  *
  * PHP version 5
  *
@@ -39,16 +39,15 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * AutoloaderException_SearchFailed is raised if searching for a class fails.
+ * Raised if searching for a class fails
  *
- * @category  Autoloader
- * @package   Exception
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::searchPath()
+ * @category Autoloader
+ * @package  Exception
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::searchPath()
  */
 class AutoloaderException_SearchFailed extends AutoloaderException
 {
@@ -60,7 +59,7 @@ class AutoloaderException_SearchFailed extends AutoloaderException
     $_class = '';
 
     /**
-     * The exception knows the class which couldn't be found.
+     * Knows the class which couldn't be found
      *
      * @param String $class The class which couldn't be found
      */
@@ -72,7 +71,7 @@ class AutoloaderException_SearchFailed extends AutoloaderException
     }
 
     /**
-     * The class which wasn't found.
+     * Returns the class which wasn't found
      *
      * @return String
      */

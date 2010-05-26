@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the class OldPHPAPI.
+ * Defines the class OldPHPAPI
  *
  * PHP version 5
  *
@@ -31,26 +31,26 @@
  */
 
 /**
- * OldPHPAPI implements missing PHP5 functions and constants.
+ * Implements missing PHP5 functions and constants
  *
  * A missing function is implemented by a static method of this class with
  * an @implement annotation. The @implement annotation gives the name of the
  * function.
  *
- * @category  Autoloader
- * @package   Base
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category Autoloader
+ * @package  Base
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
  */
 class OldPHPAPI
 {
 
     /**
-     * checkAPI() will define all required functions and constants.
+     * Defines all required functions and constants
      *
+     * @see _define()
      * @return void
      */
     public function checkAPI()
@@ -113,13 +113,14 @@ class OldPHPAPI
     }
 
     /**
-     * _define() defines a global constant if it is not defines yet.
+     * Defines a global constant if it is not defines yet
      *
-     * $value is optional and would be name of the constant it self if omitted.
+     * $value is optional and would be name of the constant itself if omitted.
      *
      * @param String $const The constant name
      * @param String $value The optional constant value
      *
+     * @see checkAPI()
      * @return void
      */
     private function _define($const, $value = null)
@@ -132,7 +133,7 @@ class OldPHPAPI
     }
 
     /**
-     * errorGetLast() implements error_get_last().
+     * Implements error_get_last()
      *
      * @implement error_get_last
      * @see error_get_last()
@@ -151,7 +152,7 @@ class OldPHPAPI
     }
 
     /**
-     * sysGetTempDir() implements sys_get_temp_dir().
+     * Implements sys_get_temp_dir()
      *
      * @implement sys_get_temp_dir
      * @see sys_get_temp_dir()
@@ -180,7 +181,7 @@ class OldPHPAPI
     }
 
     /**
-     * parseIniString() implements parse_ini_string().
+     * Implements parse_ini_string()
      *
      * @param String $data The parsable ini string
      *
@@ -199,7 +200,7 @@ class OldPHPAPI
     }
 
     /**
-     * strGetcsv() implements str_getcsv().
+     * Implements str_getcsv()
      *
      * @param String $data The parsable csv string
      *
@@ -208,7 +209,7 @@ class OldPHPAPI
      * @see AutoloaderIndex_CSV
      * @return Array
      */
-    public static function strGetcsv($data)
+    public static function strGetCSV($data)
     {
         $fp = tmpfile();
         fwrite($fp, $data);

@@ -3,8 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the
- * AutoloaderException_Index_Filter_RelativePath_InvalidBasePath.
+ * Defines the AutoloaderException_Index_Filter_RelativePath_InvalidBasePath
  *
  * PHP version 5
  *
@@ -41,14 +40,13 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * AutoloaderException_Index_Filter_RelativePath_InvalidBasePath is thrown if a
- * AutoloaderIndexFilter_RelativePath is constructored with an invalid base path.
+ * Thrown if a AutoloaderIndexFilter_RelativePath is constructored with an invalid
+ * base path
  *
  * @category   Autoloader
  * @package    Index
  * @subpackage Exception
  * @author     Markus Malkusch <markus@malkusch.de>
- * @copyright  2009 - 2010 Markus Malkusch
  * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version    Release: 1.8
  * @link       http://php-autoloader.malkusch.de/en/
@@ -61,7 +59,7 @@ class AutoloaderException_Index_Filter_RelativePath_InvalidBasePath
 {
 
     /**
-     * The exception is constructed with an invalid path.
+     * Constructed with an invalid path
      *
      * @param String $basePath An invalid base path
      */

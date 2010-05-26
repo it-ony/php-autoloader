@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the test cases for Autoloader_Profiler.
+ * Defines the test cases for Autoloader_Profiler
  *
  * PHP version 5
  *
@@ -44,13 +44,12 @@ require_once dirname(__FILE__) . "/classes/Autoloader_Profiler.php";
 /**
  * Autoloader_Profiler test cases
  *
- * @category  Autoloader
- * @package   Test
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category Autoloader
+ * @package  Test
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
  */
 class TestAutoloaderProfiler extends PHPUnit_Framework_TestCase
 {
@@ -62,7 +61,7 @@ class TestAutoloaderProfiler extends PHPUnit_Framework_TestCase
     $_autoloaderTestHelper;
 
     /**
-     * setUp() removes all Autoloaders from the stack and initializes
+     * Removes all Autoloaders from the stack and initializes
      * the AutoloaderTestHelper $_autoloaderTestHelper.
      *
      * @see $_autoloaderTestHelper
@@ -75,9 +74,9 @@ class TestAutoloaderProfiler extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testUseIndexInMultiAutoLoaderEnvironment() asserts that in an environment
-     * with several registered instances of Autoloader, every Autoloader uses its
-     * index first before they start iterating through their class paths.
+     * Asserts that in an environment with several registered instances of
+     * Autoloader, every Autoloader uses its index first before they start iterating
+     * through their class paths
      *
      * @return void
      */

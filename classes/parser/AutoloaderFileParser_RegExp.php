@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderFileParser_RegExp.
+ * Defines the AutoloaderFileParser_RegExp
  *
  * PHP version 5
  *
@@ -39,22 +39,21 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * AutoloaderFileParser_RegExp is an AutoloaderFileParser implementation which
- * uses a regulare expression for parsing.
+ * An AutoloaderFileParser implementation which uses a regulare expression for
+ * parsing
  *
  * This is not as reliable as the AutoloaderFileParser_Tokenizer.
  * But if there's no tokenizer support this is a well working
  * fallback. This class is as well as the regular expression
  * '~\s*((abstract\s+)?class|interface)\s+([a-z].*)[$\s#/{]~imU'.
  *
- * @category  Autoloader
- * @package   Parser
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::searchPath()
+ * @category Autoloader
+ * @package  Parser
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::searchPath()
  */
 class AutoloaderFileParser_RegExp extends AutoloaderFileParser
 {
@@ -70,6 +69,8 @@ class AutoloaderFileParser_RegExp extends AutoloaderFileParser
     }
 
     /**
+     * Returns classes in the code $source
+     *
      * getClassesInSource() uses a regular expression to find class definitions.
      *
      * @param String $source The content which is searched for class definitions

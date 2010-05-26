@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file implements the class AutoloaderIndex_SerializedHashtable_GZ.
+ * Implements the class AutoloaderIndex_SerializedHashtable_GZ
  *
  * PHP version 5
  *
@@ -47,25 +47,25 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * The index is a compressed serialized hashtable.
+ * Extends AutoloaderIndex_SerializedHashtable by compressing the
+ * serialized hashtable
  *
  * This index works similar to AutoloaderIndex_SerializedHashtable. Its only
  * difference is that the index file is compressed. In environments with
  * a hugh count of class definitions a plain text index file would produce
  * too much IO costs.
  *
- * @category  Autoloader
- * @package   Index
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::setIndex()
- * @see       Autoloader::getIndex()
- * @see       serialize()
- * @see       unserialize()
- * @see       gzfile()
+ * @category Autoloader
+ * @package  Index
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::setIndex()
+ * @see      Autoloader::getIndex()
+ * @see      serialize()
+ * @see      unserialize()
+ * @see      gzfile()
  */
 class AutoloaderIndex_SerializedHashtable_GZ
     extends AutoloaderIndex_SerializedHashtable
@@ -79,7 +79,7 @@ class AutoloaderIndex_SerializedHashtable_GZ
     $_compressionLevel = 1;
 
     /**
-     * readFile() reads the content of a file and decompresses it.
+     * Reads the content of a file and decompresses it
      *
      * @param String $file the path to a file
      *
@@ -114,7 +114,7 @@ class AutoloaderIndex_SerializedHashtable_GZ
     }
 
     /**
-     * saveFile() stores the string $data compressed into a file.
+     * Stores the string $data compressed into a file
      *
      * @param String $file The path to a file
      * @param String $data The uncompressed content

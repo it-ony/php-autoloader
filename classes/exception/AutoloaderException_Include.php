@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_Include.
+ * Defines the AutoloaderException_Include.
  *
  * PHP version 5
  *
@@ -37,16 +37,15 @@
 require_once dirname(__FILE__) . '/AutoloaderException.php';
 
 /**
- * AutoloaderException_Include is raised if including a class failed.
+ * Raised if including a class failed
  *
- * @category  Autoloader
- * @package   Exception
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       AbstractAutoloader::loadClass()
+ * @category Autoloader
+ * @package  Exception
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      AbstractAutoloader::loadClass()
  */
 class AutoloaderException_Include extends AutoloaderException
 {

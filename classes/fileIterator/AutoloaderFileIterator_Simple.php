@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderFileIterator_Simple.
+ * Defines the AutoloaderFileIterator_Simple
  *
  * PHP version 5
  *
@@ -39,18 +39,17 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * AutoloaderFileIterator_Simple searches all files without any logic.
+ * Searches all files without any logic
  *
  * It uses a stack of DirectoryIterator objects for searching recursively.
  *
- * @category  Autoloader
- * @package   FileIterator
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::searchPath()
+ * @category Autoloader
+ * @package  FileIterator
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::searchPath()
  */
 class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
 {
@@ -66,7 +65,7 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
     $_iterator;
 
     /**
-     * current() returns the path of the current file.
+     * Returns the path of the current file
      *
      * @see Iterator::current()
      * @return String
@@ -77,8 +76,9 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
     }
 
     /**
-     * key() returns the key of the current DirectoryIterator object. This key
-     * is not meant to be used or to be distinct.
+     * Returns the key of the current DirectoryIterator object.
+     *
+     * This key is not meant to be used or to be distinct.
      *
      * @see Iterator::key()
      * @return String
@@ -89,7 +89,7 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
     }
 
     /**
-     * next() calls next() on the current DirectoryIterator.
+     * Calls next() on the current DirectoryIterator
      *
      * @see Iterator::next()
      * @return void
@@ -100,7 +100,7 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
     }
 
     /**
-     * rewind() clears the stack and sets the current iterator to a new instance of
+     * Clears the stack and sets the current iterator to a new instance of
      * DirectoryIterator with the class path of $autoloader.
      *
      * @see Iterator::rewind()
@@ -114,7 +114,7 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
     }
 
     /**
-     * valid() does the recursion magic.
+     * Does the recursion magic
      * 
      * If the current path is a directory, the current iterator is put on the stack
      * and a new DirectoryIterator with the current path becomes the current

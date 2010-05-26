@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file implements the class AutoloaderIndex_Dummy.
+ * Implements the class AutoloaderIndex_Dummy
  *
  * PHP version 5
  *
@@ -43,19 +43,18 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * A Dummy implementation without any persistent abilities.
+ * A dummy implementation without any persistent abilities
  *
  * There is no sense except testing in using this index.
  *
- * @category  Autoloader
- * @package   Index
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::setIndex()
- * @see       Autoloader::getIndex()
+ * @category Autoloader
+ * @package  Index
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::setIndex()
+ * @see      Autoloader::getIndex()
  */
 class AutoloaderIndex_Dummy extends AutoloaderIndex
 {
@@ -67,7 +66,7 @@ class AutoloaderIndex_Dummy extends AutoloaderIndex
     $_index = array();
 
     /**
-     * count() returns the size of the index.
+     * Returns the size of the index
      *
      * @return int
      * @see Countable
@@ -78,7 +77,7 @@ class AutoloaderIndex_Dummy extends AutoloaderIndex
     }
 
     /**
-     * getPaths() returns all paths in the index.
+     * Returns all paths in the index
      *
      * @throws AutoloaderException_Index
      * @return Array
@@ -89,7 +88,7 @@ class AutoloaderIndex_Dummy extends AutoloaderIndex
     }
 
     /**
-     * getRawPath() returns the unfiltered path of the class definition
+     * Returns the unfiltered path of the class definition
      *
      * @param String $class A class name
      *
@@ -106,7 +105,7 @@ class AutoloaderIndex_Dummy extends AutoloaderIndex
     }
 
     /**
-     * setRawPath() stores the filtered path for a class definition.
+     * Stores the filtered path for a class definition
      *
      * @param String $class A class name
      * @param String $path  The path to the class definition
@@ -119,7 +118,7 @@ class AutoloaderIndex_Dummy extends AutoloaderIndex
     }
 
     /**
-     * unsetRawPath() removes A class from the index.
+     * Removes A class from the index
      *
      * @param String $class A class name
      *
@@ -131,7 +130,7 @@ class AutoloaderIndex_Dummy extends AutoloaderIndex
     }
 
     /**
-     * hasPath() returns true if the index contains the path to the class $class.
+     * Returns true if the index contains the path to the class $class
      *
      * @param String $class A class name
      *
@@ -143,7 +142,7 @@ class AutoloaderIndex_Dummy extends AutoloaderIndex
     }
 
     /**
-     * delete() does nothing in this implementation.
+     * Does nothing in this implementation
      *
      * The index is never stored persistently.
      *
@@ -155,7 +154,7 @@ class AutoloaderIndex_Dummy extends AutoloaderIndex
     }
 
     /**
-     * saveRaw() does nothing in this implementation.
+     * Does nothing in this implementation
      * 
      * The index is never stored persistently.
      *

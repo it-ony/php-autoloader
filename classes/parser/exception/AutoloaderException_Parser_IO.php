@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_Parser_IO.
+ * Defines the AutoloaderException_Parser_IO
  *
  * PHP version 5
  *
@@ -40,14 +40,12 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * An AutoloaderException_Parser_IO is raised if an IO error occured during parsing
- * for class definitions.
+ * Raised if an IO error occured during parsing for class definitions
  *
  * @category   Autoloader
  * @package    Parser
  * @subpackage Exception
  * @author     Markus Malkusch <markus@malkusch.de>
- * @copyright  2009 - 2010 Markus Malkusch
  * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version    Release: 1.8
  * @link       http://php-autoloader.malkusch.de/en/

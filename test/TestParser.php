@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the test cases for the AutoloaderFileParser
+ * Defines the test cases for the AutoloaderFileParser
  *
  * PHP version 5
  *
@@ -37,21 +37,20 @@
 require_once dirname(__FILE__) . "/../Autoloader.php";
 
 /**
- * AutoloaderFileParser test cases.
+ * AutoloaderFileParser test cases
  * 
- * @category  Autoloader
- * @package   Test
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category Autoloader
+ * @package  Test
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
  */
 class TestParser extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * This test asserts that the tokenizer is used as default.
+     * Asserts that the tokenizer is used as default
      *
      * @return void
      */
@@ -69,7 +68,7 @@ class TestParser extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This test asserts that the Parser finds all classes in a string.
+     * Asserts that the Parser finds all classes in a string
      *
      * @param AutoloaderFileParser $parser  This AutoloaderFileParser is tested.
      * @param Array                $classes Theses classes are expected to be found.
@@ -87,7 +86,7 @@ class TestParser extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This test asserts that the Parser finds all classes in a file.
+     * Asserts that the Parser finds all classes in a file
      *
      * The file is created dynamically from the given source.
      *
@@ -109,7 +108,7 @@ class TestParser extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This test asserts that the Parser finds a class in a string.
+     * Asserts that the Parser finds a class in a string
      *
      * @param AutoloaderFileParser $parser This AutoloaderFileParser is tested.
      * @param String               $class  This class is expected to be found.
@@ -128,7 +127,7 @@ class TestParser extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This test asserts that the Parser finds a class in a file.
+     * Asserts that the Parser finds a class in a file
      *
      * The file is created dynamically from the given source.
      *
@@ -155,7 +154,7 @@ class TestParser extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * This method provides test cases for TestIsClassIn* tests.
+     * Provides test cases for TestIsClassIn* tests
      *
      * @see testIsClassInSource()
      * @see testIsClassInFile()
@@ -176,7 +175,7 @@ class TestParser extends PHPUnit_Framework_TestCase
     }
 
      /**
-     * This method provides test cases for TestTestGetClasses* tests.
+     * Provides test cases for TestTestGetClasses* tests
      *
      * @see testGetClassesInFile()
      * @see testGetClassesInSource()
@@ -195,7 +194,7 @@ class TestParser extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * The method provides code with an array of defined classes.
+     * Provides code with an array of defined classes
      *
      * @return Array
      */
@@ -269,8 +268,7 @@ class TestParser extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _createFile() creates a file from and puts the content of $source
-     * into the file.
+     * Creates a file from and puts the content of $source into the file
      *
      * @param String $source The content for the new file
      *
@@ -284,8 +282,8 @@ class TestParser extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideParser() returns a list of AutoloaderFileParser objects which
-     * are will be tested in all test cases.
+     * Returns a list of AutoloaderFileParser objects which are will be tested in
+     * all test cases
      *
      * @return Array
      */

@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the class Autoloader.
+ * Defines the class Autoloader
  *
  * PHP version 5
  *
@@ -44,7 +44,7 @@ require_once
     dirname(__FILE__) . '/exception/AutoloaderException_PathNotRegistered.php';
 
 /**
- * An implementation for Autoloading classes in PHP.
+ * An implementation for Autoloading classes in PHP
  *
  * This Autoloader implementation searches recursivly in
  * defined class paths for a class definition.
@@ -57,13 +57,12 @@ require_once
  * Autoloader->addPath() as the constructor uses the path
  * of the debug_backtrace().
  *
- * @category  Autoloader
- * @package   Base
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category Autoloader
+ * @package  Base
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
  */
 class Autoloader extends AbstractAutoloader
 {
@@ -99,7 +98,7 @@ class Autoloader extends AbstractAutoloader
     $_parser;
 
     /**
-     * Sets a AutoloaderFileIterator.
+     * Sets a AutoloaderFileIterator
      *
      * This is not necessary to call, as the Autoloader initializes itself
      * with an AutoloaderFileIterator.
@@ -118,7 +117,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * getFileIterator() returns the AutoloaderFileIterator.
+     * Returns the AutoloaderFileIterator
      *
      * @see setFileIterator()
      * @see _initMembers()
@@ -131,7 +130,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * Sets a AutoloaderFileParser.
+     * Sets a AutoloaderFileParser
      *
      * This is not necessary to call, as the Autoloader initializes itself
      * with the best available parser.
@@ -149,7 +148,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * getParser() returns the AutoloaderFileParser object.
+     * Returns the AutoloaderFileParser object
      *
      * @see $_parser
      * @see setParser()
@@ -162,6 +161,8 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
+     * Sets the index
+     *
      * You might change the index if your not happy with
      * the default index AutoloaderIndex_SerializedHashtable_GZ.
      *
@@ -179,7 +180,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * getIndex() returns the AutoloaderIndex object.
+     * Returns the AutoloaderIndex object
      *
      * @see $index
      * @see setIndex()
@@ -192,8 +193,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * getRegisteredAutoloader() returns a registered instance which does
-     * autoloding in the path $path.
+     * Returns a registered instance which does autoloding in the path $path
      *
      * If no path is given the path of the caller is taken.
      *
@@ -222,8 +222,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * getRegisteredAutoloaders() returns all registered Autoloader instances which
-     * are doing their jobs.
+     * Returns all registered Autoloader instances which are doing their jobs
      *
      * @return Array
      * @see register()
@@ -241,7 +240,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * All instances of Autoloader will be removed from the stack.
+     * Removes all instances of Autoloader from the stack
      *
      * @see remove()
      * @return void
@@ -257,7 +256,10 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * Set the class path of the caller if $path is null.
+     * Sets the class path
+     *
+     * if $path is null the class path is the path of the file which created this
+     * instance.
      *
      * @param String $path The class path
      *
@@ -272,8 +274,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * _getCallersPath() returns the path of the file which calls any method on
-     * this class.
+     * Returns the path of the file which calls any method on this class
      *
      * @see __construct()
      * @see getRegisteredAutoloader()
@@ -297,7 +298,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * This Autoloader will be registered at the stack.
+     * Registers this Autoloader at the stack
      *
      * After registration, this Autoloader is autoloading class definitions.
      *
@@ -334,11 +335,11 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * This method builds an index in advance. You can use it to build
-     * your index before deployment in a productive environment.
-     *
-     * The Autoloader does not have to be registered. All missing members
-     * are initialized like in register().
+     * Builds an index in advance
+     * 
+     * You can use it to build your index before deployment in a productive
+     * environment. The Autoloader does not have to be registered. All missing
+     * members are initialized like in register().
      *
      * @throws AutoloaderException_IndexBuildCollision
      * @throws AutoloaderException_Index
@@ -375,7 +376,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * _initMembers() initializes the members with a working configuration.
+     * Initializes the members with a working configuration
      *
      * @see register()
      * @see buildIndex()
@@ -409,7 +410,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * _removeByNormalization() is called during _normalizeSearchPaths().
+     * Is called during _normalizeSearchPaths()
      *
      * The autoloader is removed from the stack. It is added to
      * $_unregisteredNormalizedAutoloaders so it could later be readded by
@@ -428,7 +429,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * This Autoloader will be removed from the stack.
+     * Removes this Autoloader from the stack
      *
      * If this was resposnible for removing any other autoloaders during
      * _normalizeSearchPaths() the other autoloaders is readded again.
@@ -452,7 +453,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * Paths which are below other search paths are removed.
+     * Removes paths which are included in other search paths
      *
      * For example a /var/tmp would be removed if /var is already
      * a search path.
@@ -481,7 +482,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * You can define a class paths in which the Autoloader will search for classes.
+     * Defines a class paths in which the Autoloader will search for classes
      *
      * The constructor did this automatically.
      *
@@ -507,7 +508,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * Get the search path of this autoloader.
+     * Gets the search path of this autoloader
      *
      * @see $_path
      * @return String
@@ -519,8 +520,10 @@ class Autoloader extends AbstractAutoloader
 
     /**
      * Returns true if this instance is the first registered instance of
-     * this class. It might return TRUE if there are Autoloaders registered
-     * of different classes.
+     * this class
+     * 
+     * It might return TRUE if there are Autoloaders registered of different
+     * classes.
      *
      * @return bool
      * @see _getAutoloaderPosition()
@@ -532,10 +535,12 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * Returns the position in the autoloader stack. The offset is 0.
-     * It considers only instances of this class. That means a returned
-     * position of 0 doesn't implie it is the first Autoloader in the
-     * autoloader stack. It's only the first instance of this Autoloader class.
+     * Returns the position in the autoloader stack
+     * 
+     * The offset is 0. It considers only instances of this class.
+     * That means a returned position of 0 doesn't implie it is the first Autoloader
+     * in the autoloader stack. It's only the first instance of this Autoloader
+     * class.
      *
      * @return int
      * @throws AutoloaderException_PathNotRegistered
@@ -551,7 +556,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * _searchPathInIndexes() returns the path of a class from the index
+     * Returns the path of a class from the index
      *
      * This method acts actually statically. If this object is the first instance
      * in the autoloader stack it will iterate through all indexes and return
@@ -582,7 +587,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * doAutoload() implements autoloading with an dynamic index.
+     * Implements autoloading with an dynamic index
      *
      * @param String $class The normalized class name
      *
@@ -618,7 +623,7 @@ class Autoloader extends AbstractAutoloader
     }
 
     /**
-     * searchPath() finds a class definition in the search paths
+     * Finds a class definition in the search paths
      *
      * This methods resets the max_execution_time to $searchTimeoutSeconds.
      *

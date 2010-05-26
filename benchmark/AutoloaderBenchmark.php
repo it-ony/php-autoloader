@@ -4,7 +4,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file starts an index benchmark.
+ * Starts an index benchmark
  *
  * PHP version 5
  *
@@ -51,13 +51,12 @@ AutoloaderBenchmark::classConstructor();
 /**
  * AutoloaderBenchmark class
  *
- * @category  Autoloader
- * @package   Benchmark
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category Autoloader
+ * @package  Benchmark
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
  */
 class AutoloaderBenchmark
 {
@@ -111,8 +110,9 @@ class AutoloaderBenchmark
     $_sqliteFile;
 
     /**
-     * The class constructor serves as entry point for this script. It runs
-     * several benchmark iteratios.
+     * Serves as entry point for this script.
+     *
+     * It runs several benchmark iteratios.
      *
      * @return void
      */
@@ -148,7 +148,7 @@ class AutoloaderBenchmark
     }
 
     /**
-     * The constructor creates a new benchmark.
+     * Creates a new benchmark
      *
      * @param int $indexSize    The size of the index
      * @param int $getPathCount The amount of AutoloaderIndex::getPath() calls
@@ -187,7 +187,7 @@ class AutoloaderBenchmark
     }
 
     /**
-     * run() starts the benchmark.
+     * Starts the benchmark
      *
      * @return void
      */
@@ -226,7 +226,7 @@ class AutoloaderBenchmark
     }
 
     /**
-     * runBenchmark() runs one iteration of the benchmark.
+     * Runs one iteration of the benchmark
      *
      * @param AutoloaderIndex $index    The AutoloaderIndex instance
      * @param array           $classSet The list of classes to fetch
@@ -243,8 +243,7 @@ class AutoloaderBenchmark
 
 
     /**
-     * _getClassSet() returns a random set of class numbers, which the index
-     * contains.
+     * Returns a random set of class numbers, which the index contains
      *
      * The count of this is $_getPathCount. To get the class name of a class
      * number you can use _getIndexedClassName().
@@ -272,7 +271,7 @@ class AutoloaderBenchmark
     }
 
     /**
-     * __toString() returns the human readable output of the benchmark.
+     * Returns the human readable output of the benchmark
      *
      * @return String
      */
@@ -307,7 +306,7 @@ class AutoloaderBenchmark
     }
 
     /**
-     * getDurations() returns the durations array.
+     * Returns the durations array
      *
      * @return Array
      */
@@ -317,7 +316,7 @@ class AutoloaderBenchmark
     }
 
     /**
-     * getAverageDurations() returns the avarage duration Array.
+     * Returns the avarage duration Array
      *
      * @return Array
      */
@@ -332,7 +331,7 @@ class AutoloaderBenchmark
     }
 
     /**
-     * getAverageDuration() returns the avarage duration for one index.
+     * Returns the avarage duration for one index
      *
      * @param String $name The index name
      *
@@ -345,7 +344,7 @@ class AutoloaderBenchmark
     }
 
     /**
-     * _createIndexes() creates new indexes which are tested in this benchmark.
+     * Creates new indexes which are tested in this benchmark
      *
      * @see _fillIndex()
      * @return Array
@@ -388,7 +387,7 @@ class AutoloaderBenchmark
     }
 
     /**
-     * _fillIndex() inserts an amount of classes into an empty index.
+     * Inserts an amount of classes into an empty index
      *
      * @param AutoloaderIndex $index An instance of AutoloaderIndex
      * @param int             $count the amount of classes for the index
@@ -406,7 +405,7 @@ class AutoloaderBenchmark
     }
 
     /**
-     * _getIndexedClassName() returns a class name for a class number.
+     * Returns a class name for a class number
      *
      * @param int $number The class number
      *

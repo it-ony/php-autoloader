@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderIndexFilter_RelativePath.
+ * Defines the AutoloaderIndexFilter_RelativePath
  *
  * PHP version 5
  *
@@ -45,14 +45,12 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * AutoloaderIndexFilter_RelativePath transforms absolute paths into relative paths
- * and vice versa.
+ * Transforms absolute paths into relative paths and vice versa
  *
  * @category   Autoloader
  * @package    Index
  * @subpackage Filter
  * @author     Markus Malkusch <markus@malkusch.de>
- * @copyright  2009 - 2010 Markus Malkusch
  * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version    Release: 1.8
  * @link       http://php-autoloader.malkusch.de/en/
@@ -74,6 +72,8 @@ class AutoloaderIndexFilter_RelativePath implements AutoloaderIndexFilter
     $_basePathArray = array();
 
     /**
+     * Constructed with a base path
+     *
      * The base path is the base for the relative paths.
      *
      * @param String $basePath The base path
@@ -98,7 +98,7 @@ class AutoloaderIndexFilter_RelativePath implements AutoloaderIndexFilter
     }
 
     /**
-     * getBasePath() returns the base path.
+     * Returns the base path
      *
      * @return String
      */
@@ -108,7 +108,7 @@ class AutoloaderIndexFilter_RelativePath implements AutoloaderIndexFilter
     }
 
     /**
-     * filterSetPath() transforms an absolute path to a relative path.
+     * Transforms an absolute path to a relative path
      *
      * filterSetPath() is inverse to filterGetPath().
      *
@@ -137,7 +137,7 @@ class AutoloaderIndexFilter_RelativePath implements AutoloaderIndexFilter
     }
 
     /**
-     * filterGetPath() transforms a relative to an absolute path.
+     * Transforms a relative to an absolute path
      *
      * filterGetPath() is inverse to filterSetPath().
      *

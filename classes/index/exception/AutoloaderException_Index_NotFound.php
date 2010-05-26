@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_Index_NotFound.
+ * Defines the AutoloaderException_Index_NotFound
  *
  * PHP version 5
  *
@@ -40,14 +40,12 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * AutoloaderException_Index_NotFound is thrown by the autoloader if it doesn't
- * find a file in the index.
+ * Thrown by the autoloader if it doesn't find a file in the index
  *
  * @category   Autoloader
  * @package    Index
  * @subpackage Exception
  * @author     Markus Malkusch <markus@malkusch.de>
- * @copyright  2009 - 2010 Markus Malkusch
  * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version    Release: 1.8
  * @link       http://php-autoloader.malkusch.de/en/

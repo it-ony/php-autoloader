@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines AutoloaderTestHelper.
+ * Defines AutoloaderTestHelper
  *
  * PHP version 5
  *
@@ -31,15 +31,14 @@
  */
 
 /**
- * AutoloaderTestHelper is a helper for unit tests.
+ * A helper for unit tests
  *
- * @category  Autoloader
- * @package   Test
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category Autoloader
+ * @package  Test
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
  */
 class AutoloaderTestHelper
 {
@@ -57,7 +56,7 @@ class AutoloaderTestHelper
     $_test;
 
     /**
-     * The class constructor creates the directory where tests may create files.
+     * Creates the directory where tests may create files
      *
      * @return void
      */
@@ -70,7 +69,7 @@ class AutoloaderTestHelper
     }
 
     /**
-     * getClassDirectory() returns the path where tests may create temporary files.
+     * Returns the path where tests may create temporary files
      *
      * If $subDirectory is given, $subdirectory will be appended to the path.
      *
@@ -92,8 +91,7 @@ class AutoloaderTestHelper
     }
 
     /**
-     * The constructor assigns $_test with an instance of
-     * PHPUnit_Framework_TestCase.
+     * Assigns $_test with an instance of PHPUnit_Framework_TestCase
      *
      * @param PHPUnit_Framework_TestCase $test The test
      *
@@ -105,11 +103,13 @@ class AutoloaderTestHelper
     }
 
     /**
-     * assertLoadable() tests if $class is loadable. If not it will call
-     * PHPUnit_Framework_TestCase::fail().
+     * Tests if $class is loadable
+     * 
+     * If not it will call PHPUnit_Framework_TestCase::fail().
      *
      * @param String $class The class name
-     * 
+     *
+     * @see PHPUnit_Framework_TestCase::fail()
      * @return void
      */
     public function assertLoadable($class)
@@ -124,11 +124,13 @@ class AutoloaderTestHelper
     }
 
     /**
-     * assertNotLoadable() tests if $class is not loadable. If it is loadable
-     * it will call PHPUnit_Framework_TestCase::fail().
+     * Tests if $class is not loadable
+     *
+     * If it is loadable it will call PHPUnit_Framework_TestCase::fail().
      *
      * @param String $class The class name
      *
+     * @see PHPUnit_Framework_TestCase::fail()
      * @return void
      */
     public function assertNotLoadable($class)
@@ -150,7 +152,7 @@ class AutoloaderTestHelper
     }
 
     /**
-     * makeClassInNamespace() creates a class definition in a namespace.
+     * Creates a class definition in a namespace
      *
      * $name is only a prefix of the resulting class name. The class name
      * gets a random string appended. The resulting class name is returned.
@@ -180,7 +182,7 @@ class AutoloaderTestHelper
     }
 
     /**
-     * makeClass() creates a class definition.
+     * Creates a class definition
      *
      * $name is only a prefix of the resulting class name. The class name
      * gets a random string appended. The resulting class name is returned.
@@ -222,7 +224,7 @@ class AutoloaderTestHelper
     }
 
     /**
-     * getGeneratedClassPath() returns the path to the class definition.
+     * Returns the path to the class definition
      * 
      * The class definition must be created with makeClass()
      * or makeClassInNamespace().
@@ -239,8 +241,7 @@ class AutoloaderTestHelper
     }
 
     /**
-     * deleteDirectory() deletes a directory recursively
-     * by calling `rm -rf  $directory`.
+     * Deletes a directory recursively by calling `rm -rf  $directory`
      *
      * if $isChroot is true (default) $directory will be a subdirectory under
      * getClassDirectory().

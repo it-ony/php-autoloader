@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_GuessPathFailed.
+ * Defines the AutoloaderException_GuessPathFailed
  *
  * PHP version 5
  *
@@ -39,16 +39,15 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * AutoloaderException_GuessPathFailed is raised if guessing the caller's path fails.
+ * Raised if guessing the caller's path fails
  *
- * @category  Autoloader
- * @package   Exception
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::getCallersPath()
+ * @category Autoloader
+ * @package  Exception
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::getCallersPath()
  */
 class AutoloaderException_GuessPathFailed extends AutoloaderException
 {

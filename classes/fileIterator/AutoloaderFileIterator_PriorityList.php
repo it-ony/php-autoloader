@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderFileIterator_PriorityList.
+ * Defines the AutoloaderFileIterator_PriorityList
  *
  * PHP version 5
  *
@@ -43,20 +43,18 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * AutoloaderFileIterator_PriorityList searches all files and returns them
- * in a priority list.
+ * Searches all files and returns them in a priority list
  *
  * The AutoloaderFileIterator_PriorityList searches all files in advance and
  * orders them. It may not be practicable on a huge file base.
  *
- * @category  Autoloader
- * @package   FileIterator
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::searchPath()
+ * @category Autoloader
+ * @package  FileIterator
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::searchPath()
  */
 class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator
 {
@@ -84,6 +82,8 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator
     $_iterator;
 
     /**
+     * Sets the class name for the prefered file names
+     *
      * Iteration tries to return an ordered list to
      * have potential class definition candidates first.
      *
@@ -97,6 +97,8 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator
     }
 
     /**
+     * Adds a pattern for prefered files
+     *
      * Files which match agaings $pattern are prefered
      * during iteration.
      *
@@ -111,6 +113,8 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator
     }
 
     /**
+     * Resets the cache of this object
+     *
      * As this implementation uses a cache, any configuration change will discard
      * the cache.
      *
@@ -127,7 +131,7 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator
     }
 
     /**
-     * current() returns the path of the current file.
+     * Returns the path of the current file
      *
      * @see Iterator::current()
      * @return String
@@ -138,8 +142,9 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator
     }
 
     /**
-     * key() returns the key of the current Iterator object. This key
-     * is not meant to be used or to be distinct.
+     * Returns the key of the current Iterator object.
+     *
+     * This key is not meant to be used or to be distinct.
      *
      * @see Iterator::key()
      * @return String
@@ -150,7 +155,7 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator
     }
 
     /**
-     * next() calls next() on the iterator.
+     * Calls next() on the iterator
      *
      * @see Iterator::next()
      * @return void
@@ -161,7 +166,7 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator
     }
 
     /**
-     * rewind() does the ordering and the actual iteration.
+     * Does the ordering and the actual iteration
      *
      * After calling rewind() iteration from outside is done on the ordered
      * array.
@@ -193,7 +198,7 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator
     }
 
     /**
-     * valid() returns valid() on the iterator.
+     * Returns valid() on the iterator
      *
      * Iteration was already done in rewind().
      *
@@ -207,9 +212,9 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator
     }
 
     /**
-     * _initFileArrays() iterates through the class path with an
-     * AutoloaderFileIterator_Simple object. The found paths are stored in the
-     * arrays $_preferedFiles and $_unpreferedFiles.
+     * Iterates through the class path with an AutoloaderFileIterator_Simple object.
+     * The found paths are stored in the arrays $_preferedFiles and
+     * $_unpreferedFiles.
      *
      * @see AutoloaderFileIterator_Simple
      * @return Array

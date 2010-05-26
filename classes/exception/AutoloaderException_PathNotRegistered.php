@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_PathNotRegistered.
+ * Defines the AutoloaderException_PathNotRegistered
  *
  * PHP version 5
  *
@@ -37,17 +37,15 @@
 require_once dirname(__FILE__) . '/AutoloaderException.php';
 
 /**
- * AutoloaderException_PathNotRegistered is raised if no Autoloader was registered
- * for the class path.
+ * Raised if no Autoloader was registered for the class path
  *
- * @category  Autoloader
- * @package   Exception
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::getRegisteredAutoloader()
+ * @category Autoloader
+ * @package  Exception
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::getRegisteredAutoloader()
  */
 class AutoloaderException_PathNotRegistered extends AutoloaderException
 {
@@ -59,7 +57,7 @@ class AutoloaderException_PathNotRegistered extends AutoloaderException
     $_path = '';
 
     /**
-     * The Exception knows the path which has no registered Autoloader.
+     * Knows the path which has no registered Autoloader
      *
      * @param String $path The class path which has no Autoloader
      */
@@ -71,7 +69,7 @@ class AutoloaderException_PathNotRegistered extends AutoloaderException
     }
 
     /**
-     * getPath() returns the path which has no registered Autoloader.
+     * Returns the path which has no registered Autoloader
      *
      * @return String
      */

@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the class AutoloaderIndex.
+ * Defines the class AutoloaderIndex
  *
  * PHP version 5
  *
@@ -31,23 +31,21 @@
  */
 
 /**
- * The AutoloaderIndex stores the location of class defintions for speeding up
- * recurring searches.
+ * Stores the location of class defintions for speeding up recurring searches
  *
  * Searching a class definition in the filesystem takes a lot of time, as every
  * file is read. To avoid these long searches, a found class definition will be
  * stored in an index. The next search for an already found class definition
  * will take no time.
  *
- * @category  Autoloader
- * @package   Index
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::setIndex()
- * @see       Autoloader::getIndex()
+ * @category Autoloader
+ * @package  Index
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::setIndex()
+ * @see      Autoloader::getIndex()
  */
 abstract class AutoloaderIndex implements Countable
 {
@@ -78,7 +76,7 @@ abstract class AutoloaderIndex implements Countable
     $autoloader;
 
     /**
-     * getRawPath() returns the unfiltered path to the class definition of $class.
+     * Returns the unfiltered path to the class definition of $class
      *
      * @param String $class The class name
      *
@@ -90,7 +88,7 @@ abstract class AutoloaderIndex implements Countable
     abstract protected function getRawPath($class);
 
     /**
-     * hasPath() returns true if the class $class is already stored in the index.
+     * Returns true if the class $class is already stored in the index
      *
      * @param String $class The class name
      *
@@ -100,7 +98,7 @@ abstract class AutoloaderIndex implements Countable
     abstract public function hasPath($class);
 
     /**
-     * getPaths() returns all paths of the index.
+     * Returns all paths of the index
      *
      * The returned array has the class name as keys and the paths as values.
      *
@@ -110,7 +108,7 @@ abstract class AutoloaderIndex implements Countable
     abstract public function getPaths();
 
     /**
-     * delete() deletes the index.
+     * Deletes the index
      *
      * @throws AutoloaderException_Index
      * @return void
@@ -118,7 +116,7 @@ abstract class AutoloaderIndex implements Countable
     abstract public function delete();
 
     /**
-     * Set the path for the class $class to $path
+     * Sets the path for the class $class to $path
      *
      * This must not yet be persistent to the index. The Destructor
      * will call save() to make it persistent.
@@ -134,7 +132,7 @@ abstract class AutoloaderIndex implements Countable
     abstract protected function setRawPath($class, $path);
 
     /**
-     * Unset the path for the class $class.
+     * Unsets the path for the class $class
      *
      * This must not yet be persistent to the index. The Destructor
      * will call save() to make it persistent.
@@ -149,7 +147,7 @@ abstract class AutoloaderIndex implements Countable
     abstract protected function unsetRawPath($class);
 
     /**
-     * Makes the changes to the index persistent.
+     * Makes the changes to the index persistent
      *
      * The destructor is calling this method.
      *
@@ -160,6 +158,8 @@ abstract class AutoloaderIndex implements Countable
     abstract protected function saveRaw();
 
     /**
+     * Adds an AutoloaderIndexGetFilter instance to the index
+     *
      * You can add a filter which modifies the path which is read
      * from the index. This could for example produce absolute paths from
      * relative paths.
@@ -175,6 +175,8 @@ abstract class AutoloaderIndex implements Countable
     }
 
     /**
+     * Adds an AutoloaderIndexSetFilter instance to the index
+     *
      * You can add a filter which modifies the path which is stored
      * into the index. This could for example store relative paths instead
      * of absolute paths.
@@ -190,7 +192,7 @@ abstract class AutoloaderIndex implements Countable
     }
 
     /**
-     * addFilter() adds an AutoloaderIndexFilter instance.
+     * Adds an AutoloaderIndexFilter instance to the index
      * 
      * These filters are used to modify the stored and read paths.
      *
@@ -207,7 +209,7 @@ abstract class AutoloaderIndex implements Countable
     }
 
     /**
-     * getPath() returns the path of a class definition.
+     * Returns the path of a class definition
      *
      * All AutoloaderIndexGetFilter instances are applied on the returned path.
      *
@@ -234,8 +236,7 @@ abstract class AutoloaderIndex implements Countable
     }
 
     /**
-     * getGetPathCallCounter() returns how often class definitions were read
-     * from the index.
+     * Returns how often class definitions were read from the index
      *
      * @return int A counter how often getPath() has been called
      * @see getPath()
@@ -246,7 +247,7 @@ abstract class AutoloaderIndex implements Countable
     }
 
     /**
-     * save() makes the changes to the index persistent.
+     * Makes the changes to the index persistent
      *
      * The destructor is calling this method.
      *
@@ -268,6 +269,8 @@ abstract class AutoloaderIndex implements Countable
     }
 
     /**
+     * Sets the Autoloader instance for this index
+     *
      * The Autoloader calls this to set itself to this index.
      *
      * @param Autoloader $autoloader an Autoloader instance
@@ -282,7 +285,7 @@ abstract class AutoloaderIndex implements Countable
     }
 
     /**
-     * Destruction of this index will make changes persistent.
+     * Make changes persistent
      *
      * @throws AutoloaderException_Index
      * @see save()
@@ -293,7 +296,7 @@ abstract class AutoloaderIndex implements Countable
     }
 
     /**
-     * setPath() sets the path for the class $class to $path.
+     * Sets the path for the class $class to $path
      *
      * This must not yet be persistent to the index. The Destructor
      * will call save() to make it persistent.
@@ -322,7 +325,7 @@ abstract class AutoloaderIndex implements Countable
     }
 
     /**
-     * Unset the path for the class
+     * Unsets the path for the class
      *
      * This must not yet be persistent to the index. The Destructor
      * will call save() to make it persistent.
@@ -343,7 +346,7 @@ abstract class AutoloaderIndex implements Countable
     }
 
     /**
-     * The Autoloader class path context
+     * Returns the Autoloader class path context
      *
      * Only Autoloaders with an equal class path work in the same context.
      *

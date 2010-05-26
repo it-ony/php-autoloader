@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderFileIterator.
+ * Defines the AutoloaderFileIterator
  *
  * PHP version 5
  *
@@ -39,7 +39,7 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * An AutoloaderFileIterator finds potential files with class definitions.
+ * Finds potential files with class definitions
  *
  * As AutoloaderFileIterator implements the Iterator interface iterating through
  * a class path recursively is as simple as:
@@ -52,14 +52,13 @@ InternalAutoloader::getInstance()->registerClass(
  * }
  * </code>
  *
- * @category  Autoloader
- * @package   FileIterator
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::searchPath()
+ * @category Autoloader
+ * @package  FileIterator
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::searchPath()
  */
 abstract class AutoloaderFileIterator implements Iterator
 {
@@ -83,9 +82,10 @@ abstract class AutoloaderFileIterator implements Iterator
     $autoloader;
 
     /**
-     * The state of the AutoloaderFileIterator is reseted. This happens implicit if
-     * the configuration of the object has changed and would have a different result
-     * set.
+     * Resets the state of the AutoloaderFileIterator
+     * 
+     * This happens implicit if the configuration of the object has changed and
+     * would have a different result set.
      *
      * The default implementaion does nothing.
      *
@@ -100,10 +100,10 @@ abstract class AutoloaderFileIterator implements Iterator
     }
 
     /**
-     * setAutoloader() sets the Autoloader for this object. The Autoloader object
-     * has the class path where this object will search for files.
-     *
-     * This changes the configuration of this object, so reset() is called.
+     * Sets the Autoloader for this object
+     * 
+     * The Autoloader object has the class path where this object will search for
+     * files. This changes the configuration of this object, so reset() is called.
      *
      * @param Autoloader $autoloader The Autoloader object
      *
@@ -118,7 +118,7 @@ abstract class AutoloaderFileIterator implements Iterator
     }
 
     /**
-     * Adds a regular expression for ignoring files in the class paths.
+     * Adds a regular expression for ignoring files in the class paths
      *
      * Files which paths match one of these patterns won't be
      * searched for class definitions.
@@ -142,7 +142,7 @@ abstract class AutoloaderFileIterator implements Iterator
     }
 
     /**
-     * Set a file size to ignore files bigger than $size.
+     * Sets a file size to ignore files bigger than $size
      *
      * The autoloader has to look into every file. Large files
      * like images may result in exceeding the max_execution_time.

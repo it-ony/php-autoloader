@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the test cases for Autoloader.
+ * Defines the test cases for Autoloader
  *
  * PHP version 5
  *
@@ -39,13 +39,12 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
 /**
  * Autoloader test cases
  *
- * @category  Autoloader
- * @package   Test
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category Autoloader
+ * @package  Test
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
  */
 class TestAutoloader extends PHPUnit_Framework_TestCase
 {
@@ -63,8 +62,9 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     $_autoloaderTestHelper;
 
     /**
-     * testDeprecatedClassConstructor() tests the deprecated class constructor
-     * __static(). The autoloader loads the class $class and the test expects
+     * Ttests the deprecated class constructor __static()
+     *
+     * The autoloader loads the class $class and the test expects
      * from the autoloader, that it sets the value of $testClassConstructorState
      * to $expectedState. Additionally an E_USER_DEPRECATED warning is expected.
      *
@@ -90,8 +90,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestDeprecatedClassConstructor() provide test cases for
-     * testDeprecatedClassConstructor().
+     * Provide test cases for testDeprecatedClassConstructor()
      *
      * A test case is an expected state and a not loaded class with a
      * deprecated class constructor. The class constructor should set the
@@ -156,8 +155,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testClassConstructor() asserts that after loading the a new class its class
-     * constructor is called.
+     * Asserts that after loading the a new class its class constructor is called
      *
      * The class constructor is expected to set the public atribute
      * $testClassConstructorState to an expected value.
@@ -177,7 +175,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestClassConstructor() provides test cases for testClassConstructor().
+     * Provides test cases for testClassConstructor()
      *
      * A test case consists of an expected value for $testClassConstructorState and
      * a new class name. The class constructor of a test case should change the
@@ -243,8 +241,8 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testBuildIndex() asserts that Autoloader::buildIndex() stores all class
-     * definitions in its index.
+     * Asserts that Autoloader::buildIndex() stores all class definitions
+     * in its index
      *
      * @param Autoloader $autoloader    The tested Autoloader instance
      * @param Array      $expectedPaths A list of all class definitions
@@ -264,7 +262,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestBuildIndex() provides test cases for testBuildIndex().
+     * Provides test cases for testBuildIndex()
      *
      * A test case is a Autoloader for a certain class path and a list of all
      * class definitions in that class path.
@@ -330,7 +328,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _getPaths() returns a list of paths for the list of classes.
+     * Returns a list of paths for the list of classes
      *
      * @param array                $testClasses A list of classes
      * @param AutoloaderTestHelper $testHelper  A helper which generated the classes
@@ -364,7 +362,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestFailBuildIndex() provides test cases for testFailBuildIndex().
+     * Provides test cases for testFailBuildIndex()
      *
      * A test case is an Autoloader instance. The class path of that instance
      * should contain multiple class definitions for the same class name.
@@ -397,7 +395,8 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * In this case you have several packages of this autoloader.
+     * Tests several packages of this autoloader
+     *
      * This might happen if you use libraries which come with this
      * autoloader in their own class path. The Autoloader should
      * define its classes only once no matter how often it is required
@@ -418,6 +417,8 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Checks reregistering
+     *
      * This Test checks if a normalized Autolader will registered
      * again, after removing its parent Autoloader.
      *
@@ -467,6 +468,8 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests normalization
+     *
      * An autoloader will unregister itself automatically if another autoloader
      * would include it. On the other hand, if including autoloader is unregistered
      * all automatically unregistered autoloaders should be registered again.
@@ -539,7 +542,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testClassPath() asserts that an autoloader has the expected class path.
+     * Asserts that an autoloader has the expected class path
      *
      * @param Autoloader $autoloader   An instance of Autoloader
      * @param String     $expectedPath The expected class path
@@ -556,7 +559,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestClassPath() provides testClassPath().
+     * Provides test cases for testClassPath()
      *
      * A test case is an instance of Autoloader and its expected class path.
      *
@@ -579,7 +582,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testLoadClass() asserts that $class is loadable.
+     * Asserts that $class is loadable
      *
      * @param String $class A loadable class name
      *
@@ -592,7 +595,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideClassNames() provides testLoadClass() with loadable class names.
+     * Provides testLoadClass() with loadable class names
      *
      * @see testLoadClass()
      * @return Array
@@ -658,7 +661,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testFailLoadClass() asserts that an undefined class is not loadable.
+     * Asserts that an undefined class is not loadable
      *
      * @return void
      */
@@ -668,8 +671,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testGetRegisteredAutoloader() asserts that getRegisteredAutoloader() is
-     * working.
+     * Asserts that getRegisteredAutoloader() is working
      *
      * @see Autoloader::getRegisteredAutoloader()
      * @return void
@@ -710,9 +712,8 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testGetRegisteredAutoloaderFailure() asserts that calling
-     * Autoloader::getRegisteredAutoloader() for a not registered path will
-     * fail.
+     * Asserts that calling Autoloader::getRegisteredAutoloader() for a not
+     * registered path will fail
      *
      * @param String $path A path wich is not registered
      *
@@ -727,9 +728,8 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestGetRegisteredAutoloaderFailure() provides
-     * testGetRegisteredAutoloaderFailure() with paths where no autoloader is
-     * registered.
+     * Provides testGetRegisteredAutoloaderFailure() with paths where no autoloader
+     * is registered
      *
      * @see testGetRegisteredAutoloaderFailure
      * @return Array
@@ -740,11 +740,9 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testGetDefaultRegisteredAutoloaderFailure() provides
-     * testGetRegisteredAutoloaderFailure() with class paths which are not
-     * registered.
+     * Tests Autoloader::getRegisteredAutoloader failure
      *
-     * @see testGetRegisteredAutoloaderFailure()
+     * @see Autoloader::getRegisteredAutoloader()
      * @return void
      */
     public function testGetDefaultRegisteredAutoloaderFailure()
@@ -766,8 +764,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testUnregisterAutoloader() asserts that an Autoloader can unregister itself
-     * from the stack.
+     * Asserts that an Autoloader can unregister itself from the stack
      *
      * @see Autoloader::remove()
      * @return void
@@ -787,8 +784,8 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testDifferentClassPaths() tests if Autoloaders with disjunct class paths
-     * can be registered and can find their classes.
+     * Tests if Autoloaders with disjunct class paths can be registered and can find
+     * their classes
      *
      * @return void
      */
@@ -824,9 +821,8 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testGetRegisteredAutoloaders() asserts that
-     * Autoloader::getRegisteredAutoloaders() returns all registered
-     * instances of Autoloaders.
+     * Asserts that Autoloader::getRegisteredAutoloaders() returns all registered
+     * instances of Autoloaders
      *
      * @see Autoloader::getRegisteredAutoloaders()
      * @return void
@@ -853,7 +849,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * In each test a new Autoloader is registered.
+     * Registers in each test a new Autoloader
      *
      * @return void
      */
@@ -866,7 +862,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Each test leaves no Autoloader behind.
+     * Leaves no Autoloader behind
      *
      * @return void
      */
@@ -876,8 +872,8 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testRemoveAllAutoloaders() asserts that Autoloader::removeAll() removes
-     * all instances of Autoloader from the stack.
+     * Asserts that Autoloader::removeAll() removes all instances of Autoloader from
+     * the stack
      * 
      * @see Autoloader::removeAll()
      * @return void
@@ -916,9 +912,8 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testSeveralRequiredAutoloaders() asserts that including the file
-     * Autoloader.php will register each time an instance of Autoloader with
-     * the correct class path.
+     * Asserts that including the file Autoloader.php will register each time an
+     * instance of Autoloader with the correct class path
      * 
      * @see Autoloader.php
      * @return void

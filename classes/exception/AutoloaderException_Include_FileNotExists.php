@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_Include_FileNotExists.
+ * Defines the AutoloaderException_Include_FileNotExists
  *
  * PHP version 5
  *
@@ -37,21 +37,19 @@
 require_once dirname(__FILE__) . '/AutoloaderException_Include.php';
 
 /**
- * AutoloaderException_Include_FileNotExists is raised if the required
- * class definition does not exist.
+ * Raised if the required class definition does not exist
  *
  * This can happen if the Autoloader tries to load a class definition from
  * a stale index. Normally the Autoloader reacts on this exception to find
  * the new class definition.
  *
- * @category  Autoloader
- * @package   Exception
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       AbstractAutoloader::loadClass()
+ * @category Autoloader
+ * @package  Exception
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      AbstractAutoloader::loadClass()
  */
 class AutoloaderException_Include_FileNotExists extends AutoloaderException_Include
 {

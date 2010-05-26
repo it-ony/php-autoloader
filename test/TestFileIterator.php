@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the test cases for implementations of AutoloaderFileIterator.
+ * Defines the test cases for implementations of AutoloaderFileIterator
  *
  * PHP version 5
  *
@@ -42,20 +42,18 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
 /**
  * AutoloaderFileIterator test cases
  *
- * @category  Autoloader
- * @package   Test
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category Autoloader
+ * @package  Test
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
  */
 class TestFileIterator extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * testCompleteIteration() asserts that an AutoloaderFileIterator finds all
-     * files in a path.
+     * Asserts that an AutoloaderFileIterator finds all files in a path
      *
      * @param AutoloaderFileIterator $iterator      The AutoloaderFileIterator
      * @param String                 $path          A path for searching
@@ -81,8 +79,7 @@ class TestFileIterator extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestCompleteIteration() provides test cases for
-     * testCompleteIteration().
+     * Provides test cases for testCompleteIteration()
      *
      * A test case is an AutoloaderFileIterator, a path and a list of files which
      * are expected to be found in that path.
@@ -179,8 +176,8 @@ class TestFileIterator extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testSkipPatterns() asserts that files, which match a given pattern are not
-     * found by an AutoloaderFileIterator object.
+     * Asserts that files, which match a given pattern are not found by an
+     * AutoloaderFileIterator object
      *
      * @param AutoloaderFileIterator $iterator         The AutoloaderFileIterator
      * @param Array                  $notExpectedFiles Files which are not expected
@@ -210,7 +207,7 @@ class TestFileIterator extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestSkipPatterns() provides test cases for testSkipPatterns().
+     * Provides test cases for testSkipPatterns()
      *
      * A test case is an instance of AutoloaderFileIterator, a list of files and
      * a search path. The AutoloaderFileIterator object is configured with a skip
@@ -316,7 +313,7 @@ class TestFileIterator extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testEmptyIterator() asserts that an AutoloaderFileIterator might be empty.
+     * Asserts that an AutoloaderFileIterator might be empty
      *
      * @param AutoloaderFileIterator $iterator The tested AutoloaderFileIterator
      * @param String                 $path     A path where no files are found
@@ -336,7 +333,7 @@ class TestFileIterator extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestEmptyIterator() provides test cases for testEmptyIterator().
+     * Provides test cases for testEmptyIterator()
      *
      * A test case consists of an instance of AutoloaderFileIterator and a path.
      * The iterator should not find any file in that path.
@@ -405,9 +402,10 @@ class TestFileIterator extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testPreferedPattern() asserts that AutoloaderFileIterator_PriorityList
-     * returns an ordered list of files. The list should be ordered by the distance
-     * between classname and filename.
+     * Asserts that AutoloaderFileIterator_PriorityList returns an ordered list of
+     * files
+     *
+     * The list should be ordered by the distance between classname and filename.
      *
      * @see AutoloaderFileIterator_PriorityList
      * @return void
@@ -448,8 +446,8 @@ class TestFileIterator extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testRepeatedIteratorUse() asserts that an instance of AutoloaderFileIterator
-     * can be reused and finds every time the same results.
+     * Asserts that an instance of AutoloaderFileIterator can be reused and finds
+     * every time the same results
      *
      * @param AutoloaderFileIterator $iterator The tested AutoloaderFileIterator
      *
@@ -471,8 +469,7 @@ class TestFileIterator extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _assertEqualFoundFiles() asserts that an AutoloaderFileIterator finds the
-     * expected list of files.
+     * Asserts that an AutoloaderFileIterator finds the expected list of files
      *
      * @param array                  $expectedFiles A list of expected files
      * @param AutoloaderFileIterator $iterator      A tested AutoloaderFileIterator
@@ -490,8 +487,7 @@ class TestFileIterator extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestRepeatedIteratorUse() provides test cases for
-     * testRepeatedIteratorUse().
+     * Provides test cases for testRepeatedIteratorUse()
      *
      * A test case consists of an AutoloaderFileIterator object which is configured
      * to search in a not empty class path.
@@ -554,8 +550,8 @@ class TestFileIterator extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testPriorityOrder() asserts that the class name is contained in the
-     * first results of an AutoloaderFileIterator_PriorityList instance.
+     * Asserts that the class name is contained in the first results of an
+     * AutoloaderFileIterator_PriorityList instance
      *
      * @param String $path  The class path
      * @param String $class The class name which should be found first
@@ -588,7 +584,7 @@ class TestFileIterator extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestPriorityOrder() provides test cases for testPriorityOrder().
+     * Provides test cases for testPriorityOrder()
      *
      * A test case consists of a class path, a class name and a limit.
      * The class path should contain files which have the class name in their
@@ -621,8 +617,8 @@ class TestFileIterator extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testLoadsOfFiles() asserts that the AutoloaderFileIterator is still working
-     * in a huge environment.
+     * Asserts that the AutoloaderFileIterator is still working in a huge
+     * environment
      *
      * @param AutoloaderFileIterator $iterator The tested AutoloaderFileIterator
      * @param String                 $path     The searched class path
@@ -642,7 +638,7 @@ class TestFileIterator extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestLoadsOfFiles() provides testLoadsOfFiles() with test cases.
+     * Provides testLoadsOfFiles() with test cases
      *
      * A test case is an instance of AutoloaderFileIterator and a class path.
      * The class path should contain a large amount of files.

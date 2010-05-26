@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the test cases for implementations of AutoloaderIndex.
+ * Defines the test cases for implementations of AutoloaderIndex
  *
  * PHP version 5
  *
@@ -51,13 +51,12 @@ TestIndex::classConstructor();
 /**
  * AutoloaderIndex test cases
  *
- * @category  Autoloader
- * @package   Test
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category Autoloader
+ * @package  Test
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
  */
 class TestIndex extends PHPUnit_Framework_TestCase
 {
@@ -68,7 +67,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
     const INDEX_DIRECTORY = 'index';
 
     /**
-     * The class contructor creates the directory for the test classes.
+     * Creates the directory for the test classes
      *
      * @return void
      */
@@ -82,8 +81,8 @@ class TestIndex extends PHPUnit_Framework_TestCase
 
 
     /**
-     * testGetDefaultSQLiteIndex() asserts that
-     * AutoloaderIndex_PDO::getSQLiteInstance() doesn't throw any exception.
+     * Asserts that AutoloaderIndex_PDO::getSQLiteInstance() doesn't throw any
+     * exception
      *
      * @see initIndex()
      * @see AutoloaderIndex_PDO::getSQLiteInstance()
@@ -96,8 +95,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testGetPath() asserts that AutoloaderIndex::getPath() returns the expected
-     * path for a class.
+     * Asserts that AutoloaderIndex::getPath() returns the expected path for a class
      *
      * @param AutoloaderIndex $index The tested index
      * @param String          $class The searched class
@@ -113,8 +111,8 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testFailGetPath() asserts that the index will throw an
-     * AutoloaderException_Index_NotFound Exception for an unknown class.
+     * Asserts that the index will throw an AutoloaderException_Index_NotFound
+     * Exception for an unknown class
      *
      * @param AutoloaderIndex $index The tested AutoloaderIndex object
      *
@@ -130,8 +128,8 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testHasNotPath() asserts that AutoloaderIndex::hasPath() returns false
-     * for a not existing class.
+     * Asserts that AutoloaderIndex::hasPath() returns false for a not existing
+     * class
      *
      * @param AutoloaderIndex $index The tested AutoloaderIndex object
      *
@@ -145,8 +143,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testHasPath() asserts that AutoloaderIndex::hasPath() returns true
-     * for a existing class.
+     * Asserts that AutoloaderIndex::hasPath() returns true for a existing class
      *
      * @param AutoloaderIndex $index The tested AutoloaderIndex object
      * @param String          $class A class which exists in $index
@@ -161,8 +158,8 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testUnsetPath() asserts that AutoloaderIndex::unsetPath() removes an
-     * existing class from an index.
+     * Asserts that AutoloaderIndex::unsetPath() removes an existing class from an
+     * index
      *
      * @param AutoloaderIndex $index The tested AutoloaderIndex object
      * @param String          $class A class which exists in $index
@@ -188,8 +185,8 @@ class TestIndex extends PHPUnit_Framework_TestCase
 
 
     /**
-     * provideExistingClassesWithPaths() provides test cases for classes which
-     * exists in an index with an expected path.
+     * Provides test cases for classes which exists in an index with an expected
+     * path
      *
      * A test case consists of an index, a class which exists in that index
      * and the path which the index would return for that class.
@@ -279,7 +276,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideIndexes() returns Indexes which are tested in all tests.
+     * Returns Indexes which are tested in all tests
      *
      * @see testFailGetPath()
      * @see testHasNotPath()
@@ -310,8 +307,8 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _createAutoloaderIndexSerializedHashtableGZ() returns an instance of
-     * AutoloaderIndex_SerializedHashtable_GZ which is tested in theses tests.
+     * Returns an instance of AutoloaderIndex_SerializedHashtable_GZ which is tested
+     * in theses tests
      *
      * @return AutoloaderIndex_SerializedHashtable_GZ
      */
@@ -323,8 +320,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _createAutoloaderIndexPDO() returns an instance of AutoloaderIndex_PDO
-     * which is tested in theses tests.
+     * Returns an instance of AutoloaderIndex_PDO which is tested in theses tests
      *
      * @param PDO $pdo The PDO object for the AutoloaderIndex_PDO object
      *
@@ -338,8 +334,8 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _createAutoloaderIndexPdoSqLite() returns an instance of AutoloaderIndex_PDO
-     * with a SQLite PDO object which is tested in theses tests.
+     * Returns an instance of AutoloaderIndex_PDO with a SQLite PDO object which is
+     * tested in theses tests
      *
      * @param String $filename The path to the SQLite database
      *
@@ -353,8 +349,8 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _createAutoloaderIndexPdoMySQL() returns an instance of AutoloaderIndex_PDO
-     * with a MySQL PDO object which is tested in theses tests.
+     * Returns an instance of AutoloaderIndex_PDO with a MySQL PDO object which is
+     * tested in theses tests
      *
      * The PDO object is initialized with the test database "mysql:dbname=test".
      *
@@ -368,8 +364,8 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _createAutoloaderIndexIniFile() returns an instance of AutoloaderIndex_IniFile
-     * which is tested in theses tests.
+     * Returns an instance of AutoloaderIndex_IniFile which is tested in theses
+     * tests
      *
      * @return AutoloaderIndex_IniFile
      */
@@ -381,8 +377,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _createAutoloaderIndexCSV() returns an instance of AutoloaderIndex_CSV
-     * which is tested in theses tests.
+     * Returns an instance of AutoloaderIndex_CSV which is tested in theses tests
      *
      * @return AutoloaderIndex_CSV
      */
@@ -394,8 +389,8 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _createAutoloaderIndexPHPArrayCode() returns an instance of
-     * AutoloaderIndex_PHPArrayCode which is tested in theses tests.
+     * Returns an instance of AutoloaderIndex_PHPArrayCode which is tested in theses
+     * tests
      *
      * @return AutoloaderIndex_PHPArrayCode
      */
@@ -407,8 +402,8 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _createAutoloaderIndexSerializedHashtable() returns an instance of
-     * AutoloaderIndex_SerializedHashtable which is tested in theses tests.
+     * Returns an instance of AutoloaderIndex_SerializedHashtable which is tested in
+     * theses tests
      *
      * @return AutoloaderIndex_SerializedHashtable
      */
@@ -420,8 +415,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _createAutoloaderIndexDummy() returns an instance of AutoloaderIndex_Dummy
-     * which is tested in theses tests.
+     * Returns an instance of AutoloaderIndex_Dummy which is tested in theses tests
      *
      * @return AutoloaderIndex_Dummy
      */
@@ -433,9 +427,9 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _getIndexFromPersistence() returns an index of the same class as $index.
-     * The state of the returned index is loaded from its persistance layer.
+     * Returns an index of the same class as $index
      *
+     * The state of the returned index is loaded from its persistance layer.
      * This applies only to instances of AutoloaderIndex_File.
      *
      * @param AutoloaderIndex $index The index which should load its state
@@ -462,8 +456,8 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _initIndex() initializes an index with an Autoloader and for
-     * AutoloaderIndex_File instances with an index path.
+     * Initializes an index with an Autoloader and for
+     * AutoloaderIndex_File instances with an index path
      *
      * @param AutoloaderIndex $index The index which should be initialized
      *
@@ -479,8 +473,8 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _getIndexes() returns a list of different AutoloaderIndex objects which
-     * are testet in all tests.
+     * Returns a list of different AutoloaderIndex objects which are testet in all
+     * tests
      *
      * @return Array
      */
@@ -510,8 +504,8 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _getPersistentIndexes() returns the same list as _getIndexes()
-     * without AutoloaderIndex_Dummy instances.
+     * Returns the same list as _getIndexes() without AutoloaderIndex_Dummy
+     * instances
      *
      * @see _getIndexes()
      * @return Array
@@ -531,7 +525,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * _getIndexFile() returns a generated path for a new index file.
+     * Returns a generated path for a new index file
      *
      * AutoloaderIndex_File instances will use such a generated path.
      *
@@ -543,8 +537,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * getIndexDirectory() returns the path where index files are stored
-     * for these tests.
+     * Returns the path where index files are stored for these tests
      *
      * @return String
      */

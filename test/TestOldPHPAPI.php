@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the test cases for TestOldPHPAPI.
+ * Defines the test cases for TestOldPHPAPI
  *
  * PHP version 5
  *
@@ -37,23 +37,21 @@
 require_once dirname(__FILE__) . "/../Autoloader.php";
 
 /**
- * TestOldPHPAPI tests OldPHPAPI.
+ * Tests OldPHPAPI
  *
- * @category  Autoloader
- * @package   Test
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       OldPHPAPI
+ * @category Autoloader
+ * @package  Test
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      OldPHPAPI
  */
 class TestOldPHPAPI extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * testCheckAPI() asserts that a function is implemented and returns
-     * the expected result.
+     * Asserts that a function is implemented and returns the expected result
      *
      * @param String $function The function name
      * @param Array  $params   The parameters
@@ -77,7 +75,7 @@ class TestOldPHPAPI extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestCheckAPI provides test cases for testCheckAPI().
+     * Provides test cases for testCheckAPI()
      *
      * A test case is a function name, a list of parameters and the expected result.
      *

@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the class AbstractAutoloader.
+ * Defines the class AbstractAutoloader
  *
  * PHP version 5
  *
@@ -44,15 +44,14 @@ require_once
     dirname(__FILE__) . '/exception/AutoloaderException_Include_ClassNotDefined.php';
 
 /**
- * AbstractAutoloader is an abstract autoloader.
+ * An abstract autoloader
  *
- * @category  Autoloader
- * @package   Base
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category Autoloader
+ * @package  Base
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
  */
 abstract class AbstractAutoloader
 {
@@ -70,7 +69,7 @@ abstract class AbstractAutoloader
     const CLASS_CONSTRUCTOR            = 'classConstructor';
 
     /**
-     * doAutoload() is the autoload implementation.
+     * implements autoloading
      *
      * This method should load the definition of $class. On failure it should
      * throw an AutoloaderException.
@@ -85,7 +84,7 @@ abstract class AbstractAutoloader
     abstract protected function doAutoload($class);
 
     /**
-     * normalizeClass() normalizes the reference of a class name with strtolower().
+     * Normalizes the reference of a class name with strtolower()
      *
      * Normalizing is needed as PHP is case insensitive.
      *
@@ -100,7 +99,7 @@ abstract class AbstractAutoloader
     }
 
     /**
-     * This Autoloader will be registered at the stack.
+     * Registers this Autoloader at the stack
      *
      * After registration, this Autoloader is autoloading class definitions with
      * its method autoload().
@@ -123,7 +122,7 @@ abstract class AbstractAutoloader
     }
 
     /**
-     * Returns true for Autoloaders in the spl_autoload stack.
+     * Returns true for Autoloaders in the spl_autoload stack
      *
      * @return bool
      */
@@ -133,7 +132,7 @@ abstract class AbstractAutoloader
     }
 
     /**
-     * This Autoloader will be removed from the stack.
+     * Removes this Autoloader from the stack
      *
      * @see removeAll()
      * @return void
@@ -144,7 +143,7 @@ abstract class AbstractAutoloader
     }
 
     /**
-     * All instances of Autoloader will be removed from the stack.
+     * Removes all instances of Autoloader from the stack
      *
      * @see remove()
      * @return void
@@ -159,8 +158,7 @@ abstract class AbstractAutoloader
     }
 
     /**
-     * getRegisteredAutoloaders() returns all registered Autoloader instances
-     * which are doing their jobs.
+     * Returns all registered Autoloader instances which are doing their jobs
      *
      * @see register()
      * @return Array
@@ -234,8 +232,7 @@ abstract class AbstractAutoloader
     }
 
     /**
-     * getCallback() returns a callback which calls the method autoload() on this
-     * object.
+     * Returns a callback which calls the method autoload() on this object
      *
      * @see autoload()
      * @return Callback
@@ -246,7 +243,7 @@ abstract class AbstractAutoloader
     }
 
     /**
-     * loadClass() includes the class definition and calls the class constructor.
+     * Includes the class definition and calls the class constructor
      *
      * If the class $class has the method public static classConstructor(), it
      * will be called.
@@ -315,7 +312,7 @@ abstract class AbstractAutoloader
     }
 
     /**
-     * _loadCallClassConstructor() will call the class constructor.
+     * Calla the class constructor
      *
      * If the class $class has the method public static $constructor, it
      * will be called.

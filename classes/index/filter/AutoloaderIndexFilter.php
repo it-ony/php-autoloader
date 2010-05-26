@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderIndexFilter.
+ * Defines the AutoloaderIndexFilter
  *
  * PHP version 5
  *
@@ -44,6 +44,8 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
+ * The AutoloaderIndexFilter interface
+ *
  * When a path is read from an AutoloaderIndex or set, this filter is applied on
  * that path.
  *
@@ -51,7 +53,6 @@ InternalAutoloader::getInstance()->registerClass(
  * @package    Index
  * @subpackage Filter
  * @author     Markus Malkusch <markus@malkusch.de>
- * @copyright  2009 - 2010 Markus Malkusch
  * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version    Release: 1.8
  * @link       http://php-autoloader.malkusch.de/en/

@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the test cases for implementations of AutoloaderIndexFilter.
+ * Defines the test cases for implementations of AutoloaderIndexFilter
  *
  * PHP version 5
  *
@@ -40,21 +40,19 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
 /**
  * AutoloaderIndexFilter_RelativePath test cases
  *
- * @category  Autoloader
- * @package   Test
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category Autoloader
+ * @package  Test
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
  */
 class TestIndexFilter extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * testRelativePathBasePath() asserts that
-     * AutoloaderIndexFilter_RelativePath::getBasePath() returns the expected
-     * path.
+     * Asserts that AutoloaderIndexFilter_RelativePath::getBasePath() returns the
+     * expected path
      *
      * @param String                             $expectedBasePath The expected path
      * @param AutoloaderIndexFilter_RelativePath $filter           A configured
@@ -74,8 +72,7 @@ class TestIndexFilter extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestRelativePathBasePath() provides test cases for
-     * testRelativePathBasePath().
+     * Provides test cases for testRelativePathBasePath()
      *
      * A test case is the expected base path and a filter which would return
      * this base path.
@@ -98,9 +95,11 @@ class TestIndexFilter extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testFailRelativePathBasePath() creates an instance of
-     * AutoloaderIndexFilter_RelativePath with an non existing path. This
-     * should raise an AutoloaderException_Index_Filter_RelativePath_InvalidBasePath.
+     * Creates an instance of AutoloaderIndexFilter_RelativePath with an non
+     * existing path
+     * 
+     * This should raise an
+     * AutoloaderException_Index_Filter_RelativePath_InvalidBasePath.
      *
      * @param String $basePath non existing path
      *
@@ -116,8 +115,7 @@ class TestIndexFilter extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestFailRelativePathBasePath() provides non existing paths for
-     * testFailRelativePathBasePath().
+     * Provides non existing paths for testFailRelativePathBasePath()
      *
      * @return array non existing paths
      * @see testFailRelativePathBasePath()
@@ -132,9 +130,8 @@ class TestIndexFilter extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testSetRelativePath() asserts that
-     * AutoloaderIndexFilter_RelativePath::filterSetPath() converts an absolute path
-     * into the expected relative path.
+     * Asserts that AutoloaderIndexFilter_RelativePath::filterSetPath() converts an
+     * absolute path into the expected relative path
      *
      * @param String $relativePath expected relative path
      * @param String $absolutePath an absolute path which will be converted
@@ -151,9 +148,8 @@ class TestIndexFilter extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * testGetRelativePath() asserts that
-     * AutoloaderIndexFilter_RelativePath::filterGetPath() converts a relative path
-     * into the expected absolute path.
+     * Asserts that AutoloaderIndexFilter_RelativePath::filterGetPath() converts a
+     * relative path into the expected absolute path
      *
      * @param String $relativePath a relative path which will be converted
      * @param String $absolutePath the expected absolute path
@@ -179,8 +175,7 @@ class TestIndexFilter extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * provideTestRelativePath() provides test cases for testSetRelativePath() and
-     * testGetRelativePath().
+     * Provides test cases for testSetRelativePath() and testGetRelativePath()
      *
      * A test case is a relative path and its absolute correspondent. The base path
      * for the relative paths is __DIR__ . '/..'.

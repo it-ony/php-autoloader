@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_ClassPath.
+ * Defines the AutoloaderException_ClassPath
  *
  * PHP version 5
  *
@@ -39,16 +39,15 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * AutoloaderException_ClassPath indicates an error during setting the class path.
+ * Indicates an error during setting the class path
  *
- * @category  Autoloader
- * @package   Exception
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::__construct()
+ * @category Autoloader
+ * @package  Exception
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::__construct()
  */
 class AutoloaderException_ClassPath extends AutoloaderException
 {

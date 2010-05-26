@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_InternalClassNotLoadable.
+ * Defines the AutoloaderException_InternalClassNotLoadable
  *
  * PHP version 5
  *
@@ -37,17 +37,15 @@
 require_once dirname(__FILE__) . '/AutoloaderException.php';
 
 /**
- * AutoloaderException_InternalClassNotLoadable is raised if the InternalAutoloader
- * couldn't load a class.
+ * Raised if the InternalAutoloader couldn't load a class
  *
- * @category  Autoloader
- * @package   Exception
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       InternalAutoloader::doAutoload()
+ * @category Autoloader
+ * @package  Exception
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      InternalAutoloader::doAutoload()
  */
 class AutoloaderException_InternalClassNotLoadable extends AutoloaderException
 {

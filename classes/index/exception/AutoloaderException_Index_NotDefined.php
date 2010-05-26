@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_Index_NotDefined.
+ * Defines the AutoloaderException_Index_NotDefined
  *
  * PHP version 5
  *
@@ -40,13 +40,12 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * The Autoloader will throw this exception during autoloading if the index is empty.
+ * Thrown during autoloading if the index is empty
  *
  * @category   Autoloader
  * @package    Index
  * @subpackage Exception
  * @author     Markus Malkusch <markus@malkusch.de>
- * @copyright  2009 - 2010 Markus Malkusch
  * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version    Release: 1.8
  * @link       http://php-autoloader.malkusch.de/en/

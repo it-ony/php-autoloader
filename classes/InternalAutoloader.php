@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the class InternalAutoloader.
+ * Defines the class InternalAutoloader
  *
  * PHP version 5
  *
@@ -41,15 +41,14 @@ require_once
     . '/exception/AutoloaderException_InternalClassNotLoadable.php';
 
 /**
- * InternalAutoloader is the autoloader for internal classes.
+ * The autoloader for internal classes
  *
- * @category  Autoloader
- * @package   Base
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category Autoloader
+ * @package  Base
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
  */
 class InternalAutoloader extends AbstractAutoloader
 {
@@ -67,8 +66,8 @@ class InternalAutoloader extends AbstractAutoloader
     $_classes = array();
 
     /**
-     * The class constructor creates the only instance of this class and registeres
-     * it to the autoload stack.
+     * Creates the only instance of this class and registeres it to the autoload
+     * stack
      *
      * @see register()
      * @see getInstance()
@@ -81,7 +80,7 @@ class InternalAutoloader extends AbstractAutoloader
     }
 
     /**
-     * getInstance() returns the only instance of this class.
+     * Returns the only instance of this class
      *
      * @see classConstructor()
      * @return InternalAutoloader
@@ -92,8 +91,8 @@ class InternalAutoloader extends AbstractAutoloader
     }
 
     /**
-     * getRegisteredAutoloaders() returns all registered InternalAutoloader
-     * instances which are doing their jobs
+     * Returns all registered InternalAutoloader instances which are doing their
+     * jobs
      *
      * @see register()
      * @return Array
@@ -111,7 +110,7 @@ class InternalAutoloader extends AbstractAutoloader
     }
 
     /**
-     * All instances of InternalAutoloader will be removed from the stack.
+     * Removes all instances of InternalAutoloader from the stack
      *
      * @see remove()
      * @return void
@@ -126,7 +125,7 @@ class InternalAutoloader extends AbstractAutoloader
     }
 
     /**
-     * The constructor is private as this is a singleton.
+     * Private constructor as this is a singleton
      */
     private function __construct()
     {
@@ -134,7 +133,7 @@ class InternalAutoloader extends AbstractAutoloader
     }
 
     /**
-     * __clone() is private as this is a singleton.
+     * Private __clone() as this is a singleton
      *
      * @return void
      */
@@ -144,9 +143,9 @@ class InternalAutoloader extends AbstractAutoloader
     }
 
     /**
-     * This is used for internal classes, which cannot
-     * use the Autoloader. They will be required in a
-     * traditional way without any index or searching.
+     * Used for internal classes, which cannot use the Autoloader
+     *
+     * They will be required in a traditional way without any index or searching.
      *
      * @param String $class The class name
      * @param String $path  The path of the class
@@ -160,7 +159,7 @@ class InternalAutoloader extends AbstractAutoloader
     }
 
     /**
-     * doAutoload() implements autoloading for internal classes.
+     * Implements autoloading for internal classes
      *
      * @param String $class The class name
      *

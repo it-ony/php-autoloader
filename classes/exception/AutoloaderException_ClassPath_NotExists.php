@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderException_ClassPath_NotExists.
+ * Defines the AutoloaderException_ClassPath_NotExists
  *
  * PHP version 5
  *
@@ -39,16 +39,15 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * AutoloaderException_ClassPath_NotExists is raised if the class path doesn't exist.
+ * Raised if the class path doesn't exist
  *
- * @category  Autoloader
- * @package   Exception
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::__construct()
+ * @category Autoloader
+ * @package  Exception
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::__construct()
  */
 class AutoloaderException_ClassPath_NotExists extends AutoloaderException_ClassPath
 {

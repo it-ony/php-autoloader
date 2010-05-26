@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the AutoloaderFileParser.
+ * Defines the AutoloaderFileParser
  *
  * PHP version 5
  *
@@ -47,25 +47,24 @@ InternalAutoloader::getInstance()->registerClass(
 );
 
 /**
- * AutoloaderFileParser is an abstract parser for class definitions.
+ * An abstract parser for class definitions
  *
  * An implementation of this class should be able to parse a file and
  * find a class definition.
  *
- * @category  Autoloader
- * @package   Parser
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       Autoloader::searchPath()
+ * @category Autoloader
+ * @package  Parser
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      Autoloader::searchPath()
  */
 abstract class AutoloaderFileParser
 {
 
     /**
-     * getClassesInSource() returns a list of classes, which are defined in $source.
+     * Returns a list of classes, which are defined in $source
      *
      * @param String $source code which is parsed for class definitions
      *
@@ -76,8 +75,7 @@ abstract class AutoloaderFileParser
     abstract public function getClassesInSource($source);
 
     /**
-     * isSupported() returns true if the implementation is supported in your
-     * environment.
+     * Returns true if the implementation is supported in your environment
      *
      * @return bool
      */
@@ -87,7 +85,7 @@ abstract class AutoloaderFileParser
     }
 
     /**
-     * getInstance() returns an implementaion of AutoloaderFileParser.
+     * Returns an implementaion of AutoloaderFileParser
      *
      * If AutoloaderFileParser_Tokenizer is supported it is returned.
      * Else AutoloaderFileParser_RegExp will be returned.
@@ -108,7 +106,7 @@ abstract class AutoloaderFileParser
     }
 
     /**
-     * isClassInSource() returns true if $source defines the class $class.
+     * Returns true if $source defines the class $class
      *
      * @param String $class  A class name
      * @param String $source The source as a string. This is the content of a file.
@@ -128,7 +126,7 @@ abstract class AutoloaderFileParser
     }
 
     /**
-     * isClassInFile() returns true if $file defines the class $class.
+     * Returns true if $file defines the class $class
      *
      * @param String $class A class name
      * @param String $file  A file which might contain the class definitions
@@ -144,7 +142,7 @@ abstract class AutoloaderFileParser
     }
 
     /**
-     * getClassesInFile() returns a list of classes which is defined in $file.
+     * Returns a list of classes which is defined in $file
      *
      * @param String $file A file which might contain class definitions
      *
@@ -160,8 +158,9 @@ abstract class AutoloaderFileParser
     }
 
     /**
-     * _normalizeClass() normalizes a class name by reference. Normalization
-     * is implemented with strtolower($class).
+     * Normalizes a class name by reference
+     *
+     * Normalization is implemented with strtolower($class).
      *
      * @param String &$class A reference to the class name
      * @param bool   $index  unused array index of array_walk()
@@ -174,7 +173,7 @@ abstract class AutoloaderFileParser
     }
 
     /**
-     * _getSource() returns the content of $file.
+     * Returns the content of $file
      *
      * This method is a wrapper for file_get_contents(). Errors are handled by
      * exceptions.

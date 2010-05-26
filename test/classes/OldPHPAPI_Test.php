@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the class OldPHPAPI_Test.
+ * Defines the class OldPHPAPI_Test
  *
  * PHP version 5
  *
@@ -31,22 +31,21 @@
  */
 
 /**
- * OldPHPAPI_Test implements some functions for testing OldPHPAPI.
+ * OldPHPAPI tests
  *
- * @category  Autoloader
- * @package   Test
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       TestOldPHPAPI
+ * @category Autoloader
+ * @package  Test
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
+ * @see      TestOldPHPAPI
  */
 class OldPHPAPI_Test extends OldPHPAPI
 {
 
     /**
-     * testFunctionNoParameters() implements test_function_no_parameters().
+     * Implements test_function_no_parameters()
      *
      * test_function_no_parameters() is needed for testing this class.
      *
@@ -60,7 +59,7 @@ class OldPHPAPI_Test extends OldPHPAPI
     }
 
     /**
-     * testFunctionWithParameters() implements test_function_with_parameters().
+     * Implements test_function_with_parameters()
      *
      * test_function_with_parameters() is needed for testing this class.
      *

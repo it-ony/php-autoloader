@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * This file defines the class Autoloader_Profiler.
+ * Defines the class Autoloader_Profiler
  *
  * PHP version 5
  *
@@ -40,13 +40,12 @@ require_once dirname(__FILE__) . '/../../classes/Autoloader.php';
  * This Autoloader is only for profiling during development of the
  * Autoloaderpackage itself used.
  *
- * @category  Autoloader
- * @package   Base
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   Release: 1.8
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category Autoloader
+ * @package  Base
+ * @author   Markus Malkusch <markus@malkusch.de>
+ * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version  Release: 1.8
+ * @link     http://php-autoloader.malkusch.de/en/
  */
 class Autoloader_Profiler extends Autoloader
 {
@@ -72,8 +71,7 @@ class Autoloader_Profiler extends Autoloader
     }
 
     /**
-     * getSearchedClasses() returns a list of class names which have been searched
-     * in the file system.
+     * Returns a list of class names which have been searched in the file system.
      *
      * @return Array
      */

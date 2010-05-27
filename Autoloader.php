@@ -98,12 +98,12 @@
  * Autoloader is not defined yet.
  */
 if (! class_exists('Autoloader')) {
-    include_once dirname(__FILE__) . "/classes/OldPHPAPI.php";
+    include_once dirname(__FILE__) . "/Autoloader/OldPHPAPI.php";
     $__oldAPI = new OldPHPAPI();
     $__oldAPI->checkAPI();
     unset($__oldAPI);
 
-    include_once dirname(__FILE__) . "/classes/Autoloader.php";
+    include_once dirname(__FILE__) . "/Autoloader/Autoloader.php";
 
 }
 

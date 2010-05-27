@@ -408,14 +408,44 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
      */
     public function testRequireOnceMultipleAutoloaders()
     {
-        $copyPath   = '/var/tmp/' . __FUNCTION__;
+        if (! $this->_isSameFilesystem(__DIR__, sys_get_temp_dir())) {
+
+        }
+
+        $copyPath   = sys_get_temp_dir() . '/' . __FUNCTION__;
         $sourcePath = dirname(__FILE__) . "/..";
-        `cp -r --link $sourcePath $copyPath`;
+
+        /**
+         * If the tmp directory is in the same filesystem this test runs
+         * faster by creating hard links.
+         */
+        $linkOption
+            = $this->_isSameFilesystem($sourcePath, sys_get_temp_dir())
+            ? '--link'
+            : '';
+
+        `cp -r $linkOption $sourcePath $copyPath`;
 
         include dirname(__FILE__) . "/../Autoloader.php";
         include "$copyPath/Autoloader.php";
 
         `rm -rf $copyPath`;
+    }
+
+    /**
+     * Returns true if both paths are in the same filesystem.
+     *
+     * @param String $path1 A path
+     * @param String $path2 A path
+     *
+     * @return bool
+     */
+    private function _isSameFilesystem($path1, $path2)
+    {
+        $stat1 = stat($path1);
+        $stat2 = stat($path2);
+
+        return $stat1[0] === $stat2[0];
     }
 
     /**

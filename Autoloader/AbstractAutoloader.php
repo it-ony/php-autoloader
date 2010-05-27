@@ -68,6 +68,19 @@ abstract class AbstractAutoloader
      */
     const CLASS_CONSTRUCTOR = 'classConstructor';
 
+    static private
+    /**
+     * PHP < 5.2.11 cannot return the registered Autoloaders with
+     * spl_autoload_functions(). This array keeps track of them.
+     *
+     * @see http://bugs.php.net/44144
+     * @see register()
+     * @see remove()
+     * @see getRegisteredAutoloaders()
+     * @var Array registered AbstractAutoloader objects
+     */
+    $_registeredAutoloaders = array();
+
     /**
      * implements autoloading
      *
@@ -119,6 +132,27 @@ abstract class AbstractAutoloader
 
         }
         spl_autoload_register($this->getCallback());
+
+        //
+        self::$_registeredAutoloaders[] = $this->getCallback();
+    }
+
+
+    /**
+     * Returns the registered autoloader callbacks of the spl_autoload stack.
+     *
+     * PHP < 5.2.11 wasn't able to return objects. So the callbacks are stored
+     * locally.
+     *
+     * @see $_registeredAutoloaders
+     * @see http://bugs.php.net/44144
+     * @return Array
+     */
+    private static function _getRegisteredCallBacks()
+    {
+        return version_compare(PHP_VERSION, "5.2.11", '>=')
+            ? spl_autoload_functions()
+            : self::$_registeredAutoloaders;
     }
 
     /**
@@ -128,18 +162,30 @@ abstract class AbstractAutoloader
      */
     public function isRegistered()
     {
-        return in_array($this->getCallback(), spl_autoload_functions(), true);
+        return in_array($this->getCallback(), self::_getRegisteredCallBacks(), true);
     }
 
     /**
      * Removes this Autoloader from the stack
      *
      * @see removeAll()
+     * @see $_registeredAutoloaders
+     * @see http://bugs.php.net/44144
      * @return void
      */
     public function remove()
     {
         spl_autoload_unregister($this->getCallback());
+
+        $index = array_search(
+            $this->getCallback(),
+            self::$_registeredAutoloaders,
+            true
+        );
+        if ($index !== false) {
+            unset(self::$_registeredAutoloaders[$index]);
+
+        }
     }
 
     /**
@@ -171,7 +217,7 @@ abstract class AbstractAutoloader
     static public function getRegisteredAutoloaders()
     {
         $autoloaders = array();
-        foreach (spl_autoload_functions() as $callback) {
+        foreach (self::_getRegisteredCallBacks() as $callback) {
             if (! is_array($callback)) {
                 continue;
 
@@ -225,8 +271,8 @@ abstract class AbstractAutoloader
         } catch (AutoloaderException $exception) {
             // The exception is only thrown if this is the last autoloader.
             $isLastAutoloader
-                = array_search($this->getCallback(), spl_autoload_functions())
-                === count(spl_autoload_functions()) - 1;
+                = array_search($this->getCallback(), self::_getRegisteredCallBacks())
+                === count(self::_getRegisteredCallBacks()) - 1;
             if (! $isLastAutoloader) {
                 return;
 

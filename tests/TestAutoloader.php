@@ -106,7 +106,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     {
         $this->_autoloaderTestHelper = new AutoloaderTestHelper($this);
 
-        return array(
+        $cases = array(
             array(
                 'da',
                 $this->_autoloaderTestHelper->makeClass(
@@ -133,9 +133,12 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
                         }
                     } ?>'
                 )
-            ),
+            )
+        );
 
-            array(
+        $helper = new AutoloaderTestHelper($this);
+        if ($helper->hasNamespaceSupport()) {
+            $cases[] = array(
                 'dc',
                 $this->_autoloaderTestHelper->makeClassInNamespace(
                     'de\malkusch\autoloader\test',
@@ -152,8 +155,27 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
                         }
                     ?>'
                 )
-            )
-        );
+            );
+            
+        }
+        return $cases;
+    }
+
+    /**
+     * Raises a SkippedTestError to indicate that not all test cases can be
+     * run in this environment.
+     *
+     * @return void
+     */
+    public function testNamespaceSupport()
+    {
+        $helper = new AutoloaderTestHelper($this);
+        if (! $helper->hasNamespaceSupport()) {
+            $this->markTestSkipped(
+                "Namespace testcases are skipt on PHP < 5.3 systems."
+            );
+
+        }
     }
 
     /**
@@ -192,7 +214,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     {
         $this->_autoloaderTestHelper = new AutoloaderTestHelper($this);
 
-        return array(
+        $cases = array(
             array(
                 'a',
                 $this->_autoloaderTestHelper->makeClass(
@@ -219,9 +241,12 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
                         }
                     } ?>'
                 )
-            ),
+            )
+        );
 
-            array(
+        $helper = new AutoloaderTestHelper($this);
+        if ($helper->hasNamespaceSupport()) {
+            $cases[] = array(
                 'c',
                 $this->_autoloaderTestHelper->makeClassInNamespace(
                     'de\malkusch\autoloader\test',
@@ -238,8 +263,10 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
                         }
                     ?>'
                 )
-            )
-        );
+            );
+
+        }
+        return $cases;
     }
 
     /**
@@ -671,18 +698,22 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
             "TestG6", "g", "<?php\nclass %name% \n {\n}?>"
         );
 
-        $classes[] = $this->_autoloaderTestHelper->makeClassInNamespace(
-            "a", "Test", ""
-        );
-        $classes[] = $this->_autoloaderTestHelper->makeClassInNamespace(
-            "a\b", "Test", ""
-        );
-        $classes[] = $this->_autoloaderTestHelper->makeClassInNamespace(
-            "a\b", "Test", ""
-        );
-        $classes[] = $this->_autoloaderTestHelper->makeClassInNamespace(
-            "a\b\c", "Test", ""
-        );
+        $helper = new AutoloaderTestHelper($this);
+        if ($helper->hasNamespaceSupport()) {
+            $classes[] = $this->_autoloaderTestHelper->makeClassInNamespace(
+                "a", "Test", ""
+            );
+            $classes[] = $this->_autoloaderTestHelper->makeClassInNamespace(
+                "a\b", "Test", ""
+            );
+            $classes[] = $this->_autoloaderTestHelper->makeClassInNamespace(
+                "a\b", "Test", ""
+            );
+            $classes[] = $this->_autoloaderTestHelper->makeClassInNamespace(
+                "a\b\c", "Test", ""
+            );
+
+        }
 
         $return = array();
         foreach ($classes as $class) {

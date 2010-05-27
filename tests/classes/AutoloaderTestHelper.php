@@ -105,6 +105,18 @@ class AutoloaderTestHelper
     }
 
     /**
+     * Returns if this PHP supports namespaces
+     *
+     * Some tests might be skipped in an unsupported environment.
+     *
+     * @return bool
+     */
+    public function hasNamespaceSupport()
+    {
+        return version_compare(PHP_VERSION, "5.3", '>=');
+    }
+
+    /**
      * Tests if $class is loadable
      * 
      * If not it will call PHPUnit_Framework_TestCase::fail().

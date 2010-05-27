@@ -163,7 +163,8 @@ class TestParser extends PHPUnit_Framework_TestCase
      */
     public function testNamespaceSupport()
     {
-        if (! defined(__NAMESPACE__) && __NAMESPACE__ != '') {
+        $helper = new AutoloaderTestHelper($this);
+        if (! $helper->hasNamespaceSupport()) {
             $this->markTestSkipped(
                 "Namespace testcases are skipt on PHP < 5.3 systems."
             );
@@ -249,7 +250,8 @@ class TestParser extends PHPUnit_Framework_TestCase
         );
 
         // These tests works only if PHP >= 5.3
-        if (defined(__NAMESPACE__) || __NAMESPACE__ == '') {
+        $helper = new AutoloaderTestHelper($this);
+        if ($helper->hasNamespaceSupport()) {
             $cases[] = array(
                 array(
                     'de\malkusch\autoloader\test\ns\bracket\Test1',

@@ -35,6 +35,8 @@
  * autoloader, they have to be required traditionally.
  */
 require_once
+    dirname(__FILE__) . '/autoloadAPI/AutoloadAPI.php';
+require_once
     dirname(__FILE__) . '/exception/AutoloaderException.php';
 require_once
     dirname(__FILE__) . '/exception/AutoloaderException_Include.php';
@@ -67,19 +69,6 @@ abstract class AbstractAutoloader
      * The name of the class constructor is classConstructor().
      */
     const CLASS_CONSTRUCTOR = 'classConstructor';
-
-    static private
-    /**
-     * PHP < 5.2.11 cannot return the registered Autoloaders with
-     * spl_autoload_functions(). This array keeps track of them.
-     *
-     * @see http://bugs.php.net/44144
-     * @see register()
-     * @see remove()
-     * @see getRegisteredAutoloaders()
-     * @var Array registered AbstractAutoloader objects
-     */
-    $_registeredAutoloaders = array();
 
     /**
      * implements autoloading
@@ -119,7 +108,7 @@ abstract class AbstractAutoloader
      * {@link spl_autoload_register()} disables __autoload(). This might be
      * unwanted, so register() also adds __autoload() to the stack.
      *
-     * @see spl_autoload_register()
+     * @see AutoloadAPI::registerAutoloader()
      * @see autoload()
      * @see getCallback()
      * @return void
@@ -128,31 +117,10 @@ abstract class AbstractAutoloader
     {
         // spl_autoload_register() disables __autoload(). This might be unwanted.
         if (function_exists('__autoload')) {
-            spl_autoload_register("__autoload");
+            AutoloadAPI::getInstance()->registerAutoloader("__autoload");
 
         }
-        spl_autoload_register($this->getCallback());
-
-        // PHP < 5.2.11
-        self::$_registeredAutoloaders[] = $this->getCallback();
-    }
-
-
-    /**
-     * Returns the registered autoloader callbacks of the spl_autoload stack.
-     *
-     * PHP < 5.2.11 wasn't able to return objects. So the callbacks are stored
-     * locally.
-     *
-     * @see $_registeredAutoloaders
-     * @see http://bugs.php.net/44144
-     * @return Array
-     */
-    private static function _getRegisteredCallBacks()
-    {
-        return version_compare(PHP_VERSION, "5.2.11", '>=')
-            ? spl_autoload_functions()
-            : self::$_registeredAutoloaders;
+        AutoloadAPI::getInstance()->registerAutoloader($this->getCallback());
     }
 
     /**
@@ -162,31 +130,23 @@ abstract class AbstractAutoloader
      */
     public function isRegistered()
     {
-        return in_array($this->getCallback(), self::_getRegisteredCallBacks(), true);
+        return in_array(
+            $this->getCallback(),
+            AutoloadAPI::getInstance()->getRegisteredAutoloaders(),
+            true
+        );
     }
 
     /**
      * Removes this Autoloader from the stack
      *
      * @see removeAll()
-     * @see $_registeredAutoloaders
-     * @see http://bugs.php.net/44144
+     * @see AutoloadAPI::removeAutoloader()
      * @return void
      */
     public function remove()
     {
-        spl_autoload_unregister($this->getCallback());
-
-        // PHP < 5.2.11
-        $index = array_search(
-            $this->getCallback(),
-            self::$_registeredAutoloaders,
-            true
-        );
-        if ($index !== false) {
-            unset(self::$_registeredAutoloaders[$index]);
-
-        }
+        AutoloadAPI::getInstance()->removeAutoloader($this->getCallback());
     }
 
     /**
@@ -207,18 +167,15 @@ abstract class AbstractAutoloader
     /**
      * Returns all registered Autoloader instances which are doing their jobs
      *
-     * This method is not working in old PHP releases. spl_autoload_functions()
-     * is not returing objects but class names.
-     * 
-     * @see http://bugs.php.net/44144
-     * @see spl_autoload_functions()
+     * @see AutoloadAPI::getRegisteredAutoloaders()
      * @see register()
      * @return Array
      */
     static public function getRegisteredAutoloaders()
     {
         $autoloaders = array();
-        foreach (self::_getRegisteredCallBacks() as $callback) {
+        $callbacks   = AutoloadAPI::getInstance()->getRegisteredAutoloaders();
+        foreach ($callbacks as $callback) {
             if (! is_array($callback)) {
                 continue;
 
@@ -270,10 +227,12 @@ abstract class AbstractAutoloader
             $this->doAutoload($class);
 
         } catch (AutoloaderException $exception) {
+            $callbacks = AutoloadAPI::getInstance()->getRegisteredAutoloaders();
+
             // The exception is only thrown if this is the last autoloader.
             $isLastAutoloader
-                = array_search($this->getCallback(), self::_getRegisteredCallBacks())
-                === count(self::_getRegisteredCallBacks()) - 1;
+                = array_search($this->getCallback(), $callbacks)
+                === count($callbacks) - 1;
             if (! $isLastAutoloader) {
                 return;
 

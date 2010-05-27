@@ -22,13 +22,19 @@
  * classes/MyClass.php
  * <code>
  * <?php
- * class MyClass extends MyParentClass { }
+ * class MyClass extends MyParentClass
+ * {
+ *
+ * }
  * </code>
  * 
  * classes/MyParentClass.php
  * <code>
  * <?php
- * class MyParentClass { }
+ * class MyParentClass
+ * {
+ *
+ * }
  * </code>
  * 
  * As you can see it's only necessary to require this file once.

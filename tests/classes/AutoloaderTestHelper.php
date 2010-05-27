@@ -39,7 +39,7 @@
  * @subpackage Test
  * @author     Markus Malkusch <markus@malkusch.de>
  * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version    Release: 1.9
+ * @version    Release: 1.10
  * @link       http://php-autoloader.malkusch.de/en/
  */
 class AutoloaderTestHelper

@@ -160,6 +160,11 @@ abstract class AbstractAutoloader
     /**
      * Returns all registered Autoloader instances which are doing their jobs
      *
+     * This method is not working in old PHP releases. spl_autoload_functions()
+     * is not returing objects but class names.
+     * 
+     * @see http://bugs.php.net/44144
+     * @see spl_autoload_functions()
      * @see register()
      * @return Array
      */

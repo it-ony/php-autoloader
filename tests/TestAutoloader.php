@@ -408,7 +408,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
      */
     public function testRequireOnceMultipleAutoloaders()
     {
-        if (! $this->_isSameFilesystem(__DIR__, sys_get_temp_dir())) {
+        if (! $this->_isSameFilesystem(dirname(__FILE__), sys_get_temp_dir())) {
 
         }
 

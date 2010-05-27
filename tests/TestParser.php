@@ -156,6 +156,22 @@ class TestParser extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Raises a SkippedTestError to indicate that not all test cases can be
+     * run in this environment.
+     *
+     * @return void
+     */
+    public function testNamespaceSupport()
+    {
+        if (! defined(__NAMESPACE__) && __NAMESPACE__ != '') {
+            $this->markTestSkipped(
+                "Namespace testcases are skipt on PHP < 5.3 systems."
+            );
+
+        }
+    }
+
+    /**
      * Provides test cases for TestIsClassIn* tests
      *
      * @see testIsClassInSource()
@@ -202,7 +218,7 @@ class TestParser extends PHPUnit_Framework_TestCase
      */
     public function provideSource()
     {
-        return array(
+        $cases = array(
             array(array("Test"), "<?php interface Test{}?>"),
             array(array("teSt"), "<?php interface teSt{}?>"),
             array(array("Test"), "<?php abstract class Test{}?>"),
@@ -230,25 +246,31 @@ class TestParser extends PHPUnit_Framework_TestCase
                 array("Test1", "Test"),
                 "<?php\ninterface Test1 \n {\n}\interface Test \n {\n} ?>"
             ),
+        );
 
-
-            array(
+        // These tests works only if PHP >= 5.3
+        if (defined(__NAMESPACE__) || __NAMESPACE__ == '') {
+            $cases[] = array(
                 array(
                     'de\malkusch\autoloader\test\ns\bracket\Test1',
                     'de\malkusch\autoloader\test\ns\bracket\Test2'
                 ),
-                file_get_contents(__DIR__ . "/namespaceDefinitions/Bracket.php")
-            ),
-            array(
+                file_get_contents(
+                    dirname(__FILE__) . "/namespaceDefinitions/Bracket.php"
+                )
+            );
+            $cases[] = array(
                 array(
                     'de\malkusch\autoloader\test\ns\multibracket\A\Test1',
                     'de\malkusch\autoloader\test\ns\multibracket\A\Test2',
                     'de\malkusch\autoloader\test\ns\multibracket\B\Test1',
                     'de\malkusch\autoloader\test\ns\multibracket\B\Test2',
                 ),
-                file_get_contents(__DIR__ . "/namespaceDefinitions/MultiBracket.php")
-            ),
-            array(
+                file_get_contents(
+                    dirname(__FILE__) . "/namespaceDefinitions/MultiBracket.php"
+                )
+            );
+            $cases[] = array(
                 array(
                     'de\malkusch\autoloader\test\ns\multinobracket\A\Test1',
                     'de\malkusch\autoloader\test\ns\multinobracket\A\Test2',
@@ -256,17 +278,21 @@ class TestParser extends PHPUnit_Framework_TestCase
                     'de\malkusch\autoloader\test\ns\multinobracket\B\Test2',
                 ),
                 file_get_contents(
-                    __DIR__ . "/namespaceDefinitions/MultiNoBracket.php"
+                    dirname(__FILE__) . "/namespaceDefinitions/MultiNoBracket.php"
                 )
-            ),
-            array(
+            );
+            $cases[] = array(
                 array(
                     'de\malkusch\autoloader\test\ns\nobracket\Test1',
                     'de\malkusch\autoloader\test\ns\nobracket\Test2'
                 ),
-                file_get_contents(__DIR__ . "/namespaceDefinitions/NoBracket.php")
-            )
-        );
+                file_get_contents(
+                    dirname(__FILE__) . "/namespaceDefinitions/NoBracket.php"
+                )
+            );
+
+        }
+        return $cases;
     }
 
     /**

@@ -214,11 +214,11 @@ class TestIndexFilter extends PHPUnit_Framework_TestCase
                 realpath(dirname(__FILE__) . "/..") . "/Foo/Bar"
             ),
             array(
-                'test/Foo',
+                'tests/Foo',
                 dirname(__FILE__) . "/Foo"
             ),
             array(
-                'test/Foo/Bar',
+                'tests/Foo/Bar',
                 dirname(__FILE__) . "/Foo/Bar"
             )
         );

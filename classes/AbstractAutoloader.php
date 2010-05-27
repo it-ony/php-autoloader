@@ -50,7 +50,7 @@ require_once
  * @package  Autoloader
  * @author   Markus Malkusch <markus@malkusch.de>
  * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version  Release: 1.8
+ * @version  Release: 1.9
  * @link     http://php-autoloader.malkusch.de/en/
  */
 abstract class AbstractAutoloader

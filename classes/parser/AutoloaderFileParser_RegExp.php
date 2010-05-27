@@ -21,13 +21,14 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category  Autoloader
- * @package   Parser
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   SVN: $Id$
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category   Autoloader
+ * @package    Autoloader
+ * @subpackage Parser
+ * @author     Markus Malkusch <markus@malkusch.de>
+ * @copyright  2009 - 2010 Markus Malkusch
+ * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version    SVN: $Id$
+ * @link       http://php-autoloader.malkusch.de/en/
  */
 
 /**
@@ -44,16 +45,22 @@ InternalAutoloader::getInstance()->registerClass(
  *
  * This is not as reliable as the AutoloaderFileParser_Tokenizer.
  * But if there's no tokenizer support this is a well working
- * fallback. This class is as well as the regular expression
- * '~\s*((abstract\s+)?class|interface)\s+([a-z].*)[$\s#/{]~imU'.
+ * fallback. This class is as well as these regular expressions:
+ * <samp>
+ * ~\s*((abstract\s+)?class|interface)\s+([a-z].*)[$\s#/{]~imU
+ * </samp>
+ * <samp>
+ * ~namespace\s+([^\s;{]+)~im
+ * </samp>
  *
- * @category Autoloader
- * @package  Parser
- * @author   Markus Malkusch <markus@malkusch.de>
- * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version  Release: 1.8
- * @link     http://php-autoloader.malkusch.de/en/
- * @see      Autoloader::searchPath()
+ * @category   Autoloader
+ * @package    Autoloader
+ * @subpackage Parser
+ * @author     Markus Malkusch <markus@malkusch.de>
+ * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version    Release: 1.8
+ * @link       http://php-autoloader.malkusch.de/en/
+ * @see        Autoloader::searchPath()
  */
 class AutoloaderFileParser_RegExp extends AutoloaderFileParser
 {

@@ -21,25 +21,27 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category  Autoloader
- * @package   Test
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   SVN: $Id$
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category   Autoloader
+ * @package    Autoloader
+ * @subpackage Test
+ * @author     Markus Malkusch <markus@malkusch.de>
+ * @copyright  2009 - 2010 Markus Malkusch
+ * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version    SVN: $Id$
+ * @link       http://php-autoloader.malkusch.de/en/
  */
 
 /**
  * OldPHPAPI tests
  *
- * @category Autoloader
- * @package  Test
- * @author   Markus Malkusch <markus@malkusch.de>
- * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version  Release: 1.8
- * @link     http://php-autoloader.malkusch.de/en/
- * @see      TestOldPHPAPI
+ * @category   Autoloader
+ * @package    Autoloader
+ * @subpackage Test
+ * @author     Markus Malkusch <markus@malkusch.de>
+ * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version    Release: 1.8
+ * @link       http://php-autoloader.malkusch.de/en/
+ * @see        TestOldPHPAPI
  */
 class OldPHPAPI_Test extends OldPHPAPI
 {

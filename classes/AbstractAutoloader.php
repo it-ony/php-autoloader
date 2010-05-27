@@ -22,7 +22,7 @@
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
  * @category  Autoloader
- * @package   Base
+ * @package   Autoloader
  * @author    Markus Malkusch <markus@malkusch.de>
  * @copyright 2009 - 2010 Markus Malkusch
  * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
@@ -47,7 +47,7 @@ require_once
  * An abstract autoloader
  *
  * @category Autoloader
- * @package  Base
+ * @package  Autoloader
  * @author   Markus Malkusch <markus@malkusch.de>
  * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version  Release: 1.8

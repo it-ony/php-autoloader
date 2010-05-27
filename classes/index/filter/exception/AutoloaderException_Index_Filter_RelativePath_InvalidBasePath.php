@@ -22,8 +22,8 @@
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
  * @category   Autoloader
- * @package    Index
- * @subpackage Exception
+ * @package    Autoloader
+ * @subpackage Index
  * @author     Markus Malkusch <markus@malkusch.de>
  * @copyright  2009 - 2010 Markus Malkusch
  * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
@@ -44,8 +44,8 @@ InternalAutoloader::getInstance()->registerClass(
  * base path
  *
  * @category   Autoloader
- * @package    Index
- * @subpackage Exception
+ * @package    Autoloader
+ * @subpackage Index
  * @author     Markus Malkusch <markus@malkusch.de>
  * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version    Release: 1.8

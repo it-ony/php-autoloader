@@ -21,13 +21,14 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category  Autoloader
- * @package   Exception
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   SVN: $Id$
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category   Autoloader
+ * @package    Autoloader
+ * @subpackage Exception
+ * @author     Markus Malkusch <markus@malkusch.de>
+ * @copyright  2009 - 2010 Markus Malkusch
+ * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version    SVN: $Id$
+ * @link       http://php-autoloader.malkusch.de/en/
  */
 
 /**
@@ -41,13 +42,14 @@ InternalAutoloader::getInstance()->registerClass(
 /**
  * Raised if searching for a class fails
  *
- * @category Autoloader
- * @package  Exception
- * @author   Markus Malkusch <markus@malkusch.de>
- * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version  Release: 1.8
- * @link     http://php-autoloader.malkusch.de/en/
- * @see      Autoloader::searchPath()
+ * @category   Autoloader
+ * @package    Autoloader
+ * @subpackage Exception
+ * @author     Markus Malkusch <markus@malkusch.de>
+ * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version    Release: 1.8
+ * @link       http://php-autoloader.malkusch.de/en/
+ * @see        Autoloader::searchPath()
  */
 class AutoloaderException_SearchFailed extends AutoloaderException
 {

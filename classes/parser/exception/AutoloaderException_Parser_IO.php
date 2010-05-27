@@ -22,8 +22,8 @@
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
  * @category   Autoloader
- * @package    Parser
- * @subpackage Exception
+ * @package    Autoloader
+ * @subpackage Parser
  * @author     Markus Malkusch <markus@malkusch.de>
  * @copyright  2009 - 2010 Markus Malkusch
  * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
@@ -43,8 +43,8 @@ InternalAutoloader::getInstance()->registerClass(
  * Raised if an IO error occured during parsing for class definitions
  *
  * @category   Autoloader
- * @package    Parser
- * @subpackage Exception
+ * @package    Autoloader
+ * @subpackage Parser
  * @author     Markus Malkusch <markus@malkusch.de>
  * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version    Release: 1.8

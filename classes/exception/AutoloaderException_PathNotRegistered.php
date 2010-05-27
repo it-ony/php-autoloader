@@ -21,13 +21,14 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category  Autoloader
- * @package   Exception
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   SVN: $Id$
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category   Autoloader
+ * @package    Autoloader
+ * @subpackage Exception
+ * @author     Markus Malkusch <markus@malkusch.de>
+ * @copyright  2009 - 2010 Markus Malkusch
+ * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version    SVN: $Id$
+ * @link       http://php-autoloader.malkusch.de/en/
  */
 
 /**
@@ -39,13 +40,14 @@ require_once dirname(__FILE__) . '/AutoloaderException.php';
 /**
  * Raised if no Autoloader was registered for the class path
  *
- * @category Autoloader
- * @package  Exception
- * @author   Markus Malkusch <markus@malkusch.de>
- * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version  Release: 1.8
- * @link     http://php-autoloader.malkusch.de/en/
- * @see      Autoloader::getRegisteredAutoloader()
+ * @category   Autoloader
+ * @package    Autoloader
+ * @subpackage Exception
+ * @author     Markus Malkusch <markus@malkusch.de>
+ * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version    Release: 1.8
+ * @link       http://php-autoloader.malkusch.de/en/
+ * @see        Autoloader::getRegisteredAutoloader()
  */
 class AutoloaderException_PathNotRegistered extends AutoloaderException
 {

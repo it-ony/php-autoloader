@@ -22,20 +22,14 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category  Autoloader
- * @package   Benchmark
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   SVN: $Id$
- * @link      http://php-autoloader.malkusch.de/en/
- * @see       AutoloaderIndex
- * @see       AutoloaderIndex_CSV
- * @see       AutoloaderIndex_IniFile
- * @see       AutoloaderIndex_PDO
- * @see       AutoloaderIndex_PHPArrayCode
- * @see       AutoloaderIndex_SerializedHashtable
- * @see       AutoloaderIndex_SerializedHashtable_GZ
+ * @category   Autoloader
+ * @package    Autoloader
+ * @subpackage Benchmark
+ * @author     Markus Malkusch <markus@malkusch.de>
+ * @copyright  2009 - 2010 Markus Malkusch
+ * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version    SVN: $Id$
+ * @link       http://php-autoloader.malkusch.de/en/
  */
 
 /**
@@ -51,12 +45,20 @@ AutoloaderBenchmark::classConstructor();
 /**
  * AutoloaderBenchmark class
  *
- * @category Autoloader
- * @package  Benchmark
- * @author   Markus Malkusch <markus@malkusch.de>
- * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version  Release: 1.8
- * @link     http://php-autoloader.malkusch.de/en/
+ * @category   Autoloader
+ * @package    Autoloader
+ * @subpackage Benchmark
+ * @author     Markus Malkusch <markus@malkusch.de>
+ * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version    Release: 1.8
+ * @link       http://php-autoloader.malkusch.de/en/
+ * @see        AutoloaderIndex
+ * @see        AutoloaderIndex_CSV
+ * @see        AutoloaderIndex_IniFile
+ * @see        AutoloaderIndex_PDO
+ * @see        AutoloaderIndex_PHPArrayCode
+ * @see        AutoloaderIndex_SerializedHashtable
+ * @see        AutoloaderIndex_SerializedHashtable_GZ
  */
 class AutoloaderBenchmark
 {

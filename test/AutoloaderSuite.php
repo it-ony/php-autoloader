@@ -21,13 +21,14 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category  Autoloader
- * @package   Test
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2009 - 2010 Markus Malkusch
- * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version   SVN: $Id$
- * @link      http://php-autoloader.malkusch.de/en/
+ * @category   Autoloader
+ * @package    Autoloader
+ * @subpackage Test
+ * @author     Markus Malkusch <markus@malkusch.de>
+ * @copyright  2009 - 2010 Markus Malkusch
+ * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version    SVN: $Id$
+ * @link       http://php-autoloader.malkusch.de/en/
  */
 
 /**
@@ -48,20 +49,21 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
  * is a side effect of the tearDown() which deletes the indexes, before
  * every destructor was called.
  *
- * @category Autoloader
- * @package  Test
- * @author   Markus Malkusch <markus@malkusch.de>
- * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version  Release: 1.8
- * @link     http://php-autoloader.malkusch.de/en/
- * @see      TestIndexFilter
- * @see      TestAutoloader
- * @see      TestAutoloaderProfiler
- * @see      TestIndex
- * @see      TestParser
- * @see      TestInternalAutoloader
- * @see      TestFileIterator
- * @see      TestOldPHPAPI
+ * @category   Autoloader
+ * @package    Autoloader
+ * @subpackage Test
+ * @author     Markus Malkusch <markus@malkusch.de>
+ * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
+ * @version    Release: 1.8
+ * @link       http://php-autoloader.malkusch.de/en/
+ * @see        TestIndexFilter
+ * @see        TestAutoloader
+ * @see        TestAutoloaderProfiler
+ * @see        TestIndex
+ * @see        TestParser
+ * @see        TestInternalAutoloader
+ * @see        TestFileIterator
+ * @see        TestOldPHPAPI
  */
 class AutoloaderSuite extends PHPUnit_Framework_TestSuite
 {

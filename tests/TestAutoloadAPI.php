@@ -141,25 +141,38 @@ class TestAutoloadAPI extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Creates a AutoloadAPI instance
+     * Raises an error to indicate that not all test cases can be
+     * run in this environment.
+     *
+     * @return void
+     * @see _getAutoloadAPI()
+     */
+    public function testComleteTestSupport()
+    {
+        $this->assertTrue(
+            version_compare(PHP_VERSION, "5.2.11", '>='),
+            "Use PHP >= 5.2.11 to run all tests"
+        );
+    }
+
+    /**
+     * Creates an AutoloadAPI instance
      *
      * @param String $classname Either AutoloadAPI or AutoloadAPI_Old
      *
+     * @see AutoloadAPI_Constructable
+     * @see AutoloadAPI_Old_Constructable
      * @return AutoloadAPI
      */
     private function _getAutoloadAPI($classname)
     {
-        /*
-        $class          = new ReflectionClass($classname);
-        $constructor    = $class->getConstructor();
+        if (version_compare(PHP_VERSION, "5.2.11", '<')) {
+            return AutoloadAPI::getInstance();
 
-        $constructor->setAccessible(true);
+        }
 
-        
-        return $class->newInstance();
-         */
-
-        return AutoloadAPI::getInstance();
+        $classname .= "_Constructable";
+        return new $classname();
     }
 
 }

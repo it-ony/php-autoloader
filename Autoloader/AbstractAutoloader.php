@@ -133,7 +133,7 @@ abstract class AbstractAutoloader
         }
         spl_autoload_register($this->getCallback());
 
-        //
+        // PHP < 5.2.11
         self::$_registeredAutoloaders[] = $this->getCallback();
     }
 
@@ -177,6 +177,7 @@ abstract class AbstractAutoloader
     {
         spl_autoload_unregister($this->getCallback());
 
+        // PHP < 5.2.11
         $index = array_search(
             $this->getCallback(),
             self::$_registeredAutoloaders,

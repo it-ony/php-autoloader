@@ -2,7 +2,7 @@
 <?php
 
 try {
-    include dirname(__FILE__) . '/../Autoloader.php';
+    include dirname(__FILE__) . '/../../Autoloader.php';
 
     $a = new ClassA();
     $b = new ClassB();

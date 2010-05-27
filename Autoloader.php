@@ -79,7 +79,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category  Autoloader
+ * @category  PHP
  * @package   Autoloader
  * @author    Markus Malkusch <markus@malkusch.de>
  * @copyright 2009 - 2010 Markus Malkusch
@@ -98,12 +98,12 @@
  * Autoloader is not defined yet.
  */
 if (! class_exists('Autoloader')) {
-    include_once dirname(__FILE__) . "/classes/OldPHPAPI.php";
+    include_once dirname(__FILE__) . "/Autoloader/OldPHPAPI.php";
     $__oldAPI = new OldPHPAPI();
     $__oldAPI->checkAPI();
     unset($__oldAPI);
 
-    include_once dirname(__FILE__) . "/classes/Autoloader.php";
+    include_once dirname(__FILE__) . "/Autoloader/Autoloader.php";
 
 }
 

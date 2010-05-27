@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Parser
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -46,7 +46,7 @@ InternalAutoloader::getInstance()->registerClass(
 /**
  * A reliable AutoloaderFileParser implementation which uses PHP's tokenizer
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Parser
  * @author     Markus Malkusch <markus@malkusch.de>

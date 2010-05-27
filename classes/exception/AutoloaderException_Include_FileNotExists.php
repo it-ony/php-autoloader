@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Exception
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -44,7 +44,7 @@ require_once dirname(__FILE__) . '/AutoloaderException_Include.php';
  * a stale index. Normally the Autoloader reacts on this exception to find
  * the new class definition.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Exception
  * @author     Markus Malkusch <markus@malkusch.de>

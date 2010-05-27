@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Exception
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -42,7 +42,7 @@ InternalAutoloader::getInstance()->registerClass(
 /**
  * Indicates an error during setting the class path
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Exception
  * @author     Markus Malkusch <markus@malkusch.de>

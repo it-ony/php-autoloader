@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Exception
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -42,7 +42,7 @@ InternalAutoloader::getInstance()->registerClass(
 /**
  * Raised if guessing the caller's path fails
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Exception
  * @author     Markus Malkusch <markus@malkusch.de>

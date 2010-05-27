@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Index
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -56,7 +56,7 @@ InternalAutoloader::getInstance()->registerClass(
  * a hugh count of class definitions a plain text index file would produce
  * too much IO costs.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Index
  * @author     Markus Malkusch <markus@malkusch.de>

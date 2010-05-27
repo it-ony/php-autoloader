@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage FileIterator
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -53,7 +53,7 @@ InternalAutoloader::getInstance()->registerClass(
  * }
  * </code>
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage FileIterator
  * @author     Markus Malkusch <markus@malkusch.de>

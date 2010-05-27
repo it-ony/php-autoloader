@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Index
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -52,7 +52,7 @@ InternalAutoloader::getInstance()->registerClass(
  *
  * This implementation is threadsafe.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Index
  * @author     Markus Malkusch <markus@malkusch.de>

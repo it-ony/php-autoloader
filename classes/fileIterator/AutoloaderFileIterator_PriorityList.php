@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage FileIterator
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -49,7 +49,7 @@ InternalAutoloader::getInstance()->registerClass(
  * The AutoloaderFileIterator_PriorityList searches all files in advance and
  * orders them. It may not be practicable on a huge file base.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage FileIterator
  * @author     Markus Malkusch <markus@malkusch.de>

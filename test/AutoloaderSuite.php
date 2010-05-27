@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Test
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -49,7 +49,7 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
  * is a side effect of the tearDown() which deletes the indexes, before
  * every destructor was called.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Test
  * @author     Markus Malkusch <markus@malkusch.de>

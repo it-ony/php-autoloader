@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Parser
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -53,7 +53,7 @@ InternalAutoloader::getInstance()->registerClass(
  * An implementation of this class should be able to parse a file and
  * find a class definition.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Parser
  * @author     Markus Malkusch <markus@malkusch.de>

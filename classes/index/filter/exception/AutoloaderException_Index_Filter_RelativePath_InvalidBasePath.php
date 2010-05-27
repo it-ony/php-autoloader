@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Index
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -43,7 +43,7 @@ InternalAutoloader::getInstance()->registerClass(
  * Thrown if a AutoloaderIndexFilter_RelativePath is constructored with an invalid
  * base path
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Index
  * @author     Markus Malkusch <markus@malkusch.de>

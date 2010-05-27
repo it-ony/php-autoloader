@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Test
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -41,7 +41,7 @@ require_once dirname(__FILE__) . '/../../classes/Autoloader.php';
  * This Autoloader is only for profiling during development of the
  * Autoloaderpackage itself used.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Test
  * @author     Markus Malkusch <markus@malkusch.de>

@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Test
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -44,7 +44,7 @@ TestIndex::classConstructor();
 /**
  * AutoloaderIndex test cases
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Test
  * @author     Markus Malkusch <markus@malkusch.de>

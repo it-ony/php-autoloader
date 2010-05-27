@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Index
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -37,7 +37,7 @@
  * When a path is read from an AutoloaderIndex, this filter is applied on
  * that path.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Index
  * @author     Markus Malkusch <markus@malkusch.de>

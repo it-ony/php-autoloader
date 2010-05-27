@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage FileIterator
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -44,7 +44,7 @@ InternalAutoloader::getInstance()->registerClass(
  *
  * It uses a stack of DirectoryIterator objects for searching recursively.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage FileIterator
  * @author     Markus Malkusch <markus@malkusch.de>

@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Index
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -50,7 +50,7 @@ InternalAutoloader::getInstance()->registerClass(
  * database wich understands SQL. There is no need to
  * create any table. The index creates its structure by itself.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Index
  * @author     Markus Malkusch <markus@malkusch.de>

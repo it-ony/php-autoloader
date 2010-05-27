@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Exception
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -43,7 +43,7 @@ require_once dirname(__FILE__) . '/AutoloaderException_Include.php';
  * Only if the Autoloader is the last Autoloader in the stack this exception
  * will be thrown out of the Autoloader context and lead to a termination.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Exception
  * @author     Markus Malkusch <markus@malkusch.de>

@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Exception
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -36,7 +36,7 @@
  * 
  * Every thrown exception is an instance of AutoloaderException.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Exception
  * @author     Markus Malkusch <markus@malkusch.de>

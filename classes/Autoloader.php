@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category  Autoloader
+ * @category  PHP
  * @package   Autoloader
  * @author    Markus Malkusch <markus@malkusch.de>
  * @copyright 2009 - 2010 Markus Malkusch
@@ -57,7 +57,7 @@ require_once
  * Autoloader->addPath() as the constructor uses the path
  * of the debug_backtrace().
  *
- * @category Autoloader
+ * @category PHP
  * @package  Autoloader
  * @author   Markus Malkusch <markus@malkusch.de>
  * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3

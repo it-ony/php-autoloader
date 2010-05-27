@@ -22,7 +22,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Benchmark
  * @author     Markus Malkusch <markus@malkusch.de>
@@ -45,7 +45,7 @@ AutoloaderBenchmark::classConstructor();
 /**
  * AutoloaderBenchmark class
  *
- * @category   Autoloader
+ * @category   PHP
  * @package    Autoloader
  * @subpackage Benchmark
  * @author     Markus Malkusch <markus@malkusch.de>

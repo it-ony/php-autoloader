@@ -21,7 +21,7 @@
  * along with this program.
  * If not, see <http://php-autoloader.malkusch.de/en/license/>.
  *
- * @category  Autoloader
+ * @category  PHP
  * @package   Autoloader
  * @author    Markus Malkusch <markus@malkusch.de>
  * @copyright 2009 - 2010 Markus Malkusch
@@ -37,7 +37,7 @@
  * an @implement annotation. The @implement annotation gives the name of the
  * function.
  *
- * @category Autoloader
+ * @category PHP
  * @package  Autoloader
  * @author   Markus Malkusch <markus@malkusch.de>
  * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3

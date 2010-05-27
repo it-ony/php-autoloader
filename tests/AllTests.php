@@ -63,6 +63,7 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
  * @see        TestInternalAutoloader
  * @see        TestFileIterator
  * @see        TestOldPHPAPI
+ * @see        TestAutoloadAPI
  */
 class AllTests extends PHPUnit_Framework_TestSuite
 {
@@ -76,6 +77,7 @@ class AllTests extends PHPUnit_Framework_TestSuite
     {
         $suite = new self();
  
+        $suite->addTestSuite("TestAutoloadAPI");
         $suite->addTestSuite("TestOldPHPAPI");
         $suite->addTestSuite("TestIndexFilter");
         $suite->addTestSuite("TestAutoloader");

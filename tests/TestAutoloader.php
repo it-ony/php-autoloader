@@ -64,6 +64,36 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     $_autoloaderTestHelper;
 
     /**
+     * Tests moving of class definitions
+     * 
+     * If an Autoloader found a class, the path for the class definition is fetched
+     * from the index. If the class definition moves to another path, the new
+     * path should be found and stored in the index.
+     *
+     * @return void
+     */
+    public function testMoveClassdefinition()
+    {
+        // TODO implement this test
+        $this->markTestIncomplete();
+    }
+
+    /**
+     * Tests removing of class definitions
+     *
+     * If an Autoloader found a class, the path for the class definition is fetched
+     * from the index. If the class definition is removed, the autoloader should
+     * fail.
+     *
+     * @return void
+     */
+    public function testRemoveClassdefinition()
+    {
+        // TODO implement this test
+        $this->markTestIncomplete();
+    }
+
+    /**
      * Ttests the deprecated class constructor __static()
      *
      * The autoloader loads the class $class and the test expects

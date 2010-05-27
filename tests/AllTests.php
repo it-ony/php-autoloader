@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Defines the class AutoloaderSuite
+ * Defines the class AllTests
  *
  * PHP version 5
  *
@@ -65,7 +65,7 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
  * @see        TestFileIterator
  * @see        TestOldPHPAPI
  */
-class AutoloaderSuite extends PHPUnit_Framework_TestSuite
+class AllTests extends PHPUnit_Framework_TestSuite
 {
 
     /**

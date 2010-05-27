@@ -79,6 +79,22 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests changing of class definitions
+     *
+     * If an Autoloader found a class, the path for the class definition is fetched
+     * from the index. The content of this file might change and not define this
+     * class anymore. In this case the Autoloader should scan the file system for
+     * the new class definition.
+     *
+     * @return void
+     */
+    public function testChangeClassdefinition()
+    {
+        // TODO implement this test
+        $this->markTestIncomplete();
+    }
+
+    /**
      * Tests removing of class definitions
      *
      * If an Autoloader found a class, the path for the class definition is fetched
@@ -94,7 +110,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Ttests the deprecated class constructor __static()
+     * Tests the deprecated class constructor __static()
      *
      * The autoloader loads the class $class and the test expects
      * from the autoloader, that it sets the value of $testClassConstructorState

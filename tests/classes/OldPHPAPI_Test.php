@@ -49,7 +49,7 @@ class OldPHPAPI_Test extends OldPHPAPI
     /**
      * Implements test_function_no_parameters()
      *
-     * test_function_no_parameters() is needed for testing this class.
+     * test_function_no_parameters() is needed for testing OldPHPAPI.
      *
      * @implement test_function_no_parameters
      * @see TestOldPHPAPI
@@ -63,7 +63,7 @@ class OldPHPAPI_Test extends OldPHPAPI
     /**
      * Implements test_function_with_parameters()
      *
-     * test_function_with_parameters() is needed for testing this class.
+     * test_function_with_parameters() is needed for testing OldPHPAPI.
      *
      * @param int $a an integer
      * @param int $b an integer

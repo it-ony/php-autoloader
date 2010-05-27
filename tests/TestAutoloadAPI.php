@@ -72,7 +72,7 @@ class TestAutoloadAPI extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Asserts that registerAutoloader registers callbacks at the stack adn
+     * Asserts that registerAutoloader registers callbacks at the stack and
      * can be removed
      *
      * @param AutoloadAPI $api      An AutoloadAPI object
@@ -141,18 +141,17 @@ class TestAutoloadAPI extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Raises an error to indicate that not all test cases can be
-     * run in this environment.
+     * Skips to indicate that not all test cases can be run in this environment
      *
      * @return void
      * @see _getAutoloadAPI()
      */
     public function testComleteTestSupport()
     {
-        $this->assertTrue(
-            version_compare(PHP_VERSION, "5.2.11", '>='),
-            "Use PHP >= 5.2.11 to run all tests"
-        );
+        if (version_compare(PHP_VERSION, "5.2.11", '<')) {
+            $this->markTestSkipped();
+
+        }
     }
 
     /**

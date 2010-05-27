@@ -192,12 +192,12 @@ abstract class AbstractAutoloader
     }
 
     /**
-     * This method is registered in the spl_autoload stack.
+     * call from the spl_autoload stack
      *
      * This method will try to load the class definition by calling the
      * abstract method doAutoload(). If this Autoloader doesn't find
-     * a class definition it will it only raises an error if it is
-     * the last Autoloader in the stack.
+     * a class definition it only raises an error if it is the last Autoloader
+     * in the stack.
      *
      * @param String $class The class name
      *

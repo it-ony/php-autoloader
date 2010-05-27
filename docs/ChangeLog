@@ -1,9 +1,11 @@
 2010-05-27 Markus Malkusch <markus@malkusch.de>
 
-    * classes/AbstractAutoloader.php (AbstractAutoloader::_getRegisteredCallBacks()):
-    Before PHP 5.2.11 spl_autoload_functions() didn't returns proper callbacks. So
-    the Autoloader wasn't working in such a PHP environment.
-    AbstractAutoloader::_getRegisteredCallBacks() tries to repair that.
+    * classes/autoloadAPI/AutoloadAPI.php (AutoloadAPI):
+    Before PHP 5.2.11 spl_autoload_functions() didn't return proper callbacks.
+    The callback always contained the class name and a function. The object got
+    lost in the stack. This prevented the Autoloader to work in such an environment.
+    AutoloadAPI::getInstance() returns a wrapper for the spl_autoload methods
+    which would work around this problem.
 
 2010-05-20 Markus Malkusch <markus@malkusch.de>
 

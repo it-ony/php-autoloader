@@ -272,17 +272,21 @@ abstract class AbstractAutoloader
      */
     protected function loadClass($class, $path)
     {
+        /**
+         * The file_exists() could also be in the if block after the include_once.
+         * The include_once must get the @ error suppressor. But then an application
+         * is no more debuggable plus the expected error would come in the error log.
+         */
+        if (! file_exists($path)) {
+            throw new AutoloaderException_Include_FileNotExists($path);
+
+        }
         if (! include_once $path) {
-            if (! file_exists($path)) {
-                throw new AutoloaderException_Include_FileNotExists($path);
+            $error = error_get_last();
+            throw new AutoloaderException_Include(
+                "Failed to include $path for $class: $error[message]"
+            );
 
-            } else {
-                $error = error_get_last();
-                throw new AutoloaderException_Include(
-                    "Failed to include $path for $class: $error[message]"
-                );
-
-            }
         }
 
 

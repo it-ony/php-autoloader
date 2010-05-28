@@ -53,7 +53,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
 
     static public
     /**
-     * @var String
+     * @var String Used for class constructor tests
      */
     $testClassConstructorState = '';
 
@@ -74,24 +74,90 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
      */
     public function testMoveClassdefinition()
     {
-        // TODO implement this test
-        $this->markTestIncomplete();
+        $class = $this->_autoloaderTestHelper->makeClass('test', 'moveTest');
+        $index = Autoloader::getRegisteredAutoloader()->getIndex();
+
+        AbstractAutoloader::normalizeClass($class);
+
+        $index->setPath($class, uniqid('/dev/null/'));
+
+        $this->_autoloaderTestHelper->assertLoadable($class);
+        $this->assertEquals(
+            realpath($this->_autoloaderTestHelper->getGeneratedClassPath($class)),
+            realpath($index->getPath($class))
+        );
     }
 
     /**
-     * Tests changing of class definitions
+     * Tests renaming of class definitions which stay in a file
      *
      * If an Autoloader found a class, the path for the class definition is fetched
      * from the index. The content of this file might change and not define this
-     * class anymore. In this case the Autoloader should scan the file system for
-     * the new class definition.
+     * class anymore.
      *
      * @return void
      */
-    public function testChangeClassdefinition()
+    public function testRenameClass()
     {
-        // TODO implement this test
-        $this->markTestIncomplete();
+        $index    = Autoloader::getRegisteredAutoloader()->getIndex();
+        $oldClass = uniqid("testclass");
+        $newClass = $this->_autoloaderTestHelper->makeClass(
+            'newClass', 'testRename'
+        );
+
+        AbstractAutoloader::normalizeClass($oldClass);
+        AbstractAutoloader::normalizeClass($newClass);
+
+        // The index still thinks that the file defines $oldClass
+        $index->setPath(
+            $oldClass,
+            $this->_autoloaderTestHelper->getGeneratedClassPath($newClass)
+        );
+
+        $this->_autoloaderTestHelper->assertNotLoadable($oldClass);
+        $this->assertFalse($index->hasPath($oldClass));
+    }
+
+    /**
+     * Tests switching class definition files
+     *
+     * Classes may switch their files. The index should also switch its content.
+     *
+     * @return void
+     */
+    public function testSwitchClasses()
+    {
+        $index  = Autoloader::getRegisteredAutoloader()->getIndex();
+        $classA = $this->_autoloaderTestHelper->makeClass(
+            'classA', 'testSwitch'
+        );
+        $classB = $this->_autoloaderTestHelper->makeClass(
+            'classB', 'testSwitch'
+        );
+
+        AbstractAutoloader::normalizeClass($classA);
+        AbstractAutoloader::normalizeClass($classB);
+
+        /*
+         * The index still thinks that the file for classA has class B and
+         * vice versa.
+         */
+        $index->setPath(
+            $classA,
+            $this->_autoloaderTestHelper->getGeneratedClassPath($classB)
+        );
+        $index->setPath(
+            $classB,
+            $this->_autoloaderTestHelper->getGeneratedClassPath($classA)
+        );
+
+        // After loading classA the index should know the path to class A
+        $this->_autoloaderTestHelper->assertLoadable($classA);
+        $this->assertEquals(
+            realpath($this->_autoloaderTestHelper->getGeneratedClassPath($classA)),
+            realpath($index->getPath($classA))
+        );
+        // ClassB is loaded, as it was included with the wrong path for classA.
     }
 
     /**
@@ -105,8 +171,15 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
      */
     public function testRemoveClassdefinition()
     {
-        // TODO implement this test
-        $this->markTestIncomplete();
+        $class = uniqid("testclass");
+        $index = Autoloader::getRegisteredAutoloader()->getIndex();
+
+        AbstractAutoloader::normalizeClass($class);
+
+        $index->setPath($class, uniqid('/dev/null/'));
+
+        $this->_autoloaderTestHelper->assertNotLoadable($class);
+        $this->assertFalse($index->hasPath($class));
     }
 
     /**

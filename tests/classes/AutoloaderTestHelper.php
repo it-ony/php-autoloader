@@ -220,7 +220,10 @@ class AutoloaderTestHelper
         $directory = self::getClassDirectory() . DIRECTORY_SEPARATOR . $directory;
         $path      = $directory . DIRECTORY_SEPARATOR . "$name.test.php";
 
-        $this->_generatedClassPaths[$name] = $path;
+
+        $normlizedName = $name;
+        AbstractAutoloader::normalizeClass($normlizedName);
+        $this->_generatedClassPaths[$normlizedName] = $path;
 
         if (file_exists($path)) {
             return $name;
@@ -251,7 +254,9 @@ class AutoloaderTestHelper
      */
     public function getGeneratedClassPath($class)
     {
-        return $this->_generatedClassPaths[$class];
+        $normlizedName = $class;
+        AbstractAutoloader::normalizeClass($normlizedName);
+        return $this->_generatedClassPaths[$normlizedName];
     }
 
     /**

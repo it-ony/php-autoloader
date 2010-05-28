@@ -35,6 +35,11 @@
  * Needed classes
  */
 require_once dirname(__FILE__) . "/../Autoloader.php";
+
+/**
+ * This file needs to be included traditionally as there are global
+ * function definitions, which wouldn't be loaded by the autoloader.
+ */
 require_once dirname(__FILE__) . "/classes/AutoloaderCallbackDummy.php";
 
 /**

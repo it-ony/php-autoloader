@@ -113,7 +113,7 @@ class OldPHPAPI
     }
 
     /**
-     * Defines a global constant if it is not defines yet
+     * Defines a global constant if it is not defined yet
      *
      * $value is optional and would be name of the constant itself if omitted.
      *

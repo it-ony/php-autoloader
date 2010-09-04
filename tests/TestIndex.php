@@ -81,6 +81,19 @@ class TestIndex extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Test the context
+     * 
+     * Setting no context should return the class path context. Setting a context
+     * should return the setted context.
+     * 
+     * @return void
+     */
+    public function testContext()
+    {
+        //TODO implement the test
+        $this->markTestIncomplete();
+    }
 
     /**
      * Asserts that AutoloaderIndex_PDO::getSQLiteInstance() doesn't throw any

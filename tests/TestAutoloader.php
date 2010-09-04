@@ -760,6 +760,64 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests class_exists() and interface_exists()
+     *
+     * @param String $method   interface_exists or class_exists
+     * @param bool   $expected expected result
+     * @param String $class    Class name
+     *
+     * @see class_exists()
+     * @see interface_exists()
+     * @dataProvider provideTestClassExists
+     * @return void
+     */
+    public function testClassExists($method, $expected, $class)
+    {
+        $this->assertEquals(
+            $expected,
+            $method($class)
+        );
+    }
+
+    /**
+     * Provides test cases for testClassExists()
+     *
+     * @see testClassExists()
+     * @return Array
+     */
+    public function provideTestClassExists()
+    {
+        $this->_autoloaderTestHelper = new AutoloaderTestHelper($this);
+        $cases = array();
+
+        // Non existing cases
+        $cases[] = array(
+            "class_exists", false, "class_" . uniqid()
+        );
+        $cases[] = array(
+            "interface_exists", false, "interface_" . uniqid()
+        );
+
+        // Existing cases
+        $cases[] = array(
+            "class_exists",
+            true,
+            $this->_autoloaderTestHelper->makeClass("Class", "")
+        );
+        $cases[] = array(
+            "interface_exists",
+            true,
+            $this->_autoloaderTestHelper->makeClass(
+                "Interface",
+                "",
+                "<?php interface %name% { } ?>"
+            )
+        );
+
+        return $cases;
+    }
+
+    /**
      * Asserts that $class is loadable
      *
      * @param String $class A loadable class name

@@ -195,9 +195,7 @@ abstract class AbstractAutoloader
      * call from the spl_autoload stack
      *
      * This method will try to load the class definition by calling the
-     * abstract method doAutoload(). If this Autoloader doesn't find
-     * a class definition it only raises an error if it is the last Autoloader
-     * in the stack.
+     * abstract method doAutoload().
      *
      * @param String $class The class name
      *
@@ -205,7 +203,6 @@ abstract class AbstractAutoloader
      * @see getCallback()
      * @see doAutoload()
      * @see normalizeClass()
-     * @throws AutoloaderException Only the last autoloader throws this exception.
      * @return void
      */
     public function autoload($class)
@@ -217,7 +214,7 @@ abstract class AbstractAutoloader
          * even though the class is already defined by
          * a previously registered method.
          */
-        if (class_exists($class, false)) {
+        if (class_exists($class, false) || interface_exists($class, false)) {
             return;
 
         }
@@ -227,17 +224,14 @@ abstract class AbstractAutoloader
             $this->doAutoload($class);
 
         } catch (AutoloaderException $exception) {
-            $callbacks = AutoloadAPI::getInstance()->getRegisteredAutoloaders();
-
-            // The exception is only thrown if this is the last autoloader.
-            $isLastAutoloader
-                = array_search($this->getCallback(), $callbacks)
-                === count($callbacks) - 1;
-            if (! $isLastAutoloader) {
-                return;
-
-            }
-            throw $exception;
+            /**
+             * Throwing an exception breaks compatibility to functions like
+             * class_exists().
+             *
+             * @see class_exists()
+             * @see interface_exists()
+             */
+            return;
 
         }
     }

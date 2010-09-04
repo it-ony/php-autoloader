@@ -154,14 +154,9 @@ class AutoloaderTestHelper
             new $class();
             $this->_test->fail("class $class is loadable.");
 
-        } catch (AutoloaderException_SearchFailed $e) {
-            // expected
-
-        } catch (AutoloaderException_InternalClassNotLoadable $e) {
-            // expected
-
         } catch (ReflectionException $e) {
             // expected
+
         }
     }
 

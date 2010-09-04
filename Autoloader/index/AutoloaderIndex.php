@@ -54,6 +54,10 @@ abstract class AutoloaderIndex implements Countable
 
     private
     /**
+     * @var String Distinguishes different indexes
+     */
+    $_context = '',
+    /**
      * @var Array
      */
     $_getFilters = array(),
@@ -287,6 +291,19 @@ abstract class AutoloaderIndex implements Countable
     }
 
     /**
+     * Returns the autoloader
+     *
+     * @see Autoloader::setIndex()
+     * @see setAutoloader()
+     * @see $autoloader
+     * @return Autoloader
+     */
+    public function getAutoloader()
+    {
+        return $this->autoloader;
+    }
+
+    /**
      * Make changes persistent
      *
      * @throws AutoloaderException_Index
@@ -350,13 +367,40 @@ abstract class AutoloaderIndex implements Countable
     /**
      * Returns the Autoloader class path context
      *
-     * Only Autoloaders with an equal class path work in the same context.
+     * A context distinguishes indexs. Only Autoloaders with an equal class
+     * path work in the same context.
      *
+     * If no context is given, the class path of the autoloader creates the context.
+     *
+     * @see setContext()
+     * @see $_context
+     * @see Autoloader::getPath()
      * @return String A context to distinguish different autoloaders
      */
-    protected function getContext()
+    final protected function getContext()
     {
-        return md5($this->autoloader->getPath());
+        return empty($this->_context)
+            ? md5($this->autoloader->getPath())
+            : $this->_context;
+    }
+
+    /**
+     * Sets the context
+     *
+     * Setting the context is optional. The class path of the autoloader is already
+     * a context. Setting the context to a known name is useful in a prebuild
+     * index environment. You can build your index on a different system and use
+     * the built index with the known context on any other system.
+     *
+     * @param String $context
+     *
+     * @see getContext()
+     * @see $_context
+     * @return void
+     */
+    final public function setContext($context)
+    {
+        $this->_context = $context;
     }
 
 }

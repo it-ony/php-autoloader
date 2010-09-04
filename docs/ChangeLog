@@ -8,6 +8,10 @@
     Exceptions are never thrown as this breaks compatibility with
     functions like class_exists().
 
+    * classes/index/AutoloaderIndex.php (AutoloaderIndex::setContext()):
+    It is possible to define an own context for the index. This is useful if you
+    want to build your index on a different system.
+
 2010-05-27 Markus Malkusch <markus@malkusch.de>
 
     * classes/autoloadAPI/AutoloadAPI.php (AutoloadAPI):

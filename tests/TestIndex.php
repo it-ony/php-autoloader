@@ -86,13 +86,54 @@ class TestIndex extends PHPUnit_Framework_TestCase
      * 
      * Setting no context should return the class path context. Setting a context
      * should return the setted context.
-     * 
+     *
+     * @param String          $expectedContext expected context
+     * @param AutoloaderIndex $index           index
+     *
+     * @see AutoloaderIndex::setContext()
+     * @see AutoloaderIndex::getContext()
+     * @dataProvider provideTestContext
      * @return void
      */
-    public function testContext()
+    public function testContext($expectedContext, AutoloaderIndex $index)
     {
-        //TODO implement the test
-        $this->markTestIncomplete();
+        $getContext = new ReflectionMethod($index, "getContext");
+        $getContext->setAccessible(true);
+        $this->assertTrue((bool) $getContext->invoke($index));
+        $this->assertEquals($expectedContext, $getContext->invoke($index));
+    }
+
+    /**
+     * Testcases for testContext()
+     *
+     * @see testContext()
+     * @return array
+     */
+    public function provideTestContext()
+    {
+        $cases = array();
+
+        // defined context
+        $context = uniqid();
+        $index   = new AutoloaderIndex_Dummy();
+        $index->setContext($context);
+        $cases[] = array($context, $index);
+
+        // generated context
+        $index = new AutoloaderIndex_Dummy();
+        $this->_initIndex($index);
+        $getContext = new ReflectionMethod($index, "getContext");
+        $getContext->setAccessible(true);
+        $cases[] = array($getContext->invoke($index), $index);
+
+        // generated context
+        $index = new AutoloaderIndex_Dummy();
+        $this->_initIndex($index);
+        // copied from AutoloaderIndex::getContext()
+        $context = md5($index->getAutoloader()->getPath());
+        $cases[] = array($context, $index);
+
+        return $cases;
     }
 
     /**

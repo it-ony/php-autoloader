@@ -46,7 +46,7 @@ require_once dirname(__FILE__) . '/../../Autoloader/Autoloader.php';
  * @subpackage Test
  * @author     Markus Malkusch <markus@malkusch.de>
  * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version    Release: 1.10
+ * @version    Release: 1.11
  * @link       http://php-autoloader.malkusch.de/en/
  */
 class Autoloader_Profiler extends Autoloader

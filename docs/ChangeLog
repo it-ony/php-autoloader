@@ -4,6 +4,9 @@
     An exception in a class constructor leads to an uncaught
     AutoloaderException_Include_ClassConstructor.
 
+    * Autoloader/Autoloader.php (Autoloader::_initMembers()):
+    Default configuration of index and fileparser is read from autoloader.ini.
+
 2010-09-04 Markus Malkusch <markus@malkusch.de>
 
     * Autoloader/AbstractAutoloader.php (AbstractAutoloader::autoload()):

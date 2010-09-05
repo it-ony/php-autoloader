@@ -341,8 +341,12 @@ class Autoloader extends AbstractAutoloader
      * environment. The Autoloader does not have to be registered. All missing
      * members are initialized like in register().
      *
+     * It might be advisable to configure the index with
+     * an AutoloaderIndexFilter_RelativePath
+     *
      * @throws AutoloaderException_IndexBuildCollision
      * @throws AutoloaderException_Index
+     * @see AutoloaderIndexFilter_RelativePath
      * @return void
      */
     public function buildIndex()
@@ -384,9 +388,17 @@ class Autoloader extends AbstractAutoloader
      */
     private function _initMembers()
     {
+        $configuration = AutoloaderConfiguration::getInstance();
+
         // set the default index
         if (empty($this->index)) {
-            $this->setIndex(new AutoloaderIndex_SerializedHashtable_GZ());
+            $this->setIndex(
+                $configuration->getObject(
+                    AutoloaderConfiguration::INDEX,
+                    array(),
+                    'AutoloaderIndex_SerializedHashtable_GZ'
+                )
+            );
 
         }
 
@@ -404,7 +416,13 @@ class Autoloader extends AbstractAutoloader
 
         // set the AutoloaderFileIterator
         if (empty($this->_fileIterator)) {
-            $this->setFileIterator(new AutoloaderFileIterator_PriorityList());
+            $this->setFileIterator(
+                $configuration->getObject(
+                    AutoloaderConfiguration::FILE_ITERATOR,
+                    array(),
+                    'AutoloaderFileIterator_PriorityList'
+                )
+            );
 
         }
     }
@@ -771,4 +789,7 @@ InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndexFilter_RelativePath',
     dirname(__FILE__) . '/index/filter/AutoloaderIndexFilter_RelativePath.php'
 );
-
+InternalAutoloader::getInstance()->registerClass(
+    'AutoloaderConfiguration',
+    dirname(__FILE__) . '/AutoloaderConfiguration.php'
+);

@@ -64,6 +64,27 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     $_autoloaderTestHelper;
 
     /**
+     * An exception during the class constructor should be thrown
+     *
+     * @expectedException AutoloaderException_Include_ClassConstructor
+     * @return void
+     */
+    public function testClassConstructorException()
+    {
+        $this->_autoloaderTestHelper = new AutoloaderTestHelper($this);
+        $class = $this->_autoloaderTestHelper->makeClass(
+            'test',
+            '',
+            '<?php class %name% {
+                static public function classConstructor() {
+                    throw new Exception();
+                }
+            } ?>'
+        );
+        new $class();
+    }
+
+    /**
      * Tests moving of class definitions
      * 
      * If an Autoloader found a class, the path for the class definition is fetched

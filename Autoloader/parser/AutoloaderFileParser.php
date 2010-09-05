@@ -87,7 +87,7 @@ abstract class AutoloaderFileParser
     }
 
     /**
-     * Returns an implementaion of AutoloaderFileParser
+     * Returns an implementation of AutoloaderFileParser
      *
      * If AutoloaderFileParser_Tokenizer is supported it is returned.
      * Else AutoloaderFileParser_RegExp will be returned.

@@ -44,6 +44,9 @@ require_once
     dirname(__FILE__) . '/exception/AutoloaderException_Include_FileNotExists.php';
 require_once
     dirname(__FILE__) . '/exception/AutoloaderException_Include_ClassNotDefined.php';
+require_once
+    dirname(__FILE__)
+    . '/exception/AutoloaderException_Include_ClassConstructor.php';
 
 /**
  * An abstract autoloader
@@ -204,6 +207,7 @@ abstract class AbstractAutoloader
      * @see doAutoload()
      * @see normalizeClass()
      * @return void
+     * @throws AutoloaderException_Include_ClassConstructor
      */
     public function autoload($class)
     {
@@ -222,6 +226,12 @@ abstract class AbstractAutoloader
 
         try {
             $this->doAutoload($class);
+
+        } catch(AutoloaderException_Include_ClassConstructor $exception) {
+            /**
+             * An error in a class constructor is fatal
+             */
+            throw $exception;
 
         } catch (AutoloaderException $exception) {
             /**
@@ -330,6 +340,7 @@ abstract class AbstractAutoloader
      * @param String $constructor the method name of the class constructor
      *
      * @return bool true if the class constructor was called
+     * @throws AutoloaderException_Include_ClassConstructor
      */
     private function _callClassConstructor($class, $constructor)
     {
@@ -350,7 +361,16 @@ abstract class AbstractAutoloader
 
         }
 
-        $static->invoke(null);
+        try {
+            $static->invoke(null);
+
+        } catch (Exception $exception) {
+            throw new AutoloaderException_Include_ClassConstructor(
+                $class,
+                $exception
+            );
+
+        }
         return true;
     }
 

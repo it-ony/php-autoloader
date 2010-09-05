@@ -1,20 +1,26 @@
+2010-09-05 Markus Malkusch <markus@malkusch.de>
+
+    * Autoloader/AbstractAutoloader.php (AbstractAutoloader::_callClassConstructor()):
+    An exception in a class constructor leads to an uncaught
+    AutoloaderException_Include_ClassConstructor.
+
 2010-09-04 Markus Malkusch <markus@malkusch.de>
 
-    * classes/AbstractAutoloader.php (AbstractAutoloader::autoload()):
+    * Autoloader/AbstractAutoloader.php (AbstractAutoloader::autoload()):
     AbstractAutoloader::autoload() checks also interface_exists() to skip
     its work.
 
-    * classes/AbstractAutoloader.php (AbstractAutoloader::autoload()):
+    * Autoloader/AbstractAutoloader.php (AbstractAutoloader::autoload()):
     Exceptions are never thrown as this breaks compatibility with
     functions like class_exists().
 
-    * classes/index/AutoloaderIndex.php (AutoloaderIndex::setContext()):
+    * Autoloader/index/AutoloaderIndex.php (AutoloaderIndex::setContext()):
     It is possible to define an own context for the index. This is useful if you
     want to build your index on a different system.
 
 2010-05-27 Markus Malkusch <markus@malkusch.de>
 
-    * classes/autoloadAPI/AutoloadAPI.php (AutoloadAPI):
+    * Autoloader/autoloadAPI/AutoloadAPI.php (AutoloadAPI):
     Before PHP 5.2.11 spl_autoload_functions() didn't return proper callbacks.
     The callback always contained the class name and a function. The object got
     lost in the stack. This prevented the Autoloader to work in such an environment.
@@ -23,7 +29,7 @@
 
 2010-05-20 Markus Malkusch <markus@malkusch.de>
 
-    * classes/AbstractAutoloader.php (AbstractAutoloader::CLASS_CONSTRUCTOR):
+    * Autoloader/AbstractAutoloader.php (AbstractAutoloader::CLASS_CONSTRUCTOR):
     The class constructor __static() is deprecated. The new class constructor is
     called classConstructor(). A method which is called __static() would violate
     the PEAR coding standard. Only PHP magic methods should be prefixed with a

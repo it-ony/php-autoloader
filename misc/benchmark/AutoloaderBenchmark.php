@@ -366,8 +366,9 @@ class AutoloaderBenchmark
 
 
         $indexes = array(
-            "sqlite" => AutoloaderIndex_PDO::getSQLiteInstance($this->_sqliteFile),
-            "mysql"  => new AutoloaderIndex_PDO(self::$_pdoPool['mysql']),
+            "memcache" => new AutoloaderIndex_Memcache(),
+            "sqlite"   => AutoloaderIndex_PDO::getSQLiteInstance($this->_sqliteFile),
+            "mysql"    => new AutoloaderIndex_PDO(self::$_pdoPool['mysql']),
             "hashtable"    => new AutoloaderIndex_SerializedHashtable(),
             "hashtableGZ"  => new AutoloaderIndex_SerializedHashtable_GZ(),
             "hashtableCSV" => new AutoloaderIndex_CSV(),

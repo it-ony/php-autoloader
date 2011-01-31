@@ -65,14 +65,6 @@ abstract class AutoloaderIndex_SharedKeyValueStorage extends AutoloaderIndex
 
     const
     /**
-     * storing is done by trying to add first and then to replace
-     */
-    STORE_ADD_THEN_REPLACE = 1,
-    /**
-     * storing is done by trying to replace first and then to add
-     */
-    STORE_REPLACE_THEN_ADD = 2,
-    /**
      * Stored classes are stored in an inverted Array with this key.
      */
     KEY_CLASSES = '__CLASSES__';
@@ -112,16 +104,11 @@ abstract class AutoloaderIndex_SharedKeyValueStorage extends AutoloaderIndex
      *
      * @param string $key     key
      * @param string $value   value
-     * @param int    $options options
      *
      * @return void
      * @throws AutoloaderException_Index
      */
-    abstract protected function setValue(
-        $key,
-        $value,
-        $options = self::STORE_ADD_THEN_REPLACE
-    );
+    abstract protected function setValue($key, $value);
 
     /**
      * Returns the key with a prefix
@@ -168,11 +155,7 @@ abstract class AutoloaderIndex_SharedKeyValueStorage extends AutoloaderIndex
         $classes = $this->_getStoredClasses();
         $classes[$class] = $class;
 
-        $this->setValue(
-            $this->_getPrefixedKey(self::KEY_CLASSES),
-            $classes,
-            self::STORE_REPLACE_THEN_ADD
-        );
+        $this->setValue($this->_getPrefixedKey(self::KEY_CLASSES), $classes);
     }
 
     /**
@@ -188,11 +171,7 @@ abstract class AutoloaderIndex_SharedKeyValueStorage extends AutoloaderIndex
         $classes = $this->_getStoredClasses();
         unset($classes[$class]);
 
-        $this->setValue(
-            $this->_getPrefixedKey(self::KEY_CLASSES),
-            $classes,
-            self::STORE_REPLACE_THEN_ADD
-        );
+        $this->setValue($this->_getPrefixedKey(self::KEY_CLASSES), $classes);
     }
 
     /**
@@ -280,11 +259,7 @@ abstract class AutoloaderIndex_SharedKeyValueStorage extends AutoloaderIndex
      */
     protected function setRawPath($class, $path)
     {
-        $this->setValue(
-            $this->_getPrefixedKey($class),
-            $path,
-            self::STORE_ADD_THEN_REPLACE
-        );
+        $this->setValue($this->_getPrefixedKey($class), $path);
 
         // Store class name in the stored classes array
         $this->_addStoredClass($class);

@@ -150,34 +150,12 @@ class AutoloaderIndex_Memcache extends AutoloaderIndex_SharedKeyValueStorage
      *
      * @param string $key     key
      * @param string $value   value
-     * @param int    $options options
      *
      * @return void
      * @throws AutoloaderException_Index_IO
      */
-    protected function setValue(
-        $key,
-        $value,
-        $options = self::STORE_ADD_THEN_REPLACE
-    ) {
-        if ($options == self::STORE_ADD_THEN_REPLACE) {
-            $firstMethod  = 'add';
-            $secondMethod = 'replace';
-
-        } else {
-            $firstMethod  = 'replace';
-            $secondMethod = 'add';
-
-        }
-
-        $result = $this->_memcache->$firstMethod($key, $value);
-        if ($result) {
-            return;
-
-        }
-
-        $result = $this->_memcache->$secondMethod($key, $value);
-        if (! $result) {
+    protected function setValue($key, $value) {
+        if (! $this->_memcache->set($key, $value, 0, 0)) {
             throw new AutoloaderException_Index_IO(
                 "Could not store key '$key'"
             );

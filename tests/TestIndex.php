@@ -364,7 +364,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
 
     /**
      * Returns an instance of AutoloaderIndex_SerializedHashtable_GZ which is tested
-     * in theses tests
+     * in these tests
      *
      * @return AutoloaderIndex_SerializedHashtable_GZ
      */
@@ -376,7 +376,21 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Returns an instance of AutoloaderIndex_PDO which is tested in theses tests
+     * Returns an instance of AutoloaderIndex_Memcache which is tested in these tests
+     *
+     * @param Memcache $memcache Memcache object
+     *
+     * @return AutoloaderIndex_Memcache
+     */
+    private function _createAutoloaderMemcache(Memcache $memcache = null)
+    {
+        $index = new AutoloaderIndex_Memcache($memcache);
+        $this->_initIndex($index);
+        return $index;
+    }
+
+    /**
+     * Returns an instance of AutoloaderIndex_PDO which is tested in these tests
      *
      * @param PDO $pdo The PDO object for the AutoloaderIndex_PDO object
      *
@@ -391,7 +405,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
 
     /**
      * Returns an instance of AutoloaderIndex_PDO with a SQLite PDO object which is
-     * tested in theses tests
+     * tested in these tests
      *
      * @param String $filename The path to the SQLite database
      *
@@ -406,7 +420,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
 
     /**
      * Returns an instance of AutoloaderIndex_PDO with a MySQL PDO object which is
-     * tested in theses tests
+     * tested in these tests
      *
      * The PDO object is initialized with the test database "mysql:dbname=test".
      *
@@ -420,7 +434,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Returns an instance of AutoloaderIndex_IniFile which is tested in theses
+     * Returns an instance of AutoloaderIndex_IniFile which is tested in these
      * tests
      *
      * @return AutoloaderIndex_IniFile
@@ -433,7 +447,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Returns an instance of AutoloaderIndex_CSV which is tested in theses tests
+     * Returns an instance of AutoloaderIndex_CSV which is tested in these tests
      *
      * @return AutoloaderIndex_CSV
      */
@@ -445,7 +459,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Returns an instance of AutoloaderIndex_PHPArrayCode which is tested in theses
+     * Returns an instance of AutoloaderIndex_PHPArrayCode which is tested in these
      * tests
      *
      * @return AutoloaderIndex_PHPArrayCode
@@ -459,7 +473,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
 
     /**
      * Returns an instance of AutoloaderIndex_SerializedHashtable which is tested in
-     * theses tests
+     * these tests
      *
      * @return AutoloaderIndex_SerializedHashtable
      */
@@ -471,7 +485,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Returns an instance of AutoloaderIndex_Dummy which is tested in theses tests
+     * Returns an instance of AutoloaderIndex_Dummy which is tested in these tests
      *
      * @return AutoloaderIndex_Dummy
      */
@@ -543,6 +557,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
             $this->_createAutoloaderIndexIniFile(),
             $this->_createAutoloaderIndexSerializedHashtable(),
             $this->_createAutoloaderIndexSerializedHashtableGZ(),
+            $this->_createAutoloaderMemcache(),
             $this->_createAutoloaderIndexPdoSqLite(
                 tempnam(sys_get_temp_dir(), "PDOTest")
             )

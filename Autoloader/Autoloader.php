@@ -766,6 +766,10 @@ InternalAutoloader::getInstance()->registerClass(
     dirname(__FILE__) . '/index/AutoloaderIndex_SerializedHashtable_GZ.php'
 );
 InternalAutoloader::getInstance()->registerClass(
+    'AutoloaderIndex_Memcache',
+    dirname(__FILE__) . '/index/AutoloaderIndex_Memcache.php'
+);
+InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileParser',
     dirname(__FILE__) . '/parser/AutoloaderFileParser.php'
 );

@@ -392,13 +392,7 @@ class Autoloader extends AbstractAutoloader
 
         // set the default index
         if (empty($this->index)) {
-            $this->setIndex(
-                $configuration->getObject(
-                    AutoloaderConfiguration::INDEX,
-                    array(),
-                    'AutoloaderIndex_SerializedHashtable_GZ'
-                )
-            );
+            $this->setIndex($configuration->getIndex());
 
         }
 

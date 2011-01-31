@@ -62,6 +62,11 @@ InternalAutoloader::getInstance()->registerClass(
     dirname(__FILE__)
         . '/exception/AutoloaderException_Configuration_Setting_Object_Exists.php'
 );
+InternalAutoloader::getInstance()->registerClass(
+    'AutoloaderException_Index_IO',
+    dirname(__FILE__)
+        . '/index/exception/AutoloaderException_Index_IO.php'
+);
 
 /**
  * Configuration for the Autoloader
@@ -76,10 +81,43 @@ InternalAutoloader::getInstance()->registerClass(
 class AutoloaderConfiguration
 {
 
-    const 
-    SECTION       = "autoloader",
+    const
+    /**
+     * Section in the configuration file
+     */
+    SECTION = "autoloader",
+    /**
+     * Index file
+     */
+    FILE = "file",
+    /**
+     * Memcache host
+     */
+    MEMCACHE_HOST = "memcache.host",
+    /**
+     * Memcache port
+     */
+    MEMCACHE_PORT = "memcache.port",
+    /**
+     * PDO DSN
+     */
+    PDO_DSN = "pdo.dsn",
+    /**
+     * PDO user name
+     */
+    PDO_USERNAME = "pdo.username",
+    /**
+     * PDO password
+     */
+    PDO_PASSWORD = "pdo.password",
+    /**
+     * File iterator implementation
+     */
     FILE_ITERATOR = "file_iterator",
-    INDEX         = "index";
+    /**
+     * Index implementation
+     */
+    INDEX = "index";
 
     static private
     /**
@@ -165,6 +203,18 @@ class AutoloaderConfiguration
     {
 
     }
+    
+    /**
+     * Returns if a setting exists
+     *
+     * @param string $setting Setting
+     * 
+     * @return bool
+     */
+    public function hasSetting($setting)
+    {
+        return array_key_exists($setting, $this->_configuration);
+    }
 
     /**
      * Read a configuration setting
@@ -181,7 +231,7 @@ class AutoloaderConfiguration
     public function getValue($setting, $default = null)
     {
         // Check if setting exists
-        if (! array_key_exists($setting, $this->_configuration)) {
+        if (! $this->hasSetting($setting)) {
             if (is_null($default)) {
                 throw new AutoloaderException_Configuration_Setting_Exists(
                     $setting
@@ -233,6 +283,99 @@ class AutoloaderConfiguration
 
             }
         }
+    }
+
+    /**
+     * Returns a connected Memcache instance
+     *
+     * @return Memcache
+     * @throws AutoloaderException_Configuration_Setting_Exists
+     * @throws AutoloaderException_Index_IO
+     */
+    private function _getMemcache()
+    {
+        $host = $this->getValue(self::MEMCACHE_HOST, 'localhost');
+        $port = $this->getValue(self::MEMCACHE_PORT, 11211);
+        
+        $memcache    = new Memcache();
+        $isConnected = $memcache->connect($host, $port);
+
+        if (! $isConnected) {
+            throw new AutoloaderException_Index_IO(
+                "Could not connect to memcached at $host:$port."
+            );
+
+        }
+        return $memcache;
+    }
+
+    /**
+     * Returns a configured PDO instance
+     *
+     * @return PDO
+     * @throws AutoloaderException_Configuration_Setting_Exists
+     * @throws PDOException
+     */
+    private function _getPDO()
+    {
+        $pdo
+            = new PDO(
+                $this->getValue(self::PDO_DSN),
+                $this->getValue(self::PDO_USERNAME, ''),
+                $this->getValue(self::PDO_PASSWORD, '')
+            );
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $pdo;
+    }
+
+    /**
+     * Returns an AutoloaderIndex implementation
+     *
+     * @return AutoloaderIndex
+     * @throws AutoloaderException_Configuration_Setting_Exists
+     * @throws PDOException
+     * @throws AutoloaderException_Index_IO
+     */
+    public function getIndex()
+    {
+        $implementation = $this->getValue(self::INDEX);
+
+        // declare the constructor paramters
+        switch (strtolower($implementation)) {
+
+            case 'autoloaderindex_pdo':
+                $parameter = array($this->_getPDO());
+                break;
+
+            case 'autoloaderindex_memcache':
+                $parameter = array($this->_getMemcache());
+                break;
+
+            default:
+                $parameter = array();
+                break;
+
+        }
+
+        $index
+            = $this->getObject(
+                self::INDEX,
+                $parameter,
+                'AutoloaderIndex_SerializedHashtable_GZ'
+            );
+
+        // set a configured file
+        if (
+            $index instanceof AutoloaderIndex_File
+            && $this->hasSetting(self::FILE)
+        ) {
+            $index->setIndexPath(
+                $this->getValue(self::FILE)
+            );
+
+        }
+
+        return $index;
     }
 
 }

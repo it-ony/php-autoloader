@@ -49,7 +49,7 @@ TestIndex::classConstructor();
  * @subpackage Test
  * @author     Markus Malkusch <markus@malkusch.de>
  * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
- * @version    Release: 1.11
+ * @version    Release: 1.12
  * @link       http://php-autoloader.malkusch.de/en/
  * @see        AutoloaderIndex
  * @see        AutoloaderIndex_CSV

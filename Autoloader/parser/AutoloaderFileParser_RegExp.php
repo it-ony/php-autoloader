@@ -88,7 +88,7 @@ class AutoloaderFileParser_RegExp extends AutoloaderFileParser
     {
         // Namespaces are searched.
         $namespaces       = array();
-        $namespacePattern = '~namespace\s+([^\s;{]+)~im';
+        $namespacePattern = '~[^0-9a-z]namespace\s+([^\s;{]+)~im';
         preg_match_all(
             $namespacePattern,
             $source,

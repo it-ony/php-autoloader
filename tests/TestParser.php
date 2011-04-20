@@ -292,6 +292,27 @@ class TestParser extends PHPUnit_Framework_TestCase
                     dirname(__FILE__) . "/namespaceDefinitions/NoBracket.php"
                 )
             );
+            $cases[] = array(
+                array(
+                    'de\malkusch\autoloader\test\usetest1\Test',
+                    'de\malkusch\autoloader\test\usetest2\Test',
+                    'de\malkusch\autoloader\test\usetest3\Test',
+                ),
+                file_get_contents(
+                    dirname(__FILE__) . "/namespaceDefinitions/UseBracket.php"
+                )
+            );
+            $cases[] = array(
+                array(
+                    'de\malkusch\autoloader\test\usetest1\Test',
+                    'de\malkusch\autoloader\test\usetest2\Test',
+                    'de\malkusch\autoloader\test\usetest3\Test',
+                    'de\malkusch\autoloader\test\usetest4\Test',
+                ),
+                file_get_contents(
+                    dirname(__FILE__) . "/namespaceDefinitions/UseNoBracket.php"
+                )
+            );
 
         }
         return $cases;

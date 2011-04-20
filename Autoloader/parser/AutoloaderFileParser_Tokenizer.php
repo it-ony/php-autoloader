@@ -35,12 +35,12 @@
  * These class must be loaded.
  */
 InternalAutoloader::getInstance()->registerClass(
-    'AutoloaderException_Parser',
-    dirname(__FILE__) . '/exception/AutoloaderException_Parser.php'
+    "AutoloaderException_Parser",
+    dirname(__FILE__) . "/exception/AutoloaderException_Parser.php"
 );
 InternalAutoloader::getInstance()->registerClass(
-    'AutoloaderFileParser',
-    dirname(__FILE__) . '/AutoloaderFileParser.php'
+    "AutoloaderFileParser",
+    dirname(__FILE__) . "/AutoloaderFileParser.php"
 );
 
 /**
@@ -59,9 +59,9 @@ InternalAutoloader::getInstance()->registerClass(
 class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser
 {
 
-    const NEXT_CLASS        = 'class';
-    const NEXT_NAMESPACE    = 'namespace';
-    const NEXT_NOTHING      = 'nothing';
+    const NEXT_CLASS        = "class";
+    const NEXT_NAMESPACE    = "namespace";
+    const NEXT_NOTHING      = "nothing";
 
 
     /**
@@ -92,7 +92,8 @@ class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser
     {
         $classes        = array();
         $nextStringType = self::NEXT_NOTHING;
-        $namespace      = '';
+        $namespace      = "";
+        $context        = null;
         $tokens         = @token_get_all($source);
 
         if (! is_array($tokens)) {
@@ -111,33 +112,59 @@ class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser
             $tokenID    = $token[0];
             $tokenValue = $token[1];
 
+            /*
+             * Set a context
+             *
+             * Volker von Hoesslin reported a bug when using PHP's "use"
+             * keyword. The parser wasn't aware of a context and got confused
+             * by the T_NS_SEPARATOR tokens after the T_USE token. Now
+             * T_NS_SEPARATOR outside a T_NAMESPACE context will be ignored.
+             */
             switch ($tokenID) {
-            case T_NAMESPACE:
-                $namespace      = '';
-            case T_NS_SEPARATOR:
-                $nextStringType = self::NEXT_NAMESPACE;
-                break;
-
-            case T_INTERFACE:
-            case T_CLASS:
-                $nextStringType = self::NEXT_CLASS;
-                break;
-
-            case T_STRING:
-                $type           = $nextStringType;
-                $nextStringType = self::NEXT_NOTHING;
-
-                switch ($type) {
-                case self::NEXT_CLASS:
-                    $classes[] = $namespace.$tokenValue;
+                // Don't change the context
+                case T_STRING:
+                case T_COMMENT:
+                case T_WHITESPACE:
+                case T_AS:
+                case T_NS_SEPARATOR:
                     break;
 
-                case self::NEXT_NAMESPACE:
-                    $namespace .= "$tokenValue\\";
+                default:
+                    $context = $tokenID;
                     break;
 
-                }
-                break;
+            }
+
+            switch ($tokenID) {
+                case T_NAMESPACE:
+                    $namespace = "";
+                case T_NS_SEPARATOR:
+                    if ($context == T_NAMESPACE) {
+                        $nextStringType = self::NEXT_NAMESPACE;
+
+                    }
+                    break;
+
+                case T_INTERFACE:
+                case T_CLASS:
+                    $nextStringType = self::NEXT_CLASS;
+                    break;
+
+                case T_STRING:
+                    $type           = $nextStringType;
+                    $nextStringType = self::NEXT_NOTHING;
+
+                    switch ($type) {
+                        case self::NEXT_CLASS:
+                            $classes[] = $namespace.$tokenValue;
+                            break;
+
+                        case self::NEXT_NAMESPACE:
+                            $namespace .= "$tokenValue\\";
+                            break;
+
+                    }
+                    break;
 
             }
 

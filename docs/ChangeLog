@@ -1,3 +1,15 @@
+2011-05-06 Markus Malkusch <markus@malkusch.de>
+
+    * Autoloader/InstantAutoloader.php (InstantAutoloader):
+    Instant autoloader as independet autoloader which can use
+    an AutoloaderIndex_PHPArrayCode index.
+
+    * Autoloader/index/AutoloaderIndex_PHPArrayCode.php (AutoloaderIndex_PHPArrayCode):
+    Added comments to the generated PHP-array; So the index starts with <?php,
+    which means that reading of the index changed. An index which was generated
+    before that change is not compatible with the new class. It will lead to an
+    fatal error.
+
 2011-04-20 Markus Malkusch <markus@malkusch.de>
 
     * Autoloader/parser/AutoloaderFileParser_Tokenizer.php (AutoloaderFileParser_Tokenizer::getClassesInSource()):

@@ -80,7 +80,7 @@ class AutoloaderIndex_PHPArrayCode extends AutoloaderIndex_File
      */
     protected function buildIndex($data)
     {
-        $index = eval($data);
+        $index = eval("?>$data");
         if (! is_array($index)) {
             $error = "{$this->getIndexPath()} failed to generate the index:"
                    . " $data";
@@ -99,13 +99,31 @@ class AutoloaderIndex_PHPArrayCode extends AutoloaderIndex_File
      */
     protected function serializeIndex(Array $index)
     {
-        $code = 'return array('."\n";
+        $code
+            = "<?php\n\n"
+
+            . "/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */\n\n"
+
+            . "/**\n"
+            . " * Class index for autoloading\n"
+            . " * \n"
+            . " * This class index was generated automatically.\n"
+            . " * Don't edit this file. Changes might get lost when\n"
+            . " * generating a new index.\n"
+            . " *\n"
+            . " * @see  Autoloader::buildIndex()\n"
+            . " * @see  AutoloaderIndex_PHPArrayCode\n"
+            . " * @link http://php-autoloader.malkusch.de/en/\n"
+            . " */\n\n"
+        
+            . "return array(\n";
+        
         foreach ($index as $class => $path) {
             $safePath = stripslashes($path);
             $code .= "    '$class' => '$safePath',\n";
 
         }
-        $code .= ');';
+        $code .= ");\n";
         return $code;
     }
 

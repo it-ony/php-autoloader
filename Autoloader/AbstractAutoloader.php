@@ -98,7 +98,7 @@ abstract class AbstractAutoloader
      * @see strtolower().
      * @return void
      */
-    static public function normalizeClass(& $class)
+    static public function normalizeClass(&$class)
     {
         $class = strtolower($class);
     }

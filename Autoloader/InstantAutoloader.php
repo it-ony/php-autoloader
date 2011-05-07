@@ -128,6 +128,8 @@ class InstantAutoloader
      */
     public function __autoload($class)
     {
+        $this->_normalizeClass($class);
+        
         /*
          * spl_autoload_call() runs the complete stack,
          * even though the class is already defined by
@@ -158,6 +160,21 @@ class InstantAutoloader
 
         }
         require_once $path;
+    }
+
+    /**
+     * Normalizes the reference of a class name with strtolower()
+     *
+     * Normalizing is needed as PHP is case insensitive.
+     *
+     * @param String &$class The reference of a class name
+     *
+     * @see strtolower().
+     * @return void
+     */
+    private function _normalizeClass(&$class)
+    {
+        $class = strtolower($class);
     }
 
 }

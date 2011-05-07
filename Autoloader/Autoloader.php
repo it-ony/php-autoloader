@@ -365,6 +365,8 @@ class Autoloader extends AbstractAutoloader
         // All found classes are saved in the index
         foreach ($this->_fileIterator as $file) {
             foreach ($this->_parser->getClassesInFile($file) as $class) {
+                self::normalizeClass($class);
+
                 // A collision throws an AutoloaderException_IndexBuildCollision.
                 if ($this->index->hasPath($class)) {
                     throw new AutoloaderException_IndexBuildCollision(

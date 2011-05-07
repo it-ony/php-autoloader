@@ -509,7 +509,10 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     {
         $paths = array();
         foreach ($testClasses as $class) {
-            $paths[$class] = realpath($testHelper->getGeneratedClassPath($class));
+            $normalizedClass = $class;
+            AbstractAutoloader::normalizeClass($normalizedClass);
+            $paths[$normalizedClass]
+                = realpath($testHelper->getGeneratedClassPath($class));
 
         }
         return $paths;

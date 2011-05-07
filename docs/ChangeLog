@@ -1,5 +1,10 @@
 2011-05-06 Markus Malkusch <markus@malkusch.de>
 
+    * Autoloader/Autoloader.php (Autoloader::buildIndex()):
+    Dominik Niehus reported a bug in Autoloader::buildIndex().
+    AbstractAutoloader::normalizeClass() should also be used during building
+    the index.
+
     * Autoloader/InstantAutoloader.php (InstantAutoloader):
     Instant autoloader as independet autoloader which can use
     an AutoloaderIndex_PHPArrayCode index.

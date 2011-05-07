@@ -286,6 +286,8 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
             );
 
         }
+        
+        chmod($this->getIndexPath(), 0644);
     }
 
     /**

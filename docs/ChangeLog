@@ -1,5 +1,8 @@
 2011-05-06 Markus Malkusch <markus@malkusch.de>
 
+    * Autoloader/index/AutoloaderIndex_File.php (AutoloaderIndex_File::saveRaw()):
+    File based index's rights are set readable for everyone.
+
     * Autoloader/Autoloader.php (Autoloader::buildIndex()):
     Dominik Niehus reported a bug in Autoloader::buildIndex().
     AbstractAutoloader::normalizeClass() should also be used during building

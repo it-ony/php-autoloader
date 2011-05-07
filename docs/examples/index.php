@@ -1,8 +1,8 @@
-#!/usr/bin/php
+#!/bin/env php
 <?php
 
 try {
-    include __DIR__ . '/../../Autoloader.php';
+    require __DIR__ . "/../../Autoloader.php";
 
     $a = new ClassA();
     $b = new ClassB();

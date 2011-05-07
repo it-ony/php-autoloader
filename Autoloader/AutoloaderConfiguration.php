@@ -134,6 +134,10 @@ class AutoloaderConfiguration
     /**
      * Creates the only instance of this class
      *
+     * The instance will be initialized with a default autoloader.ini. You
+     * may change the settings by calling setConfigurationFile() or
+     * setConfiguration().
+     *
      * @see getInstance()
      * @return void
      */
@@ -164,25 +168,71 @@ class AutoloaderConfiguration
      */
     private function __construct($configurationFile)
     {
-        $configuration = @parse_ini_file($configurationFile, true);
+        $this->setConfigurationFile($configurationFile);
+    }
+
+    /**
+     * Reads a new configuration file
+     *
+     * The configuration file must have the section [autoloader]:
+     * <code>
+     * [autoloader]
+     * index         = AutoloaderIndex_SerializedHashtable_GZ
+     * file_iterator = AutoloaderFileIterator_PriorityList
+     * </code>
+     *
+     * @param string $path configuration file
+     *
+     * @return void
+     * @throws AutoloaderException_Configuration_File
+     * @throws AutoloaderException_Configuration_File_Exists
+     * @throws AutoloaderException_Configuration_MissingSection
+     */
+    public function setConfigurationFile($path)
+    {
+        $configuration = @parse_ini_file($path, true);
 
         // Error handling
         if (empty($configuration)) {
-            if (! file_exists($configurationFile)) {
+            if (! file_exists($path)) {
                 throw new AutoloaderException_Configuration_File_Exists(
-                    $configurationFile
+                    $path
                 );
 
             }
 
             $error = error_get_last();
             throw new AutoloaderException_Configuration_File(
-                "could not get configuration from '$configurationFile':"
+                "could not get configuration from '$path':"
                 . $error['message']
             );
 
         }
+        
+        $this->setConfiguration($configuration);
+    }
 
+    /**
+     * Sets a parsed configuration from a ini file
+     *
+     * The array must have this structure:
+     * <code>
+     * array(
+     *     "autoloader"=> array(
+     *         "index"         => "AutoloaderIndex_SerializedHashtable_GZ",
+     *         "file_iterator" => "AutoloaderFileIterator_PriorityList"
+     *     )
+     * )
+     * </code>
+     *
+     * @param array $configuration Parsed configuration
+     *
+     * @return void
+     * @throws AutoloaderException_Configuration_MissingSection
+     * @see parse_ini_file()
+     */
+    public function setConfiguration(array $configuration)
+    {
         // the autoloader section must exist
         if (empty($configuration[self::SECTION])) {
             throw new AutoloaderException_Configuration_MissingSection(
@@ -190,7 +240,6 @@ class AutoloaderConfiguration
             );
 
         }
-
         $this->_configuration = $configuration[self::SECTION];
     }
 

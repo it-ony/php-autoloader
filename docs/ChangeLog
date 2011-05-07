@@ -5,6 +5,9 @@
     AbstractAutoloader::normalizeClass() should also be used during building
     the index.
 
+    * Autoloader/AutoloaderConfiguration.php (AutoloaderConfiguration::setConfigurationFile()):
+    You may set a custom configuration file.
+
     * Autoloader/InstantAutoloader.php (InstantAutoloader):
     Instant autoloader as independet autoloader which can use
     an AutoloaderIndex_PHPArrayCode index.

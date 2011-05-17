@@ -512,10 +512,14 @@ class Autoloader extends AbstractAutoloader
         $realpath = realpath($path);
         if (! $realpath) {
             if (! file_exists($path)) {
-                throw new AutoloaderException_ClassPath_NotExists($path);
+                throw new AutoloaderException_ClassPath_NotExists(
+                    "Class path '$path' doesn't exist."
+                );
 
             }
-            throw new AutoloaderException_ClassPath($path);
+            throw new AutoloaderException_ClassPath(
+                "Could not find class path '$path'."
+            );
 
         }
         $this->_path = $realpath;

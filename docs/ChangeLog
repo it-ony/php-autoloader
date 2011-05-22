@@ -1,6 +1,6 @@
 2011-05-22 Markus Malkusch <markus@malkusch.de>
 
-    * scripts/autoloader-build.php
+    * scripts/autoloader-build.php (AutoloaderBuildScript):
     Added script for deploying an InstantAutoloader in a project.
 
 2011-05-06 Markus Malkusch <markus@malkusch.de>

@@ -800,3 +800,7 @@ InternalAutoloader::getInstance()->registerClass(
     'AutoloaderConfiguration',
     dirname(__FILE__) . '/AutoloaderConfiguration.php'
 );
+InternalAutoloader::getInstance()->registerClass(
+    'AutoloaderLocale',
+    dirname(__FILE__) . '/locale/AutoloaderLocale.php'
+);

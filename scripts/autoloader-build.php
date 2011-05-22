@@ -67,11 +67,19 @@ class AutoloaderBuildScript
 
     const
     /**
+     * Text domain
+     */
+    TEXT_DOMAIN = "autoloader-build",
+    /**
      * Any error
      */
     ERROR_ANY = 1;
 
     private
+    /**
+     * @var AutoloaderLocale
+     */
+    $_locale,
     /**
      * @var array
      */
@@ -90,6 +98,7 @@ class AutoloaderBuildScript
      */
     public function __construct()
     {
+        $this->_locale = new AutoloaderLocale(self::TEXT_DOMAIN);
         $options
             = getopt(
                 "c:d:rh",
@@ -131,17 +140,8 @@ class AutoloaderBuildScript
      */
     public function printUsage()
     {
-        echo 
-            basename(__FILE__),
-            " -c <classpath> {-c <classpath>} [-d <deploypath] [-r]", "\n\n",
-            "-c, --classpath=CP  Search for classes in classpath CP. You can\n",
-            "                    add more classpaths by adding more\n",
-            "                    --classpath options.\n",
-            "-d, --deploypath=DP Deploy the generated index and the Autoloader\n",
-            "                    in the path DP.\n",
-            "-r, --require       Don't use autoloading. All classes of the\n",
-            "                    generated index will be included.\n",
-            "\n";
+        $this->_locale->printf("USAGE", basename(__FILE__));
+        echo "\n";
     }
 
     /**

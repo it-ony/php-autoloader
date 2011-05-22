@@ -91,7 +91,18 @@ class AutoloaderBuildScript
     public function __construct()
     {
         $options
-            = getopt("c:d:r", array("classpath:", "deploypath:", "require"));
+            = getopt(
+                "c:d:rh",
+                array("classpath:", "deploypath:", "require", "help")
+            );
+
+        // Print usage and exit
+        $isHelp = empty($options) || $this->_getFlag($options, "h", "help");
+        if ($isHelp) {
+            $this->printUsage();
+            exit();
+
+        }
 
         $this->_classPaths
             = $this->_getArguments($options, "c", "classpath");
@@ -111,6 +122,26 @@ class AutoloaderBuildScript
             = $this->_getFlag($options, "r", "require")
             ? AutoloaderBuilder::MODE_REQUIRE_ALL
             : AutoloaderBuilder::MODE_AUTOLOAD;
+    }
+
+    /**
+     * Prints the usage and exits the script
+     *
+     * @return void
+     */
+    public function printUsage()
+    {
+        echo 
+            basename(__FILE__),
+            " -c <classpath> {-c <classpath>} [-d <deploypath] [-r]", "\n\n",
+            "-c, --classpath=CP  Search for classes in classpath CP. You can\n",
+            "                    add more classpaths by adding more\n",
+            "                    --classpath options.\n",
+            "-d, --deploypath=DP Deploy the generated index and the Autoloader\n",
+            "                    in the path DP.\n",
+            "-r, --require       Don't use autoloading. All classes of the\n",
+            "                    generated index will be included.\n",
+            "\n";
     }
 
     /**

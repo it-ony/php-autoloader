@@ -188,8 +188,11 @@ class AutoloaderBuilder
         $this->_mkdir($this->_deployPath);
         $this->_mkdir($indexDirectory);
 
-        // build indexes
+        // Build indexes
         foreach ($this->_classPaths as $i => $classPath) {
+            $autoloader = new Autoloader($classPath);
+
+            // Setup the deployed index
             $indexFile = "$i.php";
             $index = new AutoloaderIndex_PHPArrayCode();
             $index->setIndexPath(
@@ -199,14 +202,18 @@ class AutoloaderBuilder
                 new AutoloaderIndexFilter_RelativePath($this->_deployPath)
             );
 
-            // build index
-            $autoloader = new Autoloader($classPath);
+            // Don't index our own classes
+            $autoloader->getFileIterator()->addSkipPattern(
+                "/InstantAutoloader\.php$/"
+            );
+
+            // Build index
             $autoloader->setIndex($index);
             $autoloader->buildIndex();
 
         }
 
-        // copy InstantAutoloader
+        // Copy InstantAutoloader
         $isCopied = copy(
             dirname(__FILE__) . DIRECTORY_SEPARATOR . "InstantAutoloader.php",
             $this->_deployPath . DIRECTORY_SEPARATOR . "InstantAutoloader.php"

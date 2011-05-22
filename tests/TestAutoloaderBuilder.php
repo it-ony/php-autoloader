@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Defines the class AllTests
+ * Defines the test cases for implementations of AutoloaderBuilder
  *
  * PHP version 5
  *
@@ -32,21 +32,12 @@
  */
 
 /**
- * PHPUnit_Framework_TestSuite is included.
- */
-require_once 'PHPUnit/Framework.php';
-
-/**
  * The Autoloader is used for class loading.
  */
 require_once dirname(__FILE__) . "/../Autoloader.php";
 
 /**
- * Autoloader test suite
- *
- * The "Exception thrown without a stack frame in Unknown on line 0"
- * is a side effect of the tearDown() which deletes the indexes, before
- * every destructor was called.
+ * AutoloaderBuilder test cases
  *
  * @category   PHP
  * @package    Autoloader
@@ -55,51 +46,29 @@ require_once dirname(__FILE__) . "/../Autoloader.php";
  * @license    http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version    Release: 1.12
  * @link       http://php-autoloader.malkusch.de/en/
- * @see        TestIndexFilter
- * @see        TestAutoloader
- * @see        TestAutoloaderProfiler
- * @see        TestIndex
- * @see        TestParser
- * @see        TestInternalAutoloader
- * @see        TestFileIterator
- * @see        TestOldPHPAPI
- * @see        TestAutoloadAPI
+ * @see        AutoloaderBuilder
  */
-class AllTests extends PHPUnit_Framework_TestSuite
+class TestAutoloaderBuilder extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * Returns a list of test cases to be tested
-     *
-     * @return AutoloaderSuite
-     */
-    public static function suite()
-    {
-        $suite = new self();
- 
-        $suite->addTestSuite("TestAutoloadAPI");
-        $suite->addTestSuite("TestOldPHPAPI");
-        $suite->addTestSuite("TestIndexFilter");
-        $suite->addTestSuite("TestAutoloader");
-        $suite->addTestSuite("TestAutoloaderProfiler");
-        $suite->addTestSuite("TestIndex");
-        $suite->addTestSuite("TestParser");
-        $suite->addTestSuite("TestInternalAutoloader");
-        $suite->addTestSuite("TestFileIterator");
-        $suite->addTestSuite("TestAutoloaderBuilder");
- 
-        return $suite;
-    }
-
-    /**
-     * Deletes all temporary files
+     * Autoloader classes are not included in the build index
      *
      * @return void
      */
-    public function tearDown()
+    public function testSkipAutoloaderClassesInBuildIndex()
     {
-        AutoloaderTestHelper::deleteDirectory('.');
-        AutoloaderTestHelper::deleteDirectory(TestIndex::getIndexDirectory(), false);
+        $this->markTestIncomplete();
     }
-    
+
+    /**
+     * Deploying several InstantAutoloader classes don't redeclare the class
+     *
+     * @return void
+     */
+    public function testDeploySeveralAutoloaders()
+    {
+        $this->markTestIncomplete();
+    }
+
 }

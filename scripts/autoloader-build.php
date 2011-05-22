@@ -45,6 +45,10 @@ InternalAutoloader::getInstance()->registerClass(
  */
 $_script = new AutoloaderBuildScript();
 $_script->run();
+/**
+ * run() might kill the script. So the following code might not be executed.
+ * Who cares?
+ */
 unset($_script);
 
 /**

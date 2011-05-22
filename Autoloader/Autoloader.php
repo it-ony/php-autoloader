@@ -126,6 +126,7 @@ class Autoloader extends AbstractAutoloader
      */
     public function getFileIterator()
     {
+        $this->_initMembers();
         return $this->_fileIterator;
     }
 
@@ -157,6 +158,7 @@ class Autoloader extends AbstractAutoloader
      */
     public function getParser()
     {
+        $this->_initMembers();
         return $this->_parser;
     }
 
@@ -189,6 +191,7 @@ class Autoloader extends AbstractAutoloader
      */
     public function getIndex()
     {
+        $this->_initMembers();
         return $this->index;
     }
 

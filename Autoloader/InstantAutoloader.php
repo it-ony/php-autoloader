@@ -31,6 +31,15 @@
  */
 
 /**
+ * There might be several InstantAutoloaders deployed in a project.
+ * One is enough.
+ */
+if (class_exists("InstantAutoloader")) {
+    return;
+
+}
+
+/**
  * An instant autoloader for shipping with project builds
  *
  * You can build a complete index of your project (by calling

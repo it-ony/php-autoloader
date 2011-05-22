@@ -1,3 +1,8 @@
+2011-05-22 Markus Malkusch <markus@malkusch.de>
+
+    * scripts/autoloader-build.php
+    Added script for deploying an InstantAutoloader in a project.
+
 2011-05-06 Markus Malkusch <markus@malkusch.de>
 
     * Autoloader/index/AutoloaderIndex_File.php (AutoloaderIndex_File::saveRaw()):

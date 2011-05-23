@@ -6,6 +6,15 @@
 /**
  * Builds an index and deploys a portable autoloader for you project
  *
+ * autoloader-build.php -c <classpath> {-c <classpath>} [-d <deploypath] [-r]
+ *
+ * -c, --classpath=CP  Search for classes in classpath CP. You can add more
+ *                     classpaths by adding more --classpath options.
+ * -d, --deploypath=DP Deploy the generated index and the Autoloader
+ *                     in the path DP.
+ * -r, --require       Don't use autoloading. All classes of the
+ *                     generated index will be included.
+ *
  * PHP version 5
  *
  * LICENSE: This program is free software: you can redistribute it and/or modify

@@ -79,6 +79,10 @@ class AutoloaderBuilder
 
     const
     /**
+     * Text domain
+     */
+    TEXT_DOMAIN = "autoloader-build",
+    /**
      * Use InstantAutoloader::requireAll()
      */
     MODE_REQUIRE_ALL = "requireAll",
@@ -88,6 +92,10 @@ class AutoloaderBuilder
     MODE_AUTOLOAD = "autoload";
 
     private
+    /**
+     * @var AutoloaderLocale
+     */
+    $_locale,
     /**
      * @var string
      */
@@ -100,6 +108,14 @@ class AutoloaderBuilder
      * @var array
      */
     $_classPaths = array();
+
+    /**
+     * Initialization
+     */
+    public function __construct()
+    {
+        $this->_locale = new AutoloaderLocale(self::TEXT_DOMAIN);
+    }
 
     /**
      * Path for the deployed autoloader
@@ -171,13 +187,13 @@ class AutoloaderBuilder
     {
         if (empty($this->_deployPath)) {
             throw new AutoloaderException_Builder_NoDeployPath(
-                "No deploy path"
+                $this->_locale->sprintf("NO_DEPLOY_PATH")
             );
 
         }
         if (empty($this->_classPaths)) {
             throw new AutoloaderException_Builder_NoClassPath(
-                "No class path"
+                $this->_locale->sprintf("NO_CLASS_PATH")
             );
 
         }
@@ -220,7 +236,7 @@ class AutoloaderBuilder
         );
         if (! $isCopied) {
             throw new AutoloaderException_Builder_IO(
-                "Could not copy the class InstantAutoloader.php"
+                $this->_locale->sprintf("FAILED_COPY_INSTANTAUTOLOADER")
             );
 
         }
@@ -261,7 +277,10 @@ class AutoloaderBuilder
         if (! $isPut) {
             $error = error_get_last();
             throw new AutoloaderException_Builder_IO(
-                "Failed generating the autoloader code: $error[message]"
+                $this->_locale->sprintf(
+                    "FAILED_GENERATING_CODE",
+                    $error["message"]
+                )
             );
 
         }
@@ -285,7 +304,7 @@ class AutoloaderBuilder
         $result = mkdir($path, 0755, true);
         if (! $result) {
             throw new AutoloaderException_Builder_IO(
-                "Failed creating directory '$path'"
+                $this->_locale->sprintf("FAILED_CREATING_DIRECTORY", $path)
             );
 
         }

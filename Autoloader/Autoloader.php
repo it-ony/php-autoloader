@@ -273,6 +273,7 @@ class Autoloader extends AbstractAutoloader
      */
     public function __construct($path = null)
     {
+        parent::__construct();
         $this->_setPath(is_null($path) ? self::_getCallersPath() : $path);
     }
 
@@ -516,12 +517,12 @@ class Autoloader extends AbstractAutoloader
         if (! $realpath) {
             if (! file_exists($path)) {
                 throw new AutoloaderException_ClassPath_NotExists(
-                    "Class path '$path' doesn't exist."
+                    $this->locale->sprintf("CLASSPATH_NOT_EXIST", $path)
                 );
 
             }
             throw new AutoloaderException_ClassPath(
-                "Could not find class path '$path'."
+                $this->locale->sprintf("CLASSPATH_NOT_FOUND", $path)
             );
 
         }

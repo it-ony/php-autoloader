@@ -125,14 +125,6 @@ class InternalAutoloader extends AbstractAutoloader
     }
 
     /**
-     * Private constructor as this is a singleton
-     */
-    private function __construct()
-    {
-
-    }
-
-    /**
      * Private __clone() as this is a singleton
      *
      * @return void

@@ -67,10 +67,6 @@ class AutoloaderBuildScript
 
     const
     /**
-     * Text domain
-     */
-    TEXT_DOMAIN = "autoloader-build",
-    /**
      * Any error
      */
     ERROR_ANY = 1;
@@ -98,7 +94,7 @@ class AutoloaderBuildScript
      */
     public function __construct()
     {
-        $this->_locale = new AutoloaderLocale(self::TEXT_DOMAIN);
+        $this->_locale = new AutoloaderLocale(AutoloaderBuilder::TEXT_DOMAIN);
         $options
             = getopt(
                 "c:d:rh",
@@ -140,8 +136,7 @@ class AutoloaderBuildScript
      */
     public function printUsage()
     {
-        $this->_locale->printf("USAGE", basename(__FILE__));
-        echo "\n";
+        echo $this->_locale->sprintf("USAGE", basename(__FILE__)), "\n";
     }
 
     /**

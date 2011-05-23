@@ -37,6 +37,9 @@
 require_once
     dirname(__FILE__) . '/autoloadAPI/AutoloadAPI.php';
 require_once
+    dirname(__FILE__) . '/locale/AutoloaderLocale.php';
+AutoloaderLocale::classConstructor();
+require_once
     dirname(__FILE__) . '/exception/AutoloaderException.php';
 require_once
     dirname(__FILE__) . '/exception/AutoloaderException_Include.php';
@@ -61,17 +64,27 @@ require_once
 abstract class AbstractAutoloader
 {
 
+    const
     /**
      * The name of the deprecated class constructor is __static().
      *
      * @deprecated PEAR coding standards forbid the usage of a double underscore.
      */
-    const CLASS_CONSTRUCTOR_DEPRECATED = '__static';
-
+    CLASS_CONSTRUCTOR_DEPRECATED = '__static',
     /**
      * The name of the class constructor is classConstructor().
      */
-    const CLASS_CONSTRUCTOR = 'classConstructor';
+    CLASS_CONSTRUCTOR = 'classConstructor',
+    /**
+     * Text domain
+     */
+    TEXT_DOMAIN = "autoloader";
+
+    protected
+    /**
+     * @var AutoloaderLocale
+     */
+    $locale;
 
     /**
      * implements autoloading
@@ -101,6 +114,14 @@ abstract class AbstractAutoloader
     static public function normalizeClass(&$class)
     {
         $class = strtolower($class);
+    }
+
+    /**
+     * Initialization
+     */
+    protected function __construct()
+    {
+        $this->locale = new AutoloaderLocale(self::TEXT_DOMAIN);
     }
 
     /**

@@ -76,14 +76,14 @@ class AutoloaderLocale
      * @param string $message   Message
      * @param string $parameter Message
      *
-     * @return void
+     * @return string
      */
-    public function printf($message, $parameter = "")
+    public function sprintf($message, $parameter = "")
     {
         textdomain($this->_domain);
         $arguments = func_get_args();
         array_shift($arguments);
-        vprintf(_($message), $arguments);
+        return vsprintf(_($message), $arguments);
     }
 
 }

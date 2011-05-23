@@ -1,4 +1,4 @@
-# Translations for autoloader-build.php
+# Translations for Autoloader
 #
 # LICENSE: This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,32 +26,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "USAGE"
-msgstr "%s -c <classpath> {-c <classpath>} [-d <deploypath] [-r]\n"
-"\n"
-"-c, --classpath=CP  Search for classes in classpath CP. You can add more\n"
-"                    classpaths by adding more --classpath options.\n"
-"-d, --deploypath=DP Deploy the generated index and the Autoloader\n"
-"                    in the path DP.\n"
-"-r, --require       Don't use autoloading. All classes of the\n"
-"                    generated index will be included."
+
+msgid "CLASSPATH_NOT_EXIST"
+msgstr "Klassenpfad '%s' existiert nicht."
 
 
-msgid "NO_DEPLOY_PATH"
-msgstr "No deploy path"
-
-
-msgid "NO_CLASS_PATH"
-msgstr "No class path"
-
-
-msgid "FAILED_COPY_INSTANTAUTOLOADER"
-msgstr "Could not copy the class InstantAutoloader.php"
-
-
-msgid "FAILED_GENERATING_CODE"
-msgstr "Failed generating the autoloader code: %s"
-
-
-msgid "FAILED_CREATING_DIRECTORY"
-msgstr "Failed creating directory '%s'"
+msgid "CLASSPATH_NOT_FOUND"
+msgstr "Klassenpfad '%s' wurde nicht gefunden."

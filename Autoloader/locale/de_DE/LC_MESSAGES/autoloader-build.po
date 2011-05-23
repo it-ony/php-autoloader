@@ -37,3 +37,22 @@ msgstr "%s -c <classpath> {-c <classpath>} [-d <deploypath] [-r]\n"
 "-r, --require       Autoloading wird nicht verwendet. Alle Klassen aus dem\n"
 "                    erzeugten Index werden über require_once eingebunden."
 
+
+msgid "NO_DEPLOY_PATH"
+msgstr "Kein Auslieferungsverzeichnis"
+
+
+msgid "NO_CLASS_PATH"
+msgstr "Klassenpfad muss gesetzt seind."
+
+
+msgid "FAILED_COPY_INSTANTAUTOLOADER"
+msgstr "Konnte die Klasse InstantAutoloader.php nicht kopieren"
+
+
+msgid "FAILED_GENERATING_CODE"
+msgstr "Generierung des Autoloader Codes fehlgeschlagen: %s"
+
+
+msgid "FAILED_CREATING_DIRECTORY"
+msgstr "Anlegen von Verzeichnis '%s' ist fehlgeschlagen."

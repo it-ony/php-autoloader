@@ -144,6 +144,12 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
 
             }
 
+            // skip unreadable nodes
+            if (! $this->_iterator->current()->isReadable()) {
+                continue;
+
+            }
+
             $path = $this->_iterator->current()->getPathname();
 
             // apply file filters

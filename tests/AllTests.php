@@ -32,11 +32,6 @@
  */
 
 /**
- * PHPUnit_Framework_TestSuite is included.
- */
-require_once 'PHPUnit/Framework.php';
-
-/**
  * The Autoloader is used for class loading.
  */
 require_once dirname(__FILE__) . "/../Autoloader.php";

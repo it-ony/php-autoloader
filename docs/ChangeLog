@@ -1,3 +1,8 @@
+2012-04-02 Markus Malkusch <markus@malkusch.de>
+
+    * Autoloader/fileIterator/AutoloaderFileIterator_Simple.php (AutoloaderFileIterator_Simple::valid()):
+    Skip unreadable file nodes.
+
 2011-05-17 Markus Malkusch <markus@malkusch.de>
 
     * scripts/autoloader-build.php (AutoloaderBuildScript):

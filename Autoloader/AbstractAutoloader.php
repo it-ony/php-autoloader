@@ -357,33 +357,33 @@ abstract class AbstractAutoloader
      * If the class $class has the method public static $constructor, it
      * will be called.
      *
-     * @param String $class       A class which might have a class constructor
-     * @param String $constructor the method name of the class constructor
+     * @param String $class           A class which might have a class constructor
+     * @param String $constructorName the method name of the class constructor
      *
      * @return bool true if the class constructor was called
      * @throws AutoloaderException_Include_ClassConstructor
      */
-    private function _callClassConstructor($class, $constructor)
+    private function _callClassConstructor($class, $constructorName)
     {
         $reflectionClass = new ReflectionClass($class);
-        if (! $reflectionClass->hasMethod($constructor)) {
+        if (! $reflectionClass->hasMethod($constructorName)) {
             return false;
 
         }
 
-        $static = $reflectionClass->getMethod($constructor);
-        if (! $static->isStatic()) {
+        $constructor = $reflectionClass->getMethod($constructorName);
+        if (! $constructor->isStatic()) {
             return false;
 
         }
 
-        if ($static->getDeclaringClass()->getName() != $reflectionClass->getName()) {
+        if ($constructor->getDeclaringClass()->getName() != $reflectionClass->getName()) {
             return false;
 
         }
 
         try {
-            $static->invoke(null);
+            $constructor->invoke(null);
 
         } catch (Exception $exception) {
             throw new AutoloaderException_Include_ClassConstructor(

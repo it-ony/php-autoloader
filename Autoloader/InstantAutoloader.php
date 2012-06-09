@@ -63,6 +63,12 @@ if (class_exists("InstantAutoloader")) {
 class InstantAutoloader
 {
     
+    const
+    /**
+     * The name of the class constructor is classConstructor().
+     */
+    CLASS_CONSTRUCTOR = 'classConstructor';
+    
     private
     /**
      * @var string
@@ -152,7 +158,10 @@ class InstantAutoloader
             return;
 
         }
+        
         $this->_requirePath($this->_index[$class]);
+        
+        $this->_callClassConstructor($class, self::CLASS_CONSTRUCTOR);
     }
 
     /**
@@ -184,6 +193,40 @@ class InstantAutoloader
     private function _normalizeClass(&$class)
     {
         $class = strtolower($class);
+    }
+    
+    /**
+     * Calls the class constructor
+     *
+     * If the class $class has the method public static $constructor, it
+     * will be called.
+     *
+     * @param String $class           A class which might have a class constructor
+     * @param String $constructorName the method name of the class constructor
+     *
+     * @return bool true if the class constructor was called
+     */
+    private function _callClassConstructor($class, $constructorName)
+    {
+        $reflectionClass = new ReflectionClass($class);
+        if (! $reflectionClass->hasMethod($constructorName)) {
+            return false;
+
+        }
+
+        $constructor = $reflectionClass->getMethod($constructorName);
+        if (! $constructor->isStatic()) {
+            return false;
+
+        }
+
+        if ($constructor->getDeclaringClass()->getName() != $reflectionClass->getName()) {
+            return false;
+
+        }
+
+        $constructor->invoke(null);
+        return true;
     }
 
 }

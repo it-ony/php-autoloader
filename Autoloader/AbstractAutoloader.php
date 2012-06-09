@@ -35,20 +35,20 @@
  * autoloader, they have to be required traditionally.
  */
 require_once
-    dirname(__FILE__) . '/autoloadAPI/AutoloadAPI.php';
+    __DIR__ . '/autoloadAPI/AutoloadAPI.php';
 require_once
-    dirname(__FILE__) . '/locale/AutoloaderLocale.php';
+    __DIR__ . '/locale/AutoloaderLocale.php';
 AutoloaderLocale::classConstructor();
 require_once
-    dirname(__FILE__) . '/exception/AutoloaderException.php';
+    __DIR__ . '/exception/AutoloaderException.php';
 require_once
-    dirname(__FILE__) . '/exception/AutoloaderException_Include.php';
+    __DIR__ . '/exception/AutoloaderException_Include.php';
 require_once
-    dirname(__FILE__) . '/exception/AutoloaderException_Include_FileNotExists.php';
+    __DIR__ . '/exception/AutoloaderException_Include_FileNotExists.php';
 require_once
-    dirname(__FILE__) . '/exception/AutoloaderException_Include_ClassNotDefined.php';
+    __DIR__ . '/exception/AutoloaderException_Include_ClassNotDefined.php';
 require_once
-    dirname(__FILE__)
+    __DIR__
     . '/exception/AutoloaderException_Include_ClassConstructor.php';
 
 /**

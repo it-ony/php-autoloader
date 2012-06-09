@@ -36,11 +36,11 @@
  */
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndex_SharedKeyValueStorage',
-    dirname(__FILE__) . '/AutoloaderIndex_SharedKeyValueStorage.php'
+    __DIR__ . '/AutoloaderIndex_SharedKeyValueStorage.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Index_IO',
-    dirname(__FILE__) . '/exception/AutoloaderException_Index_IO.php'
+    __DIR__ . '/exception/AutoloaderException_Index_IO.php'
 );
 
 /**

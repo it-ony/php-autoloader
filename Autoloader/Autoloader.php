@@ -35,13 +35,13 @@
  * they have to be required traditionally.
  */
 require_once
-    dirname(__FILE__) . '/AbstractAutoloader.php';
+    __DIR__ . '/AbstractAutoloader.php';
 require_once
-    dirname(__FILE__) . '/InternalAutoloader.php';
+    __DIR__ . '/InternalAutoloader.php';
 require_once
-    dirname(__FILE__) . '/exception/AutoloaderException.php';
+    __DIR__ . '/exception/AutoloaderException.php';
 require_once
-    dirname(__FILE__) . '/exception/AutoloaderException_PathNotRegistered.php';
+    __DIR__ . '/exception/AutoloaderException_PathNotRegistered.php';
 
 /**
  * An implementation for Autoloading classes in PHP
@@ -288,8 +288,8 @@ class Autoloader extends AbstractAutoloader
     static private function _getCallersPath()
     {
         $autoloaderPaths = array(
-            realpath(dirname(__FILE__)),
-            realpath(dirname(__FILE__) . '/..'),
+            realpath(__DIR__),
+            realpath(__DIR__ . '/..'),
         );
         foreach (debug_backtrace() as $trace) {
             $path = realpath(dirname($trace['file']));
@@ -702,106 +702,106 @@ class Autoloader extends AbstractAutoloader
  */
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndex',
-    dirname(__FILE__) . '/index/AutoloaderIndex.php'
+    __DIR__ . '/index/AutoloaderIndex.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_SearchFailed',
-    dirname(__FILE__) . '/exception/AutoloaderException_SearchFailed.php'
+    __DIR__ . '/exception/AutoloaderException_SearchFailed.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_SearchFailed_EmptyClassPath',
-    dirname(__FILE__)
+    __DIR__
     . '/exception/AutoloaderException_SearchFailed_EmptyClassPath.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Include',
-    dirname(__FILE__) . '/exception/AutoloaderException_Include.php'
+    __DIR__ . '/exception/AutoloaderException_Include.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Include_FileNotExists',
-    dirname(__FILE__) . '/exception/AutoloaderException_Include_FileNotExists.php'
+    __DIR__ . '/exception/AutoloaderException_Include_FileNotExists.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Include_ClassNotDefined',
-    dirname(__FILE__) . '/exception/AutoloaderException_Include_ClassNotDefined.php'
+    __DIR__ . '/exception/AutoloaderException_Include_ClassNotDefined.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_ClassPath',
-    dirname(__FILE__) . '/exception/AutoloaderException_ClassPath.php'
+    __DIR__ . '/exception/AutoloaderException_ClassPath.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_ClassPath_NotExists',
-    dirname(__FILE__) . '/exception/AutoloaderException_ClassPath_NotExists.php'
+    __DIR__ . '/exception/AutoloaderException_ClassPath_NotExists.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Index_NotDefined',
-    dirname(__FILE__) . '/index/exception/AutoloaderException_Index_NotDefined.php'
+    __DIR__ . '/index/exception/AutoloaderException_Index_NotDefined.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_GuessPathFailed',
-    dirname(__FILE__) . '/index/exception/AutoloaderException_GuessPathFailed.php'
+    __DIR__ . '/index/exception/AutoloaderException_GuessPathFailed.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndex_Dummy',
-    dirname(__FILE__) . '/index/AutoloaderIndex_Dummy.php'
+    __DIR__ . '/index/AutoloaderIndex_Dummy.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndex_PDO',
-    dirname(__FILE__) . '/index/AutoloaderIndex_PDO.php'
+    __DIR__ . '/index/AutoloaderIndex_PDO.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndex_CSV',
-    dirname(__FILE__) . '/index/AutoloaderIndex_CSV.php'
+    __DIR__ . '/index/AutoloaderIndex_CSV.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndex_IniFile',
-    dirname(__FILE__) . '/index/AutoloaderIndex_IniFile.php'
+    __DIR__ . '/index/AutoloaderIndex_IniFile.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndex_PHPArrayCode',
-    dirname(__FILE__) . '/index/AutoloaderIndex_PHPArrayCode.php'
+    __DIR__ . '/index/AutoloaderIndex_PHPArrayCode.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndex_SerializedHashtable',
-    dirname(__FILE__) . '/index/AutoloaderIndex_SerializedHashtable.php'
+    __DIR__ . '/index/AutoloaderIndex_SerializedHashtable.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndex_SerializedHashtable_GZ',
-    dirname(__FILE__) . '/index/AutoloaderIndex_SerializedHashtable_GZ.php'
+    __DIR__ . '/index/AutoloaderIndex_SerializedHashtable_GZ.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndex_Memcache',
-    dirname(__FILE__) . '/index/AutoloaderIndex_Memcache.php'
+    __DIR__ . '/index/AutoloaderIndex_Memcache.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileParser',
-    dirname(__FILE__) . '/parser/AutoloaderFileParser.php'
+    __DIR__ . '/parser/AutoloaderFileParser.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileIterator_Simple',
-    dirname(__FILE__) . '/fileIterator/AutoloaderFileIterator_Simple.php'
+    __DIR__ . '/fileIterator/AutoloaderFileIterator_Simple.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileIterator_SimpleCached',
-    dirname(__FILE__) . '/fileIterator/AutoloaderFileIterator_SimpleCached.php'
+    __DIR__ . '/fileIterator/AutoloaderFileIterator_SimpleCached.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileIterator_PriorityList',
-    dirname(__FILE__) . '/fileIterator/AutoloaderFileIterator_PriorityList.php'
+    __DIR__ . '/fileIterator/AutoloaderFileIterator_PriorityList.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_IndexBuildCollision',
-    dirname(__FILE__) . '/exception/AutoloaderException_IndexBuildCollision.php'
+    __DIR__ . '/exception/AutoloaderException_IndexBuildCollision.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndexFilter_RelativePath',
-    dirname(__FILE__) . '/index/filter/AutoloaderIndexFilter_RelativePath.php'
+    __DIR__ . '/index/filter/AutoloaderIndexFilter_RelativePath.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderConfiguration',
-    dirname(__FILE__) . '/AutoloaderConfiguration.php'
+    __DIR__ . '/AutoloaderConfiguration.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderLocale',
-    dirname(__FILE__) . '/locale/AutoloaderLocale.php'
+    __DIR__ . '/locale/AutoloaderLocale.php'
 );

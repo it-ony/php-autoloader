@@ -36,7 +36,7 @@
  */
 InternalAutoloader::getInstance()->registerClass(
     'Autoloader',
-    dirname(__FILE__) . '/../Autoloader.php'
+    __DIR__ . '/../Autoloader.php'
 );
 
 /**

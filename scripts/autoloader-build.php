@@ -43,10 +43,10 @@
 /**
  * Autoloader classes
  */
-require dirname(__FILE__) . "/../Autoloader/Autoloader.php";
+require __DIR__ . "/../Autoloader/Autoloader.php";
 InternalAutoloader::getInstance()->registerClass(
     "AutoloaderBuilder",
-    dirname(__FILE__) . "/../Autoloader/AutoloaderBuilder.php"
+    __DIR__ . "/../Autoloader/AutoloaderBuilder.php"
 );
 
 /**

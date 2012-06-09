@@ -34,12 +34,12 @@
 /**
  * The Autoloader is used for class loading.
  */
-require_once dirname(__FILE__) . "/../Autoloader.php";
+require_once __DIR__ . "/../Autoloader.php";
 
 /**
  * Autoloader_Profiler is not not registered in the InternalAutoloader.
  */
-require_once dirname(__FILE__) . "/classes/Autoloader_Profiler.php";
+require_once __DIR__ . "/classes/Autoloader_Profiler.php";
 
 /**
  * Autoloader_Profiler test cases

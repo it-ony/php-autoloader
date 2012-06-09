@@ -36,11 +36,11 @@
  */
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileIterator',
-    dirname(__FILE__).'/AutoloaderFileIterator.php'
+    __DIR__.'/AutoloaderFileIterator.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileIterator_Simple',
-    dirname(__FILE__).'/AutoloaderFileIterator_Simple.php'
+    __DIR__.'/AutoloaderFileIterator_Simple.php'
 );
 
 /**

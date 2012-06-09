@@ -36,15 +36,15 @@
  */
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Parser_IO',
-    dirname(__FILE__) . '/exception/AutoloaderException_Parser_IO.php'
+    __DIR__ . '/exception/AutoloaderException_Parser_IO.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileParser_Tokenizer',
-    dirname(__FILE__) . '/AutoloaderFileParser_Tokenizer.php'
+    __DIR__ . '/AutoloaderFileParser_Tokenizer.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileParser_RegExp',
-    dirname(__FILE__) . '/AutoloaderFileParser_RegExp.php'
+    __DIR__ . '/AutoloaderFileParser_RegExp.php'
 );
 
 /**

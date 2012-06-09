@@ -36,7 +36,7 @@
  */
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Index_Filter_RelativePath',
-    dirname(__FILE__) . '/AutoloaderException_Index_Filter_RelativePath.php'
+    __DIR__ . '/AutoloaderException_Index_Filter_RelativePath.php'
 );
 
 /**

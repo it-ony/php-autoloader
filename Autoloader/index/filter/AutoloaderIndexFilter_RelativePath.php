@@ -36,11 +36,11 @@
  */
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndexFilter',
-    dirname(__FILE__) . '/AutoloaderIndexFilter.php'
+    __DIR__ . '/AutoloaderIndexFilter.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Index_Filter_RelativePath_InvalidBasePath',
-    dirname(__FILE__)
+    __DIR__
     . '/exception/AutoloaderException_Index_Filter_RelativePath_InvalidBasePath.php'
 );
 
@@ -84,7 +84,7 @@ class AutoloaderIndexFilter_RelativePath implements AutoloaderIndexFilter
     {
         if (empty($basePath)) {
             $root       = str_repeat(DIRECTORY_SEPARATOR . '..', 3);
-            $basePath   = dirname(__FILE__) . $root;
+            $basePath   = __DIR__ . $root;
 
         }
         $this->_basePath = realpath($basePath);

@@ -34,7 +34,7 @@
 /**
  * The Autoloader is used for class loading.
  */
-require_once dirname(__FILE__) . "/../Autoloader.php";
+require_once __DIR__ . "/../Autoloader.php";
 
 /**
  * Autoloader test cases
@@ -578,12 +578,12 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
      */
     public function testRequireOnceMultipleAutoloaders()
     {
-        if (! $this->_isSameFilesystem(dirname(__FILE__), sys_get_temp_dir())) {
+        if (! $this->_isSameFilesystem(__DIR__, sys_get_temp_dir())) {
 
         }
 
         $copyPath   = sys_get_temp_dir() . '/' . __FUNCTION__;
-        $sourcePath = dirname(__FILE__) . "/..";
+        $sourcePath = __DIR__ . "/..";
 
         /**
          * If the tmp directory is in the same filesystem this test runs
@@ -596,7 +596,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
 
         `cp -r $linkOption $sourcePath $copyPath`;
 
-        include dirname(__FILE__) . "/../Autoloader.php";
+        include __DIR__ . "/../Autoloader.php";
         include "$copyPath/Autoloader.php";
 
         `rm -rf $copyPath`;
@@ -770,7 +770,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
      */
     public function provideTestClassPath()
     {
-        $autoPath = realpath(dirname(__FILE__));
+        $autoPath = realpath(__DIR__);
 
         $defaultLoader = new Autoloader();
 
@@ -1013,7 +1013,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     {
         $autoloader = Autoloader::getRegisteredAutoloader();
         $autoloader->remove();
-        $path = realpath(dirname(__FILE__));
+        $path = realpath(__DIR__);
 
         try {
 
@@ -1187,7 +1187,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
         $autoloaders = Autoloader::getRegisteredAutoloaders();
         Autoloader::removeAll();
 
-        $autoloaderPath = dirname(__FILE__) . "/../Autoloader.php";
+        $autoloaderPath = __DIR__ . "/../Autoloader.php";
 
         $classA   = $this->_autoloaderTestHelper->makeClass("A", "a");
         $classA2  = $this->_autoloaderTestHelper->makeClass("A2", "a");

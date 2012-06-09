@@ -66,7 +66,7 @@ class AutoloaderLocale
      */
     public function __construct($domain)
     {
-        bindtextdomain($domain, dirname(__FILE__));
+        bindtextdomain($domain, __DIR__);
         $this->_domain = $domain;
     }
 

@@ -35,7 +35,7 @@
 /**
  * The Autoloader is used for class loading.
  */
-require dirname(__FILE__) . "/../../Autoloader.php";
+require __DIR__ . "/../../Autoloader.php";
 
 /**
  * The class constructor serves as entry point of this script.

@@ -36,7 +36,7 @@
  */
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Configuration_Setting',
-    dirname(__FILE__) . '/AutoloaderException_Configuration_Setting.php'
+    __DIR__ . '/AutoloaderException_Configuration_Setting.php'
 );
 
 /**

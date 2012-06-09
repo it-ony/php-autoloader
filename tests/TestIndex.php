@@ -34,7 +34,7 @@
 /**
  * The Autoloader is used for class loading.
  */
-require_once dirname(__FILE__) . "/../Autoloader.php";
+require_once __DIR__ . "/../Autoloader.php";
 
 /**
  * The tests need an one-time initialisation.
@@ -614,7 +614,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
      */
     static public function getIndexDirectory()
     {
-        return dirname(__FILE__) . DIRECTORY_SEPARATOR . self::INDEX_DIRECTORY;
+        return __DIR__ . DIRECTORY_SEPARATOR . self::INDEX_DIRECTORY;
     }
 
 }

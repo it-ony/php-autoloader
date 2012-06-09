@@ -35,7 +35,7 @@
  * The parent class is needed. As autoloading does not work here,
  * it has to be required traditionally.
  */
-require_once dirname(__FILE__) . '/../../Autoloader/Autoloader.php';
+require_once __DIR__ . '/../../Autoloader/Autoloader.php';
 
 /**
  * This Autoloader is only for profiling during development of the

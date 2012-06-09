@@ -36,11 +36,11 @@
  */
 InternalAutoloader::getInstance()->registerClass(
     "AutoloaderException_Parser",
-    dirname(__FILE__) . "/exception/AutoloaderException_Parser.php"
+    __DIR__ . "/exception/AutoloaderException_Parser.php"
 );
 InternalAutoloader::getInstance()->registerClass(
     "AutoloaderFileParser",
-    dirname(__FILE__) . "/AutoloaderFileParser.php"
+    __DIR__ . "/AutoloaderFileParser.php"
 );
 
 /**

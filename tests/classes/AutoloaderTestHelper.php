@@ -81,7 +81,7 @@ class AutoloaderTestHelper
      */
     static public function getClassDirectory($subDirectory = null)
     {
-        $classDirectory = dirname(__FILE__) . DIRECTORY_SEPARATOR
+        $classDirectory = __DIR__ . DIRECTORY_SEPARATOR
                         . '..' . DIRECTORY_SEPARATOR
                         . self::CLASS_DIRECTORY;
 

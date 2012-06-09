@@ -35,15 +35,15 @@
  */
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Builder_NoClassPath',
-    dirname(__FILE__) . '/exception/AutoloaderException_Builder_NoClassPath.php'
+    __DIR__ . '/exception/AutoloaderException_Builder_NoClassPath.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Builder_NoDeployPath',
-    dirname(__FILE__) . '/exception/AutoloaderException_Builder_NoDeployPath.php'
+    __DIR__ . '/exception/AutoloaderException_Builder_NoDeployPath.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Builder_IO',
-    dirname(__FILE__) . '/exception/AutoloaderException_Builder_IO.php'
+    __DIR__ . '/exception/AutoloaderException_Builder_IO.php'
 );
 
 /**
@@ -231,7 +231,7 @@ class AutoloaderBuilder
 
         // Copy InstantAutoloader
         $isCopied = copy(
-            dirname(__FILE__) . DIRECTORY_SEPARATOR . "InstantAutoloader.php",
+            __DIR__ . DIRECTORY_SEPARATOR . "InstantAutoloader.php",
             $this->_deployPath . DIRECTORY_SEPARATOR . "InstantAutoloader.php"
         );
         if (! $isCopied) {
@@ -261,12 +261,12 @@ class AutoloaderBuilder
             . " * @see  AutoloaderBuilder::build()\n"
             . " * @link http://php-autoloader.malkusch.de/en/\n"
             . " */\n\n"
-            . "require_once dirname(__FILE__) . '/InstantAutoloader.php';\n";
+            . "require_once __DIR__ . '/InstantAutoloader.php';\n";
         foreach ($this->_classPaths as $i => $classPath) {
-            $indexPath = "dirname(__FILE__) . '/index/$i.php'";
+            $indexPath = "__DIR__ . '/index/$i.php'";
             $code
                 .= "\n\$_autoloader = new InstantAutoloader($indexPath);\n"
-                . "\$_autoloader->setBasePath(dirname(__FILE__));\n"
+                . "\$_autoloader->setBasePath(__DIR__);\n"
                 . "\$_autoloader->$autoloadMethod();\n";
             
         }

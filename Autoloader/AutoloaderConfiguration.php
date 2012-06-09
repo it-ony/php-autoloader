@@ -35,36 +35,36 @@
  */
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Configuration_File',
-    dirname(__FILE__) . '/exception/AutoloaderException_Configuration_File.php'
+    __DIR__ . '/exception/AutoloaderException_Configuration_File.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Configuration_File_Exists',
-    dirname(__FILE__)
+    __DIR__
         . '/exception/AutoloaderException_Configuration_File_Exists.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Configuration_MissingSection',
-    dirname(__FILE__)
+    __DIR__
         . '/exception/AutoloaderException_Configuration_MissingSection.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Configuration_Setting_Exists',
-    dirname(__FILE__)
+    __DIR__
         . '/exception/AutoloaderException_Configuration_Setting_Exists.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Configuration_Setting_Object',
-    dirname(__FILE__)
+    __DIR__
         . '/exception/AutoloaderException_Configuration_Setting_Object.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Configuration_Setting_Object_Exists',
-    dirname(__FILE__)
+    __DIR__
         . '/exception/AutoloaderException_Configuration_Setting_Object_Exists.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Index_IO',
-    dirname(__FILE__)
+    __DIR__
         . '/index/exception/AutoloaderException_Index_IO.php'
 );
 
@@ -143,7 +143,7 @@ class AutoloaderConfiguration
      */
     static public function classConstructor()
     {
-        self::$_instance = new self(dirname(__FILE__) . "/../autoloader.ini");
+        self::$_instance = new self(__DIR__ . "/../autoloader.ini");
     }
 
     /**

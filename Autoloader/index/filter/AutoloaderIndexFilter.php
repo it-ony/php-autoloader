@@ -36,11 +36,11 @@
  */
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndexGetFilter',
-    dirname(__FILE__) . '/AutoloaderIndexGetFilter.php'
+    __DIR__ . '/AutoloaderIndexGetFilter.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndexSetFilter',
-    dirname(__FILE__) . '/AutoloaderIndexSetFilter.php'
+    __DIR__ . '/AutoloaderIndexSetFilter.php'
 );
 
 /**

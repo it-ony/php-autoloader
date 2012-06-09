@@ -36,15 +36,15 @@
  */
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderIndex_SerializedHashtable',
-    dirname(__FILE__) . '/AutoloaderIndex_SerializedHashtable.php'
+    __DIR__ . '/AutoloaderIndex_SerializedHashtable.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Index_IO',
-    dirname(__FILE__) . '/exception/AutoloaderException_Index_IO.php'
+    __DIR__ . '/exception/AutoloaderException_Index_IO.php'
 );
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderException_Index_IO_FileNotExists',
-    dirname(__FILE__) . '/exception/AutoloaderException_Index_IO_FileNotExists.php'
+    __DIR__ . '/exception/AutoloaderException_Index_IO_FileNotExists.php'
 );
 
 /**

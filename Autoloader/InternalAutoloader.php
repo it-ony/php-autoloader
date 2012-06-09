@@ -35,9 +35,9 @@
  * they have to be required traditionally.
  */
 require_once
-    dirname(__FILE__) . '/AbstractAutoloader.php';
+    __DIR__ . '/AbstractAutoloader.php';
 require_once
-    dirname(__FILE__)
+    __DIR__
     . '/exception/AutoloaderException_InternalClassNotLoadable.php';
 
 /**

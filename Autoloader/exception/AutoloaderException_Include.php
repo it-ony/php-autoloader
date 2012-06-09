@@ -35,7 +35,7 @@
  * The parent class must be loaded. As this exception might be raised in the
  * InternalAutoloader, it is loaded by require_once.
  */
-require_once dirname(__FILE__) . '/AutoloaderException.php';
+require_once __DIR__ . '/AutoloaderException.php';
 
 /**
  * Raised if including a class failed

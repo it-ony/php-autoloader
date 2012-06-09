@@ -34,7 +34,7 @@
 /**
  * Requires the parent class
  */
-require_once dirname(__FILE__) . '/AutoloadAPI.php';
+require_once __DIR__ . '/AutoloadAPI.php';
 
 /**
  * A workaround for a broken spl_autoload_functions()

@@ -6,20 +6,20 @@
  * Registers an Autoloader
  *
  * The Autoloader works out of the box as simple as possible. You have
- * nothing more to do than require this file. Don't bother the time it
- * consumes when it's called the first time. Let it build its index.
+ * nothing more to do than include the file Autoloader.php. Don't bother the
+ * time it consumes when it's called the first time. Let it build its index.
  * The second time it will run as fast as light.
  *
  * The simplest and probably most common use case shows this example:
- *
- * index.php
+ * 
+ * ./index.php
  * <code>
  * <?php
- * require dirname(__FILE__) . "/autoloader/Autoloader.php";
+ * require __DIR__ . "/autoloader/Autoloader.php";
  * $myObject = new MyClass();
  * </code>
  * 
- * classes/MyClass.php
+ * ./classes/MyClass.php
  * <code>
  * <?php
  * class MyClass extends MyParentClass
@@ -28,7 +28,7 @@
  * }
  * </code>
  * 
- * classes/MyParentClass.php
+ * ./classes/MyParentClass.php
  * <code>
  * <?php
  * class MyParentClass
@@ -37,7 +37,7 @@
  * }
  * </code>
  * 
- * As you can see it's only necessary to require this file once.
+ * As you can see it's only necessary to require Autoloader.php once.
  * If this is done in the document root of your classes (index.php in
  * this case) the Autoloader is already configured. After requiring
  * this file you don't have to worry where your classes reside.
@@ -48,7 +48,7 @@
  *
  * <code>
  * <?php
- * require dirname(__FILE__) . "/autoloader/Autoloader.php";
+ * require __DIR__ . "/autoloader/Autoloader.php";
  *
  * // As the guessed class path is wrong you should remove this Autoloader.
  * Autoloader::getRegisteredAutoloader()->remove();
@@ -57,7 +57,7 @@
  * $autoloader = new Autoloader($classpath);
  * $autoloader->register();
  *
- * // You might also have other class paths
+ * // You might also have more class paths
  * $autoloader2 = new Autoloader($classpath2);
  * $autoloader2->register();
  * </code>
@@ -104,12 +104,12 @@
  * Autoloader is not defined yet.
  */
 if (! class_exists('Autoloader')) {
-    include_once dirname(__FILE__) . "/Autoloader/OldPHPAPI.php";
+    include_once __DIR__ . "/Autoloader/OldPHPAPI.php";
     $__oldAPI = new OldPHPAPI();
     $__oldAPI->checkAPI();
     unset($__oldAPI);
 
-    include_once dirname(__FILE__) . "/Autoloader/Autoloader.php";
+    include_once __DIR__ . "/Autoloader/Autoloader.php";
 
 }
 

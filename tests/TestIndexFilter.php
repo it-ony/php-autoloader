@@ -34,7 +34,7 @@
 /**
  * The Autoloader is used for class loading.
  */
-require_once dirname(__FILE__) . "/../Autoloader.php";
+require_once __DIR__ . "/../Autoloader.php";
 
 /**
  * AutoloaderIndexFilter_RelativePath test cases
@@ -86,12 +86,12 @@ class TestIndexFilter extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                dirname(__FILE__) . '/../',
+                __DIR__ . '/../',
                 new AutoloaderIndexFilter_RelativePath()
             ),
             array(
-                dirname(__FILE__),
-                new AutoloaderIndexFilter_RelativePath(dirname(__FILE__))
+                __DIR__,
+                new AutoloaderIndexFilter_RelativePath(__DIR__)
             ),
         );
     }
@@ -126,7 +126,7 @@ class TestIndexFilter extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                dirname(__FILE__) . '/' . uniqid(),
+                __DIR__ . '/' . uniqid(),
             )
         );
     }
@@ -191,35 +191,35 @@ class TestIndexFilter extends PHPUnit_Framework_TestCase
         return array(
             array(
                 '../../Foo',
-                realpath(dirname(__FILE__) . "/../../../") . "/Foo"
+                realpath(__DIR__ . "/../../../") . "/Foo"
             ),
             array(
                 '../../Foo/Bar',
-                realpath(dirname(__FILE__) . "/../../../") . "/Foo/Bar"
+                realpath(__DIR__ . "/../../../") . "/Foo/Bar"
             ),
             array(
                 '../Foo',
-                realpath(dirname(__FILE__) . "/../../") . "/Foo"
+                realpath(__DIR__ . "/../../") . "/Foo"
             ),
             array(
                 '../Foo/Bar',
-                realpath(dirname(__FILE__) . "/../../") . "/Foo/Bar"
+                realpath(__DIR__ . "/../../") . "/Foo/Bar"
             ),
             array(
                 'Foo',
-                realpath(dirname(__FILE__) . "/..") . "/Foo"
+                realpath(__DIR__ . "/..") . "/Foo"
             ),
             array(
                 'Foo/Bar',
-                realpath(dirname(__FILE__) . "/..") . "/Foo/Bar"
+                realpath(__DIR__ . "/..") . "/Foo/Bar"
             ),
             array(
                 'tests/Foo',
-                dirname(__FILE__) . "/Foo"
+                __DIR__ . "/Foo"
             ),
             array(
                 'tests/Foo/Bar',
-                dirname(__FILE__) . "/Foo/Bar"
+                __DIR__ . "/Foo/Bar"
             )
         );
     }

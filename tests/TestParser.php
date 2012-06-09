@@ -34,7 +34,7 @@
 /**
  * The Autoloader is used for class loading.
  */
-require_once dirname(__FILE__) . "/../Autoloader.php";
+require_once __DIR__ . "/../Autoloader.php";
 
 /**
  * AutoloaderFileParser test cases
@@ -258,7 +258,7 @@ class TestParser extends PHPUnit_Framework_TestCase
                     'de\malkusch\autoloader\test\ns\bracket\Test2'
                 ),
                 file_get_contents(
-                    dirname(__FILE__) . "/namespaceDefinitions/Bracket.php"
+                    __DIR__ . "/namespaceDefinitions/Bracket.php"
                 )
             );
             $cases[] = array(
@@ -269,7 +269,7 @@ class TestParser extends PHPUnit_Framework_TestCase
                     'de\malkusch\autoloader\test\ns\multibracket\B\Test2',
                 ),
                 file_get_contents(
-                    dirname(__FILE__) . "/namespaceDefinitions/MultiBracket.php"
+                    __DIR__ . "/namespaceDefinitions/MultiBracket.php"
                 )
             );
             $cases[] = array(
@@ -280,7 +280,7 @@ class TestParser extends PHPUnit_Framework_TestCase
                     'de\malkusch\autoloader\test\ns\multinobracket\B\Test2',
                 ),
                 file_get_contents(
-                    dirname(__FILE__) . "/namespaceDefinitions/MultiNoBracket.php"
+                    __DIR__ . "/namespaceDefinitions/MultiNoBracket.php"
                 )
             );
             $cases[] = array(
@@ -289,7 +289,7 @@ class TestParser extends PHPUnit_Framework_TestCase
                     'de\malkusch\autoloader\test\ns\nobracket\Test2'
                 ),
                 file_get_contents(
-                    dirname(__FILE__) . "/namespaceDefinitions/NoBracket.php"
+                    __DIR__ . "/namespaceDefinitions/NoBracket.php"
                 )
             );
             $cases[] = array(
@@ -299,7 +299,7 @@ class TestParser extends PHPUnit_Framework_TestCase
                     'de\malkusch\autoloader\test\usetest3\Test',
                 ),
                 file_get_contents(
-                    dirname(__FILE__) . "/namespaceDefinitions/UseBracket.php"
+                    __DIR__ . "/namespaceDefinitions/UseBracket.php"
                 )
             );
             $cases[] = array(
@@ -310,7 +310,7 @@ class TestParser extends PHPUnit_Framework_TestCase
                     'de\malkusch\autoloader\test\usetest4\Test',
                 ),
                 file_get_contents(
-                    dirname(__FILE__) . "/namespaceDefinitions/UseNoBracket.php"
+                    __DIR__ . "/namespaceDefinitions/UseNoBracket.php"
                 )
             );
 

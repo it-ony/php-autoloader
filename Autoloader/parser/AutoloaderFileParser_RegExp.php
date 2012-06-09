@@ -36,7 +36,7 @@
  */
 InternalAutoloader::getInstance()->registerClass(
     'AutoloaderFileParser',
-    dirname(__FILE__) . '/AutoloaderFileParser.php'
+    __DIR__ . '/AutoloaderFileParser.php'
 );
 
 /**

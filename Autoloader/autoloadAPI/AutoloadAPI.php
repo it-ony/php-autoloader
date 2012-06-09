@@ -34,7 +34,7 @@
 /**
  * Require the needed class
  */
-require_once dirname(__FILE__) . '/AutoloadAPI_Old.php';
+require_once __DIR__ . '/AutoloadAPI_Old.php';
 
 /**
  * The class constructor is called.

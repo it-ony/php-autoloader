@@ -1,3 +1,8 @@
+2012-06-09 Markus Malkusch <markus@malkusch.de>
+
+    * Autoloader/InstantAutoloader.php (InstantAutoloader::__autoload()):
+    InstantAutoloader comes with class constructor support.
+
 2012-04-02 Markus Malkusch <markus@malkusch.de>
 
     * Autoloader/fileIterator/AutoloaderFileIterator_Simple.php (AutoloaderFileIterator_Simple::valid()):

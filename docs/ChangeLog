@@ -39,9 +39,8 @@
 2011-04-20 Markus Malkusch <markus@malkusch.de>
 
     * Autoloader/parser/AutoloaderFileParser_Tokenizer.php (AutoloaderFileParser_Tokenizer::getClassesInSource()):
-    Volker von Hoesslin reported a bug when using PHP's "use" keyword.
-    It confused the parser. Added a context to know what tokens are part of the
-    namespace.
+    PHP's "use" keyword confused the parser. Added a context to know what tokens
+    are part of the namespace.
 
     * Autoloader/parser/AutoloaderFileParser_RegExp.php (AutoloaderFileParser_RegExp::getClassesInSource()):
     Fixed small bug when searching for namespaces.

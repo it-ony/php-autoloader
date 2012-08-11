@@ -115,8 +115,7 @@ class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser
             /*
              * Set a context
              *
-             * Volker von Hoesslin reported a bug when using PHP's "use"
-             * keyword. The parser wasn't aware of a context and got confused
+             * The parser wasn't aware of a context and got confused 
              * by the T_NS_SEPARATOR tokens after the T_USE token. Now
              * T_NS_SEPARATOR outside a T_NAMESPACE context will be ignored.
              */

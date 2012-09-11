@@ -105,6 +105,18 @@ class AutoloaderTestHelper
     }
 
     /**
+     * Returns if this PHP supports traits
+     *
+     * Some tests might be skipped in an unsupported environment.
+     *
+     * @return bool
+     */
+    public function hasTraitsSupport()
+    {
+        return version_compare(PHP_VERSION, "5.4", '>=');
+    }
+
+    /**
      * Returns if this PHP supports namespaces
      *
      * Some tests might be skipped in an unsupported environment.

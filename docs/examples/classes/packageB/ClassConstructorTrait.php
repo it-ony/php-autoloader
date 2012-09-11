@@ -7,7 +7,7 @@ trait ClassConstructorTrait
     
     static public function classConstructor()
     {
-        echo __CLASS__, " loaded.\n";
+        echo "calling class constructor for class ", __CLASS__, ".\n";
     }
     
 }

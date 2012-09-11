@@ -35,6 +35,8 @@
  * autoloader, they have to be required traditionally.
  */
 require_once
+    __DIR__ . '/InstantAutoloader.php';
+require_once
     __DIR__ . '/autoloadAPI/AutoloadAPI.php';
 require_once
     __DIR__ . '/locale/AutoloaderLocale.php';
@@ -239,7 +241,11 @@ abstract class AbstractAutoloader
          * even though the class is already defined by
          * a previously registered method.
          */
-        if (class_exists($class, false) || interface_exists($class, false)) {
+        if (
+            class_exists($class, false)
+            || interface_exists($class, false)
+            || trait_exists($class, false)
+        ) {
             return;
 
         }
@@ -315,7 +321,11 @@ abstract class AbstractAutoloader
         }
 
 
-        if (! (class_exists($class, false) || interface_exists($class, false))) {
+        if (! (
+            class_exists($class, false)
+            || interface_exists($class, false)
+            || trait_exists($class, false)
+        )) {
             throw new AutoloaderException_Include_ClassNotDefined($class);
 
         }
@@ -365,25 +375,10 @@ abstract class AbstractAutoloader
      */
     private function _callClassConstructor($class, $constructorName)
     {
-        $reflectionClass = new ReflectionClass($class);
-        if (! $reflectionClass->hasMethod($constructorName)) {
-            return false;
-
-        }
-
-        $constructor = $reflectionClass->getMethod($constructorName);
-        if (! $constructor->isStatic()) {
-            return false;
-
-        }
-
-        if ($constructor->getDeclaringClass()->getName() != $reflectionClass->getName()) {
-            return false;
-
-        }
-
         try {
-            $constructor->invoke(null);
+            return InstantAutoloader::_callClassConstructor(
+                $class, $constructorName
+            );
 
         } catch (Exception $exception) {
             throw new AutoloaderException_Include_ClassConstructor(
@@ -392,7 +387,6 @@ abstract class AbstractAutoloader
             );
 
         }
-        return true;
     }
 
 }

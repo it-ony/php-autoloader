@@ -307,6 +307,23 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
+    public function testTraitsSupport()
+    {
+        $helper = new AutoloaderTestHelper($this);
+        if (! $helper->hasTraitsSupport()) {
+            $this->markTestSkipped(
+                "traits testcases are skipt on PHP < 5.4 systems."
+            );
+
+        }
+    }
+
+    /**
+     * Raises a SkippedTestError to indicate that not all test cases can be
+     * run in this environment.
+     *
+     * @return void
+     */
     public function testNamespaceSupport()
     {
         $helper = new AutoloaderTestHelper($this);
@@ -784,7 +801,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests class_exists() and interface_exists()
+     * Tests class_exists(), interface_exists() and trait_exists()
      *
      * @param String $method   interface_exists or class_exists
      * @param bool   $expected expected result
@@ -821,6 +838,9 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
         $cases[] = array(
             "interface_exists", false, "interface_" . uniqid()
         );
+        $cases[] = array(
+            "trait_exists", false, "trait_" . uniqid()
+        );
 
         // Existing cases
         $cases[] = array(
@@ -835,6 +855,15 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
                 "Interface",
                 "",
                 "<?php interface %name% { } ?>"
+            )
+        );
+        $cases[] = array(
+            "trait_exists",
+            true,
+            $this->_autoloaderTestHelper->makeClass(
+                "Trait",
+                "",
+                "<?php trait %name% { } ?>"
             )
         );
 
@@ -873,6 +902,10 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
         $classes[] = $this->_autoloaderTestHelper->makeClass("TestE", "e");
         $classes[] = $this->_autoloaderTestHelper->makeClass("TestF1", "e/f");
         $classes[] = $this->_autoloaderTestHelper->makeClass("TestF2", "e/f");
+
+        $classes[] = $this->_autoloaderTestHelper->makeClass(
+            "TestTrait", "g", "<?php trait %name%{}?>"
+        );
 
         $classes[] = $this->_autoloaderTestHelper->makeClass(
             "TestInterface", "g", "<?php interface %name%{}?>"

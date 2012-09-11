@@ -150,7 +150,11 @@ class InstantAutoloader
          * even though the class is already defined by
          * a previously registered method.
          */
-        if (class_exists($class, false) || interface_exists($class, false)) {
+        if (
+            class_exists($class, false)
+            || interface_exists($class, false)
+            || trait_exists($class, false)
+        ) {
             return;
 
         }
@@ -206,16 +210,21 @@ class InstantAutoloader
      *
      * @return bool true if the class constructor was called
      */
-    private function _callClassConstructor($class, $constructorName)
+    public static function _callClassConstructor($class, $constructorName)
     {
         $reflectionClass = new ReflectionClass($class);
         if (! $reflectionClass->hasMethod($constructorName)) {
             return false;
 
         }
-
+        
         $constructor = $reflectionClass->getMethod($constructorName);
         if (! $constructor->isStatic()) {
+            return false;
+
+        }
+        
+        if ($reflectionClass->isTrait()) {
             return false;
 
         }

@@ -37,11 +37,6 @@
 require_once __DIR__ . "/../Autoloader.php";
 
 /**
- * The tests need an one-time initialisation.
- */
-TestIndex::classConstructor();
-
-/**
  * AutoloaderIndex test cases
  *
  * @category   PHP
@@ -618,3 +613,9 @@ class TestIndex extends PHPUnit_Framework_TestCase
     }
 
 }
+
+
+/**
+ * The tests need an one-time initialisation.
+ */
+TestIndex::classConstructor();

@@ -201,6 +201,21 @@ class OldPHPAPI
     }
 
     /**
+     * Implements trait_exists()
+     *
+     * @param String $class    Name of the trait to check
+     * @param String $autoload Whether to autoload if not already loaded.
+     *
+     * @implement trait_exists
+     * @see trait_exists()
+     * @return bool
+     */
+    public static function trait_exists($class, $autoload = true)
+    {
+        return false;
+    }
+
+    /**
      * Implements str_getcsv()
      *
      * @param String $data The parsable csv string

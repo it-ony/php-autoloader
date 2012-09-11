@@ -106,7 +106,7 @@ class AutoloaderFileParser_RegExp extends AutoloaderFileParser
         // Classes and interfaces are searched.
         $classes = array();
         $classPattern
-            = '~\s*((abstract\s+)?class|interface)\s+([a-z].*)[$\s#/{]~imU';
+            = '~\s*((abstract\s+)?class|interface|trait)\s+([a-z].*)[$\s#/{]~imU';
         preg_match_all(
             $classPattern,
             $source,

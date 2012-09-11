@@ -220,6 +220,7 @@ class TestParser extends PHPUnit_Framework_TestCase
     public function provideSource()
     {
         $cases = array(
+            array(array("Test"), "<?php trait Test{}?>"),
             array(array("Test"), "<?php interface Test{}?>"),
             array(array("teSt"), "<?php interface teSt{}?>"),
             array(array("Test"), "<?php abstract class Test{}?>"),

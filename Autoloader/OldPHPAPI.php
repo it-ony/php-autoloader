@@ -57,6 +57,7 @@ class OldPHPAPI
     {
         // The constants are defined.
         $this->_define('T_NAMESPACE');
+        $this->_define('T_TRAIT');
         $this->_define('T_NS_SEPARATOR');
         $this->_define('E_USER_DEPRECATED', E_USER_WARNING);
 

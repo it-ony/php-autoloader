@@ -145,6 +145,7 @@ class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser
                     break;
 
                 case T_INTERFACE:
+                case T_TRAIT:
                 case T_CLASS:
                     $nextStringType = self::NEXT_CLASS;
                     break;

@@ -2,7 +2,7 @@
 
 class ClassA extends ClassB
 {
-
-    use ClassConstructorTrait;
     
 }
+
+echo "ClassA loaded.\n";

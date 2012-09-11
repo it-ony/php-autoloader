@@ -1,8 +1,8 @@
 <?php
 
-echo "InterfaceB loaded.\n";
-
 interface InterfaceB
 {
 
 }
+
+echo "InterfaceB loaded.\n";

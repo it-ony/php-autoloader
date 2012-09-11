@@ -1,7 +1,5 @@
 <?php
 
-echo "ClassConstructorTrait loaded.\n";
-
 trait ClassConstructorTrait
 {
     
@@ -11,3 +9,5 @@ trait ClassConstructorTrait
     }
     
 }
+
+echo "ClassConstructorTrait loaded.\n";

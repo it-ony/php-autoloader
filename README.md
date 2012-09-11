@@ -5,33 +5,26 @@ The second time it will run as fast as light.
 
 The simplest and probably most common use case shows this example:
 
-./index.php
-<code>
-<?php
-require __DIR__ . "/autoloader/Autoloader.php";
-$myObject = new MyClass();
-</code>
+*./index.php*
+    <?php
+    require __DIR__ . "/autoloader/Autoloader.php";
+    $myObject = new MyClass();
 
-./classes/MyClass.php
-<code>
-<?php
-class MyClass extends MyParentClass
-{
+*./classes/MyClass.php*
+    <?php
+    class MyClass extends MyParentClass
+    {
+    
+    }
 
-}
-</code>
-
-./classes/MyParentClass.php
-<code>
-<?php
-class MyParentClass
-{
-
-}
-</code>
-
+*./classes/MyParentClass.php*
+    <?php
+    class MyParentClass
+    {
+    
+    
 As you can see it's only necessary to require Autoloader.php once.
-If this is done in the document root of your classes (index.php in
+If this is done in the document root of your classes (*index.php* in
 this case) the Autoloader is already configured. After requiring
 this file you don't have to worry where your classes reside.
 
@@ -39,21 +32,19 @@ Another use case would have the class path outside of your document root.
 As the autoloader has no knowledge of this arbitrary path you have to
 tell him where your class path is:
 
-<code>
-<?php
-require __DIR__ . "/autoloader/Autoloader.php";
-
-// As the guessed class path is wrong you should remove this Autoloader.
-Autoloader::getRegisteredAutoloader()->remove();
-
-// register your arbitrary class path
-$autoloader = new Autoloader($classpath);
-$autoloader->register();
-
-// You might also have more class paths
-$autoloader2 = new Autoloader($classpath2);
-$autoloader2->register();
-</code>
+    <?php
+    require __DIR__ . "/autoloader/Autoloader.php";
+    
+    // As the guessed class path is wrong you should remove this Autoloader.
+    Autoloader::getRegisteredAutoloader()->remove();
+    
+    // register your arbitrary class path
+    $autoloader = new Autoloader($classpath);
+    $autoloader->register();
+    
+    // You might also have more class paths
+    $autoloader2 = new Autoloader($classpath2);
+    $autoloader2->register();
 
 If you have the possibility to enable PHP's tokenizer you should do
 this. Otherwise the Autoloader has to use a parser based on PCRE
@@ -64,39 +55,37 @@ equal names the behaviour is undefined.
 
 Generating a portable autoloader:
 
-autoloader/scripts/autoloader-build.php can generate a portable autoloader for
-your project. Specify each class path with the parameter --classpath. If you
+`autoloader/scripts/autoloader-build.php` can generate a portable autoloader for
+your project. Specify each class path with the parameter `--classpath`. If you
 have more class paths you have to use the parameter more times. The parameter
---deploypath tells the script where the portable autoloader and its index files
-will be stored. Afterwards your project can use the generated autoloader. In the
-deploy path you will find an autoloader.php. Your project must include this
-file.
+`--deploypath` tells the script where the portable autoloader and its index
+files will be stored. Afterwards your project can use the generated autoloader.
+In the deploy path you will find an autoloader.php. Your project must include
+this file.
 
 Example:
 
 Your project looks like this:
 
 ./project/index.php
-./project/classes/*.php
-./project/moreClasses/*.php
+./project/classes/\*.php
+./project/moreClasses/\*.php
 
 You want to deploy a portable autoloader in project/autoloader for the class
 paths project/classes and project/moreClasses:
 
-# autoloader-build.php \
-#   --classpath project/classes \
-#   --classpath project/moreClasses \
-#   --deploypath project/autoloader
+    # autoloader-build.php \
+        --classpath project/classes \
+        --classpath project/moreClasses \
+        --deploypath project/autoloader
 
 This generates a portable autoloader in project/autoloader/autoloader.php. You
 have to include this autoloder in your index.php:
 
-<code>
-<?php
-include __DIR__ . "/autoloader/autoloader.php";
-
-?>
-</code>
+    <?php
+    include __DIR__ . "/autoloader/autoloader.php";
+    
+    ?>
 
 Now index.php find's all classes.
 

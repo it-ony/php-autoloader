@@ -6,11 +6,13 @@ The second time it will run as fast as light.
 The simplest and probably most common use case shows this example:
 
 *./index.php*
+
     <?php
     require __DIR__ . "/autoloader/Autoloader.php";
     $myObject = new MyClass();
 
 *./classes/MyClass.php*
+
     <?php
     class MyClass extends MyParentClass
     {
@@ -18,6 +20,7 @@ The simplest and probably most common use case shows this example:
     }
 
 *./classes/MyParentClass.php*
+
     <?php
     class MyParentClass
     {

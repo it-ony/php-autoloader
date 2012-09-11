@@ -70,9 +70,9 @@ Example:
 
 Your project looks like this:
 
-./project/index.php
-./project/classes/\*.php
-./project/moreClasses/\*.php
+* ./project/index.php
+* ./project/classes/\*.php
+* ./project/moreClasses/\*.php
 
 You want to deploy a portable autoloader in project/autoloader for the class
 paths project/classes and project/moreClasses:
@@ -83,12 +83,10 @@ paths project/classes and project/moreClasses:
         --deploypath project/autoloader
 
 This generates a portable autoloader in project/autoloader/autoloader.php. You
-have to include this autoloder in your index.php:
+have to include this autoloader in your index.php:
 
     <?php
     include __DIR__ . "/autoloader/autoloader.php";
-    
-    ?>
 
 Now index.php find's all classes.
 

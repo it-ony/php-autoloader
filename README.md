@@ -1,3 +1,6 @@
+PHP-Autoloader
+==============
+
 The Autoloader works out of the box as simple as possible. You have
 nothing more to do than include the file Autoloader.php. Don't bother the
 time it consumes when it's called the first time. Let it build its index.
@@ -56,7 +59,8 @@ which is not as reliable as PHP's tokenizer.
 The Autoloader assumes that a class name is unique. If you have classes with
 equal names the behaviour is undefined.
 
-Generating a portable autoloader:
+Generating a portable autoloader
+================================
 
 `autoloader/bin/autoloader-build.php` can generate a portable autoloader for
 your project. Specify each class path with the parameter `--classpath`. If you

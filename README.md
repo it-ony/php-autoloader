@@ -58,7 +58,7 @@ equal names the behaviour is undefined.
 
 Generating a portable autoloader:
 
-`autoloader/scripts/autoloader-build.php` can generate a portable autoloader for
+`autoloader/bin/autoloader-build.php` can generate a portable autoloader for
 your project. Specify each class path with the parameter `--classpath`. If you
 have more class paths you have to use the parameter more times. The parameter
 `--deploypath` tells the script where the portable autoloader and its index

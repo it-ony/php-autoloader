@@ -2,7 +2,7 @@
 <?php
 
 try {
-    require __DIR__ . "/../../Autoloader.php";
+    require __DIR__ . "/../../autoloader.php";
 
     $a = new ClassA();
     $b = new ClassB();

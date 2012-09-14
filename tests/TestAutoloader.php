@@ -34,7 +34,7 @@
 /**
  * The Autoloader is used for class loading.
  */
-require_once __DIR__ . "/../Autoloader.php";
+require_once __DIR__ . "/../autoloader.php";
 
 /**
  * Autoloader test cases

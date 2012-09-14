@@ -34,7 +34,7 @@
 /**
  * Needed classes
  */
-require_once __DIR__ . "/../Autoloader.php";
+require_once __DIR__ . "/../autoloader.php";
 
 /**
  * This file needs to be included traditionally as there are global

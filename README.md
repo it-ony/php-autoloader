@@ -11,7 +11,7 @@ The simplest and probably most common use case shows this example:
 *./index.php*
 
     <?php
-    require __DIR__ . "/autoloader/Autoloader.php";
+    require __DIR__ . "/autoloader/autoloader.php";
     $myObject = new MyClass();
 
 *./classes/MyClass.php*
@@ -39,7 +39,7 @@ As the autoloader has no knowledge of this arbitrary path you have to
 tell him where your class path is:
 
     <?php
-    require __DIR__ . "/autoloader/Autoloader.php";
+    require __DIR__ . "/autoloader/autoloader.php";
     
     // As the guessed class path is wrong you should remove this Autoloader.
     Autoloader::getRegisteredAutoloader()->remove();

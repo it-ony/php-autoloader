@@ -15,7 +15,7 @@
  * ./index.php
  * <code>
  * <?php
- * require __DIR__ . "/autoloader/Autoloader.php";
+ * require __DIR__ . "/autoloader/autoloader.php";
  * $myObject = new MyClass();
  * </code>
  * 
@@ -48,7 +48,7 @@
  *
  * <code>
  * <?php
- * require __DIR__ . "/autoloader/Autoloader.php";
+ * require __DIR__ . "/autoloader/autoloader.php";
  *
  * // As the guessed class path is wrong you should remove this Autoloader.
  * Autoloader::getRegisteredAutoloader()->remove();

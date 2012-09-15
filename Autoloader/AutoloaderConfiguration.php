@@ -30,6 +30,8 @@
  * @link      http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * Required classes
  */
@@ -190,18 +192,18 @@ class AutoloaderConfiguration
      */
     public function setConfigurationFile($path)
     {
-        $configuration = @parse_ini_file($path, true);
+        $configuration = @\parse_ini_file($path, true);
 
         // Error handling
         if (empty($configuration)) {
-            if (! file_exists($path)) {
+            if (! \file_exists($path)) {
                 throw new AutoloaderException_Configuration_File_Exists(
                     $path
                 );
 
             }
 
-            $error = error_get_last();
+            $error = \error_get_last();
             throw new AutoloaderException_Configuration_File(
                 "could not get configuration from '$path':"
                 . $error['message']
@@ -262,7 +264,7 @@ class AutoloaderConfiguration
      */
     public function hasSetting($setting)
     {
-        return array_key_exists($setting, $this->_configuration);
+        return \array_key_exists($setting, $this->_configuration);
     }
 
     /**
@@ -313,14 +315,14 @@ class AutoloaderConfiguration
     ) {
         try {
             $classname = $this->getValue($setting, $default);
-            $class     = new ReflectionClass($classname);
+            $class     = new \ReflectionClass($classname);
             return
                 empty($parameters)
                 ? $class->newInstance()
                 : $class->newInstanceArgs($parameters);
 
-        } catch (ReflectionException $e) {
-            if (! class_exists($classname, false)) {
+        } catch (\ReflectionException $e) {
+            if (! \class_exists($classname, false)) {
                 throw new AutoloaderException_Configuration_Setting_Object_Exists(
                     $setting, $classname
                 );
@@ -346,7 +348,7 @@ class AutoloaderConfiguration
         $host = $this->getValue(self::MEMCACHE_HOST, 'localhost');
         $port = $this->getValue(self::MEMCACHE_PORT, 11211);
         
-        $memcache    = new Memcache();
+        $memcache    = new \Memcache();
         $isConnected = $memcache->connect($host, $port);
 
         if (! $isConnected) {
@@ -368,12 +370,12 @@ class AutoloaderConfiguration
     private function _getPDO()
     {
         $pdo
-            = new PDO(
+            = new \PDO(
                 $this->getValue(self::PDO_DSN),
                 $this->getValue(self::PDO_USERNAME, ''),
                 $this->getValue(self::PDO_PASSWORD, '')
             );
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         return $pdo;
     }
 

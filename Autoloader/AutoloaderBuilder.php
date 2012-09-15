@@ -30,6 +30,8 @@
  * @link      http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * Includes
  */
@@ -261,6 +263,9 @@ class AutoloaderBuilder
             . " * @see  AutoloaderBuilder::build()\n"
             . " * @link http://php-autoloader.malkusch.de/en/\n"
             . " */\n\n"
+                
+            . "namespace " . __NAMESPACE__ . ";\n\n"
+                
             . "require_once __DIR__ . '/InstantAutoloader.php';\n";
         foreach ($this->_classPaths as $i => $classPath) {
             $indexPath = "__DIR__ . '/index/$i.php'";
@@ -273,9 +278,9 @@ class AutoloaderBuilder
         $code .= "unset(\$_autoloader);";
 
         
-        $isPut = @file_put_contents($this->getAutoloaderFile(), $code);
+        $isPut = @\file_put_contents($this->getAutoloaderFile(), $code);
         if (! $isPut) {
-            $error = error_get_last();
+            $error = \error_get_last();
             throw new AutoloaderException_Builder_IO(
                 $this->_locale->sprintf(
                     "FAILED_GENERATING_CODE",
@@ -284,7 +289,7 @@ class AutoloaderBuilder
             );
 
         }
-        chmod($this->getAutoloaderFile(), 0644);
+        \chmod($this->getAutoloaderFile(), 0644);
     }
 
     /**
@@ -297,11 +302,11 @@ class AutoloaderBuilder
      */
     private function _mkdir($path)
     {
-        if (file_exists($path)) {
+        if (\file_exists($path)) {
             return;
 
         }
-        $result = mkdir($path, 0755, true);
+        $result = \mkdir($path, 0755, true);
         if (! $result) {
             throw new AutoloaderException_Builder_IO(
                 $this->_locale->sprintf("FAILED_CREATING_DIRECTORY", $path)

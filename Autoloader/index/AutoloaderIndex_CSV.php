@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * The parent class is needed.
  */
@@ -72,7 +74,7 @@ class AutoloaderIndex_CSV extends AutoloaderIndex_File
      */
     protected function buildIndex($data)
     {
-        $lines = explode("\n", $data);
+        $lines = \explode("\n", $data);
         if (! is_array($lines)) {
             $error = "{$this->getIndexPath()} failed to generate the index:"
                    . " $data";
@@ -106,7 +108,7 @@ class AutoloaderIndex_CSV extends AutoloaderIndex_File
             $lines[] = "$class,$path";
 
         }
-        return implode("\n", $lines);
+        return \implode("\n", $lines);
     }
 
 }

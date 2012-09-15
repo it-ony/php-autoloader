@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * Require the needed class
  */
@@ -79,7 +81,7 @@ class AutoloadAPI
     static public function classConstructor()
     {
         self::$_instance
-            = version_compare(PHP_VERSION, "5.2.11", '>=')
+            = \version_compare(PHP_VERSION, "5.2.11", '>=')
             ? new self()
             : new AutoloadAPI_Old();
     }
@@ -121,7 +123,7 @@ class AutoloadAPI
      */
     public function getRegisteredAutoloaders()
     {
-        return spl_autoload_functions();
+        return \spl_autoload_functions();
     }
 
     /**
@@ -134,7 +136,7 @@ class AutoloadAPI
      */
     public function registerAutoloader($autoloader)
     {
-        spl_autoload_register($autoloader);
+        \spl_autoload_register($autoloader);
     }
 
     /**
@@ -147,7 +149,7 @@ class AutoloadAPI
      */
     public function removeAutoloader($autoloader)
     {
-        spl_autoload_unregister($autoloader);
+        \spl_autoload_unregister($autoloader);
     }
 
 }

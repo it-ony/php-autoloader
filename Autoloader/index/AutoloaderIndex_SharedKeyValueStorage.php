@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * Require needed classes
  */
@@ -242,7 +244,7 @@ abstract class AutoloaderIndex_SharedKeyValueStorage extends AutoloaderIndex
      */
     public function count()
     {
-        return count($this->_getStoredClasses());
+        return \count($this->_getStoredClasses());
     }
 
     /**

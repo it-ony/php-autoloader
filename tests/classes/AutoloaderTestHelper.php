@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+use malkusch\autoloader\AbstractAutoloader;
+
 /**
  * A helper for unit tests
  *
@@ -64,8 +66,8 @@ class AutoloaderTestHelper
      */
     static public function classConstructor()
     {
-        if (! file_exists(self::getClassDirectory())) {
-            mkdir(self::getClassDirectory());
+        if (! \file_exists(self::getClassDirectory())) {
+            \mkdir(self::getClassDirectory());
 
         }
     }
@@ -99,7 +101,7 @@ class AutoloaderTestHelper
      *
      * @see $_test
      */
-    public function __construct(PHPUnit_Framework_TestCase $test)
+    public function __construct(\PHPUnit_Framework_TestCase $test)
     {
         $this->_test = $test;
     }
@@ -113,7 +115,7 @@ class AutoloaderTestHelper
      */
     public function hasTraitsSupport()
     {
-        return version_compare(PHP_VERSION, "5.4", '>=');
+        return \version_compare(PHP_VERSION, "5.4", '>=');
     }
 
     /**
@@ -125,7 +127,7 @@ class AutoloaderTestHelper
      */
     public function hasNamespaceSupport()
     {
-        return version_compare(PHP_VERSION, "5.3", '>=');
+        return \version_compare(PHP_VERSION, "5.3", '>=');
     }
 
     /**
@@ -141,9 +143,9 @@ class AutoloaderTestHelper
     public function assertLoadable($class)
     {
         try {
-            new ReflectionClass($class);
+            new \ReflectionClass($class);
 
-        } catch (ReflectionException $e) {
+        } catch (\ReflectionException $e) {
             $this->_test->fail("class $class is not loadable.");
 
         }
@@ -162,11 +164,11 @@ class AutoloaderTestHelper
     public function assertNotLoadable($class)
     {
         try {
-            new ReflectionClass($class);
+            new \ReflectionClass($class);
             new $class();
             $this->_test->fail("class $class is loadable.");
 
-        } catch (ReflectionException $e) {
+        } catch (\ReflectionException $e) {
             // expected
 
         }
@@ -197,7 +199,7 @@ class AutoloaderTestHelper
         $directory,
         $definition = "<?php namespace %namespace%; class %name%{}?>"
     ) {
-        $definition = str_replace('%namespace%', $namespace, $definition);
+        $definition = \str_replace('%namespace%', $namespace, $definition);
         $name       = $this->makeClass($name, $directory, $definition);
         return "$namespace\\$name";
     }
@@ -223,7 +225,7 @@ class AutoloaderTestHelper
     public function makeClass(
         $name, $directory, $definition = "<?php class %name%{}?>"
     ) {
-        $name     .= uniqid();
+        $name     .= \uniqid();
         $directory = self::getClassDirectory() . DIRECTORY_SEPARATOR . $directory;
         $path      = $directory . DIRECTORY_SEPARATOR . "$name.test.php";
 
@@ -232,17 +234,17 @@ class AutoloaderTestHelper
         AbstractAutoloader::normalizeClass($normlizedName);
         $this->_generatedClassPaths[$normlizedName] = $path;
 
-        if (file_exists($path)) {
+        if (\file_exists($path)) {
             return $name;
 
         }
 
-        if (! file_exists($directory)) {
-            mkdir($directory, 0777, true);
+        if (! \file_exists($directory)) {
+            \mkdir($directory, 0777, true);
 
         }
-        $definition = str_replace("%name%", $name, $definition);
-        file_put_contents($path, $definition);
+        $definition = \str_replace("%name%", $name, $definition);
+        \file_put_contents($path, $definition);
 
         return $name;
     }
@@ -285,11 +287,11 @@ class AutoloaderTestHelper
 
         }
         $directory = realpath($directory);
-        if (! file_exists($directory)) {
+        if (! \file_exists($directory)) {
             return;
 
         }
-        system('rm -rf ' . $directory);
+        \system('rm -rf ' . $directory);
     }
 
 }

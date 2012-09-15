@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * These classes are needed.
  */
@@ -75,7 +77,7 @@ class AutoloaderIndex_Dummy extends AutoloaderIndex
      */
     public function count()
     {
-        return count($this->_index);
+        return \count($this->_index);
     }
 
     /**
@@ -140,7 +142,7 @@ class AutoloaderIndex_Dummy extends AutoloaderIndex
      */
     public function hasPath($class)
     {
-        return array_key_exists($class, $this->_index);
+        return \array_key_exists($class, $this->_index);
     }
 
     /**

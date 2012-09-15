@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+use malkusch\autoloader\AutoloadAPI;
+
 /**
  * AutoloadAPI with a public constructor
  *

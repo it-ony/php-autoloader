@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * These class must be loaded.
  */
@@ -73,7 +75,7 @@ class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser
      */
     static public function isSupported()
     {
-        return function_exists("token_get_all");
+        return \function_exists("\token_get_all");
     }
 
 
@@ -94,10 +96,10 @@ class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser
         $nextStringType = self::NEXT_NOTHING;
         $namespace      = "";
         $context        = null;
-        $tokens         = @token_get_all($source);
+        $tokens         = @\token_get_all($source);
 
-        if (! is_array($tokens)) {
-            $error = error_get_last();
+        if (! \is_array($tokens)) {
+            $error = \error_get_last();
             throw new AutoloaderException_Parser(
                 "Could not tokenize: $error[message]\n$source");
 

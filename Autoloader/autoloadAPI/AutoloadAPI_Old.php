@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * Requires the parent class
  */
@@ -111,7 +113,7 @@ class AutoloadAPI_Old extends AutoloadAPI
     {
         parent::removeAutoloader($autoloader);
 
-        $index = array_search(
+        $index = \array_search(
             $autoloader,
             $this->_registeredAutoloaders,
             true

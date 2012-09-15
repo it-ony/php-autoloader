@@ -30,11 +30,13 @@
  * @link      http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * There might be several InstantAutoloaders deployed in a project.
  * One is enough.
  */
-if (class_exists("InstantAutoloader")) {
+if (class_exists("malkusch\autoloader\InstantAutoloader")) {
     return;
 
 }
@@ -99,11 +101,11 @@ class InstantAutoloader
     public function register()
     {
         // spl_autoload_register() disables __autoload(). This might be unwanted.
-        if (function_exists("__autoload")) {
-            spl_autoload_register("__autoload");
+        if (\function_exists("\__autoload")) {
+            \spl_autoload_register("\__autoload");
 
         }
-        spl_autoload_register(array($this, "__autoload"));
+        \spl_autoload_register(array($this, "__autoload"));
     }
 
     /**
@@ -151,14 +153,14 @@ class InstantAutoloader
          * a previously registered method.
          */
         if (
-            class_exists($class, false)
-            || interface_exists($class, false)
-            || trait_exists($class, false)
+            \class_exists($class, false)
+            || \interface_exists($class, false)
+            || \trait_exists($class, false)
         ) {
             return;
 
         }
-        if (! array_key_exists($class, $this->_index)) {
+        if (! \array_key_exists($class, $this->_index)) {
             return;
 
         }
@@ -196,7 +198,7 @@ class InstantAutoloader
      */
     private function _normalizeClass(&$class)
     {
-        $class = strtolower($class);
+        $class = \strtolower($class);
     }
     
     /**
@@ -212,7 +214,7 @@ class InstantAutoloader
      */
     public static function _callClassConstructor($class, $constructorName)
     {
-        $reflectionClass = new ReflectionClass($class);
+        $reflectionClass = new \ReflectionClass($class);
         if (! $reflectionClass->hasMethod($constructorName)) {
             return false;
 

@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * These classes must be loaded.
  */
@@ -95,7 +97,7 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator
      */
     public function setClassname($classname)
     {
-        $this->_classname = strtolower($classname);
+        $this->_classname = \strtolower($classname);
     }
 
     /**
@@ -184,8 +186,8 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator
         // order by Levenshtein distance to $classname
         $levArray = array();
         foreach ($this->_preferedFiles as $file) {
-            $levArray[] = levenshtein(
-                strtolower(basename($file)),
+            $levArray[] = \levenshtein(
+                \strtolower(\basename($file)),
                 $this->_classname
             );
 
@@ -196,7 +198,7 @@ class AutoloaderFileIterator_PriorityList extends AutoloaderFileIterator
         // merge ordered and unordered files
         $files = array_merge($this->_preferedFiles, $this->_unpreferedFiles);
 
-        $this->_iterator = new ArrayIterator($files);
+        $this->_iterator = new \ArrayIterator($files);
     }
 
     /**

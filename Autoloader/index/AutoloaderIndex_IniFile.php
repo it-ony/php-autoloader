@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * The parent class is needed.
  */
@@ -72,7 +74,7 @@ class AutoloaderIndex_IniFile extends AutoloaderIndex_File
      */
     protected function buildIndex($data)
     {
-        $index = parse_ini_string($data);
+        $index = \parse_ini_string($data);
         if (! is_array($index)) {
             $error = "{$this->getIndexPath()} failed to generate the index:"
                    . " $data";
@@ -96,7 +98,7 @@ class AutoloaderIndex_IniFile extends AutoloaderIndex_File
             $lines[] = "$class = $path";
             
         }
-        return implode("\n", $lines);
+        return \implode("\n", $lines);
     }
 
 }

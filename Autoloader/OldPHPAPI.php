@@ -30,6 +30,8 @@
  * @link      http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * Implements missing PHP5 functions and constants
  *
@@ -65,9 +67,9 @@ class OldPHPAPI
          * Every static public method with an @implement annotation defines
          * a function.
          */
-        $reflectionObject = new ReflectionObject($this);
+        $reflectionObject = new \ReflectionObject($this);
         $methods = $reflectionObject->getMethods(
-            ReflectionMethod::IS_STATIC | ReflectionMethod::IS_PUBLIC
+            \ReflectionMethod::IS_STATIC | \ReflectionMethod::IS_PUBLIC
         );
         foreach ($methods as $method) {
             // The method comment is parsed for the @implement annotation
@@ -84,7 +86,7 @@ class OldPHPAPI
             $function = $matches[1];
 
             // A function might already exist.
-            if (function_exists($function)) {
+            if (\function_exists($function)) {
                 continue;
 
             }
@@ -164,7 +166,7 @@ class OldPHPAPI
     {
         $envVars = array('TMP', 'TEMP', 'TMPDIR');
         foreach ($envVars as $envVar) {
-            $temp = getenv($envVar);
+            $temp = \getenv($envVar);
             if (! empty($temp)) {
                 return $temp;
 
@@ -172,13 +174,13 @@ class OldPHPAPI
 
         }
 
-        $temp = tempnam(__FILE__, '');
-        if (file_exists($temp)) {
-            unlink($temp);
-            return dirname($temp);
+        $temp = \tempnam(__FILE__, '');
+        if (\file_exists($temp)) {
+            \unlink($temp);
+            return \dirname($temp);
 
         }
-        throw new LogicException("sys_get_temp_dir() failed.");
+        throw new \LogicException("sys_get_temp_dir() failed.");
     }
 
     /**
@@ -193,10 +195,10 @@ class OldPHPAPI
      */
     public static function parseIniString($data)
     {
-        $file = tempnam(sys_get_temp_dir(), 'parse_ini_string');
+        $file = \tempnam(\sys_get_temp_dir(), 'parse_ini_string');
         file_put_contents($file, $data);
-        $iniData = parse_ini_file($file);
-        unlink($file);
+        $iniData = \parse_ini_file($file);
+        \unlink($file);
         return $iniData;
     }
 
@@ -227,11 +229,11 @@ class OldPHPAPI
      */
     public static function strGetCSV($data)
     {
-        $fp = tmpfile();
-        fwrite($fp, $data);
-        fseek($fp, 0);
-        $csv = fgetcsv($fp);
-        fclose($fp);
+        $fp = \tmpfile();
+        \fwrite($fp, $data);
+        \fseek($fp, 0);
+        $csv = \fgetcsv($fp);
+        \fclose($fp);
         return $csv;
     }
 

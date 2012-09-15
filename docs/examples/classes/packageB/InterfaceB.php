@@ -1,5 +1,7 @@
 <?php
 
+namespace malkusch\autoloader\example;
+
 interface InterfaceB
 {
 

@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * The parent class is needed.
  */
@@ -119,7 +121,7 @@ class AutoloaderIndex_PHPArrayCode extends AutoloaderIndex_File
             . "return array(\n";
         
         foreach ($index as $class => $path) {
-            $safePath = stripslashes($path);
+            $safePath = \stripslashes($path);
             $code .= "    '$class' => '$safePath',\n";
 
         }

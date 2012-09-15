@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * This class must be loaded.
  */
@@ -62,7 +64,7 @@ InternalAutoloader::getInstance()->registerClass(
  * @link       http://php-autoloader.malkusch.de/en/
  * @see        Autoloader::searchPath()
  */
-abstract class AutoloaderFileIterator implements Iterator
+abstract class AutoloaderFileIterator implements \Iterator
 {
 
     protected

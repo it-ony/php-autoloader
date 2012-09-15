@@ -95,6 +95,8 @@
  * @see       Autoloader
  */
 
+namespace malkusch\autoloader;
+
 /**
  * Another library might use this Autoloader in another package as well. In that
  * case a copy of the Autoloader package exists at a different location in the
@@ -103,7 +105,7 @@
  * to a fatal error. To avoid this, the classes are only loaded if the class
  * Autoloader is not defined yet.
  */
-if (! class_exists('Autoloader')) {
+if (! class_exists('malkusch\autoloader\Autoloader')) {
     include_once __DIR__ . "/Autoloader/OldPHPAPI.php";
     $__oldAPI = new OldPHPAPI();
     $__oldAPI->checkAPI();

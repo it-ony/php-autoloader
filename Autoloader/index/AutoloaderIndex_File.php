@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * These classes are needed.
  */
@@ -140,9 +142,9 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     {
         if (empty($this->_path)) {
             $this->setIndexPath(
-                sys_get_temp_dir()
+                \sys_get_temp_dir()
                 . DIRECTORY_SEPARATOR
-                . get_class($this)
+                . \get_class($this)
                 . $this->getContext()
             );
 
@@ -158,8 +160,8 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
      */
     public function delete()
     {
-        if (! @unlink($this->getIndexPath())) {
-            $error = error_get_last();
+        if (! @\unlink($this->getIndexPath())) {
+            $error = \error_get_last();
             throw new AutoloaderException_Index(
                 "Could not delete {$this->getIndexPath()}: $error[message]"
             );
@@ -208,13 +210,13 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
      */
     protected function readFile($file)
     {
-        $data = @file_get_contents($file);
+        $data = @\file_get_contents($file);
         if ($data === false) {
-            if (! file_exists($file)) {
+            if (! \file_exists($file)) {
                 throw new AutoloaderException_Index_IO_FileNotExists($file);
 
             } else {
-                $error = error_get_last();
+                $error = \error_get_last();
                 throw new AutoloaderException_Index_IO(
                     "Could not read '$file': $error[message]"
                 );
@@ -235,7 +237,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
      */
     protected function saveFile($file, $data)
     {
-        return @file_put_contents($file, $data);
+        return @\file_put_contents($file, $data);
     }
 
     /**
@@ -254,23 +256,23 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
         /* Avoid race conditions, by writting into a temporary file
          * which will be moved atomically
          */
-        $tmpFile = @tempnam(
-            dirname($this->getIndexPath()),
-            get_class($this) . "_tmp_"
+        $tmpFile = @\tempnam(
+            \dirname($this->getIndexPath()),
+            \get_class($this) . "_tmp_"
         );
         if (! $tmpFile) {
-            $error = error_get_last();
+            $error = \error_get_last();
             throw new AutoloaderException_Index_IO(
                 "Could not create temporary file in "
-                . dirname($this->getIndexPath())
+                . \dirname($this->getIndexPath())
                 . " for saving new index atomically: $error[message]"
             );
 
         }
 
         $writtenBytes = $this->saveFile($tmpFile, $data);
-        if ($writtenBytes !== strlen($data)) {
-            $error = error_get_last();
+        if ($writtenBytes !== \strlen($data)) {
+            $error = \error_get_last();
             throw new AutoloaderException_Index_IO(
                 "Could not save new index to $tmpFile."
                 . " $writtenBytes Bytes written: $error[message]"
@@ -278,8 +280,8 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
 
         }
 
-        if (! @rename($tmpFile, $this->getIndexPath())) {
-            $error = error_get_last();
+        if (! @\rename($tmpFile, $this->getIndexPath())) {
+            $error = \error_get_last();
             throw new AutoloaderException_Index_IO(
                 "Could not move new index $tmpFile to {$this->getIndexPath()}:"
                 . " $error[message]"
@@ -287,7 +289,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
 
         }
         
-        chmod($this->getIndexPath(), 0644);
+        \chmod($this->getIndexPath(), 0644);
     }
 
     /**
@@ -300,7 +302,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     public function count()
     {
         $this->_assertLoadedIndex();
-        return count($this->_index);
+        return \count($this->_index);
     }
 
     /**
@@ -374,7 +376,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
     public function hasPath($class)
     {
         $this->_assertLoadedIndex();
-        return array_key_exists($class, $this->_index);
+        return \array_key_exists($class, $this->_index);
     }
 
 }

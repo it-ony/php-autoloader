@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+use malkusch\autoloader\Autoloader;
+
 /**
  * The parent class is needed. As autoloading does not work here,
  * it has to be required traditionally.

@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * Require needed classes
  */
@@ -79,11 +81,11 @@ class AutoloaderIndex_Memcache extends AutoloaderIndex_SharedKeyValueStorage
      *
      * @throws AutoloaderException_Index_IO if connection to localhost fails
      */
-    public function __construct(Memcache $memcache = null)
+    public function __construct(\Memcache $memcache = null)
     {
         // establish a default connection to localhost
         if (is_null($memcache)) {
-            $memcache = new Memcache();
+            $memcache = new \Memcache();
             if (! $memcache->connect('localhost')) {
                 throw new AutoloaderException_Index_IO(
                     "Could not connect to memcached at localhost."

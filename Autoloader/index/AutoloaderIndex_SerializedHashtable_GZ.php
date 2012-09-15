@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * The parent class is needed.
  */
@@ -91,16 +93,16 @@ class AutoloaderIndex_SerializedHashtable_GZ
      */
     protected function readFile($file)
     {
-        $content = @gzfile($file);
+        $content = @\gzfile($file);
         if (! $content) {
-            if (! file_exists($file)) {
+            if (! \file_exists($file)) {
                 throw new AutoloaderException_Index_IO_FileNotExists($file);
 
             }
 
-            $error = error_get_last();
+            $error = \error_get_last();
 
-            if (! @file_get_contents($file)) {
+            if (! @\file_get_contents($file)) {
                 throw new AutoloaderException_Index_IO(
                     "Could not read '$file': $error[message]"
                 );
@@ -112,7 +114,7 @@ class AutoloaderIndex_SerializedHashtable_GZ
 
             }
         }
-        return implode('', $content);
+        return \implode('', $content);
     }
 
     /**
@@ -129,17 +131,17 @@ class AutoloaderIndex_SerializedHashtable_GZ
      */
     protected function saveFile($file, $data)
     {
-        $zp = @gzopen($file, "w{$this->_compressionLevel}");
+        $zp = @\gzopen($file, "w{$this->_compressionLevel}");
         if (! $zp) {
-            $error = error_get_last();
+            $error = \error_get_last();
             throw new AutoloaderException_Index_IO(
                 "Could not write to $file: $error[message]"
             );
 
         }
-        $bytes = gzwrite($zp, $data);
-        if (! @gzclose($zp)) {
-            $error = error_get_last();
+        $bytes = \gzwrite($zp, $data);
+        if (! @\gzclose($zp)) {
+            $error = \error_get_last();
             throw new AutoloaderException_Index_IO(
                 "Could not close $file: $error[message]"
             );

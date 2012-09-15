@@ -30,6 +30,8 @@
  * @link      http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * These classes are needed. As autoloading does not work here,
  * they have to be required traditionally.
@@ -146,6 +148,7 @@ class InternalAutoloader extends AbstractAutoloader
      */
     public function registerClass($class, $path)
     {
+        $class = __NAMESPACE__ . "\\" . $class;
         Autoloader::normalizeClass($class);
         $this->_classes[$class] = $path;
     }
@@ -163,7 +166,7 @@ class InternalAutoloader extends AbstractAutoloader
      */
     protected function doAutoload($class)
     {
-        if (!  array_key_exists($class, $this->_classes)) {
+        if (!  \array_key_exists($class, $this->_classes)) {
             throw new AutoloaderException_InternalClassNotLoadable($class);
 
         }

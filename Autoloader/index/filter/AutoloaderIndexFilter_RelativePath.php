@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * These classes must be loaded.
  */
@@ -83,18 +85,18 @@ class AutoloaderIndexFilter_RelativePath implements AutoloaderIndexFilter
     public function __construct($basePath = '')
     {
         if (empty($basePath)) {
-            $root       = str_repeat(DIRECTORY_SEPARATOR . '..', 3);
+            $root       = \str_repeat(DIRECTORY_SEPARATOR . '..', 3);
             $basePath   = __DIR__ . $root;
 
         }
-        $this->_basePath = realpath($basePath);
+        $this->_basePath = \realpath($basePath);
         if ($this->_basePath === false) {
             throw new AutoloaderException_Index_Filter_RelativePath_InvalidBasePath(
                 $basePath
             );
 
         }
-        $this->_basePathArray = explode(DIRECTORY_SEPARATOR, $this->_basePath);
+        $this->_basePathArray = \explode(DIRECTORY_SEPARATOR, $this->_basePath);
     }
 
     /**
@@ -119,7 +121,7 @@ class AutoloaderIndexFilter_RelativePath implements AutoloaderIndexFilter
      */
     public function filterSetPath($path)
     {
-        $pathArray = explode(DIRECTORY_SEPARATOR, $path);
+        $pathArray = \explode(DIRECTORY_SEPARATOR, $path);
         foreach ($this->_basePathArray as $level => $directory) {
             if ($pathArray[$level] !== $directory) {
                 $level--;
@@ -133,7 +135,7 @@ class AutoloaderIndexFilter_RelativePath implements AutoloaderIndexFilter
             '..' . DIRECTORY_SEPARATOR,
             count($this->_basePathArray) - $level - 1
         );
-        return $prefix . implode(DIRECTORY_SEPARATOR, $pathArray);
+        return $prefix . \implode(DIRECTORY_SEPARATOR, $pathArray);
     }
 
     /**

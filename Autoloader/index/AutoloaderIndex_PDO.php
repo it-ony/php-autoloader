@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * The parent class is needed.
  */
@@ -97,10 +99,10 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
     {
         if (is_null($file)) {
             $file
-                = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_SQLITE;
+                = \sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_SQLITE;
 
         }
-        $pdo = new PDO("sqlite://$file");
+        $pdo = new \PDO("sqlite://$file");
         return new self($pdo);
     }
 
@@ -114,15 +116,15 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
      *
      * @param PDO $pdo A PDO instance
      */
-    public function __construct(PDO $pdo)
+    public function __construct(\PDO $pdo)
     {
         $this->_pdo = $pdo;
 
-        $this->_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         try {
             $stmt = $pdo->query("SELECT 1 FROM autoloadindex");
 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $pdo->exec(
                 "
                 CREATE TABLE autoloadindex (
@@ -159,7 +161,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
         try {
             $this->_pdo->exec("DROP TABLE autoloadindex");
 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             throw new AutoloaderException_Index($e->getMessage());
 
         }
@@ -175,7 +177,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
      */
     private function _getStatement($sql)
     {
-        $key = md5($sql);
+        $key = \md5($sql);
         if (! array_key_exists($key, $this->_statements)) {
             $this->_statements[$key] = $this->_pdo->prepare($sql);
 
@@ -213,7 +215,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
             }
             return $path;
 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             throw new AutoloaderException_Index($e->getMessage());
 
         }
@@ -240,7 +242,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
             }
             return $paths;
 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             throw new AutoloaderException_Index($e->getMessage());
 
         }
@@ -269,7 +271,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
             }
             return $count;
 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             throw new AutoloaderException_Index($e->getMessage());
 
         }
@@ -302,7 +304,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
                 )
             );
 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             throw new AutoloaderException_Index($e->getMessage());
 
         }
@@ -328,7 +330,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
             );
             $stmt->execute(array($this->getContext(), $class));
 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             throw new AutoloaderException_Index($e->getMessage());
 
         }
@@ -354,7 +356,7 @@ class AutoloaderIndex_PDO extends AutoloaderIndex
 
             return (bool) $hasPath;
 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             throw new AutoloaderException_Index($e->getMessage());
 
         }

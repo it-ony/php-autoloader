@@ -1,5 +1,7 @@
 <?php
 
+namespace malkusch\autoloader\example;
+
 class ExceptionB extends Exception
 {
 

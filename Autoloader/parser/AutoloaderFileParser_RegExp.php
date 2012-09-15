@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * The parent class must be loaded.
  */
@@ -89,7 +91,7 @@ class AutoloaderFileParser_RegExp extends AutoloaderFileParser
         // Namespaces are searched.
         $namespaces       = array();
         $namespacePattern = '~[^0-9a-z]namespace\s+([^\s;{]+)~im';
-        preg_match_all(
+        \preg_match_all(
             $namespacePattern,
             $source,
             $namespaceMatches,
@@ -107,7 +109,7 @@ class AutoloaderFileParser_RegExp extends AutoloaderFileParser
         $classes = array();
         $classPattern
             = '~\s*((abstract\s+)?class|interface|trait)\s+([a-z].*)[$\s#/{]~imU';
-        preg_match_all(
+        \preg_match_all(
             $classPattern,
             $source,
             $classMatches,

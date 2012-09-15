@@ -30,6 +30,8 @@
  * @link      http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * Locale
  *
@@ -56,7 +58,7 @@ class AutoloaderLocale
      */
     static public function classConstructor()
     {
-        setlocale(LC_ALL, NULL);
+        \setlocale(LC_ALL, NULL);
     }
 
     /**
@@ -66,7 +68,7 @@ class AutoloaderLocale
      */
     public function __construct($domain)
     {
-        bindtextdomain($domain, __DIR__);
+        \bindtextdomain($domain, __DIR__);
         $this->_domain = $domain;
     }
 
@@ -80,10 +82,10 @@ class AutoloaderLocale
      */
     public function sprintf($message, $parameter = "")
     {
-        textdomain($this->_domain);
-        $arguments = func_get_args();
-        array_shift($arguments);
-        return vsprintf(_($message), $arguments);
+        \textdomain($this->_domain);
+        $arguments = \func_get_args();
+        \array_shift($arguments);
+        return \vsprintf(_($message), $arguments);
     }
 
 }

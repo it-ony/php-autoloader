@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * The parent class is needed.
  */
@@ -74,8 +76,8 @@ class AutoloaderIndex_SerializedHashtable extends AutoloaderIndex_File
      */
     protected function buildIndex($data)
     {
-        $index = unserialize($data);
-        if (! is_array($index)) {
+        $index = \unserialize($data);
+        if (! \is_array($index)) {
             $error = "Can not unserialize {$this->getIndexPath()}:"
                    . " $data";
             throw new AutoloaderException_Index($error);

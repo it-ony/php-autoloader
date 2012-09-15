@@ -30,6 +30,8 @@
  * @link      http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * These classes are needed. As autoloading does not work in the abstract
  * autoloader, they have to be required traditionally.
@@ -115,7 +117,7 @@ abstract class AbstractAutoloader
      */
     static public function normalizeClass(&$class)
     {
-        $class = strtolower($class);
+        $class = \strtolower($class);
     }
 
     /**
@@ -142,8 +144,8 @@ abstract class AbstractAutoloader
     public function register()
     {
         // spl_autoload_register() disables __autoload(). This might be unwanted.
-        if (function_exists('__autoload')) {
-            AutoloadAPI::getInstance()->registerAutoloader("__autoload");
+        if (\function_exists('\__autoload')) {
+            AutoloadAPI::getInstance()->registerAutoloader("\__autoload");
 
         }
         AutoloadAPI::getInstance()->registerAutoloader($this->getCallback());
@@ -242,9 +244,9 @@ abstract class AbstractAutoloader
          * a previously registered method.
          */
         if (
-            class_exists($class, false)
-            || interface_exists($class, false)
-            || trait_exists($class, false)
+            \class_exists($class, false)
+            || \interface_exists($class, false)
+            || \trait_exists($class, false)
         ) {
             return;
 
@@ -308,12 +310,12 @@ abstract class AbstractAutoloader
          * The include_once must get the @ error suppressor. But then an application
          * is no more debuggable plus the expected error would come in the error log.
          */
-        if (! file_exists($path)) {
+        if (! \file_exists($path)) {
             throw new AutoloaderException_Include_FileNotExists($path);
 
         }
         if (! include_once $path) {
-            $error = error_get_last();
+            $error = \error_get_last();
             throw new AutoloaderException_Include(
                 "Failed to include $path for $class: $error[message]"
             );
@@ -322,9 +324,9 @@ abstract class AbstractAutoloader
 
 
         if (! (
-            class_exists($class, false)
-            || interface_exists($class, false)
-            || trait_exists($class, false)
+            \class_exists($class, false)
+            || \interface_exists($class, false)
+            || \trait_exists($class, false)
         )) {
             throw new AutoloaderException_Include_ClassNotDefined($class);
 
@@ -355,7 +357,7 @@ abstract class AbstractAutoloader
                     . " is deprecated."
                     . " Use $class::" . self::CLASS_CONSTRUCTOR . "() instead!";
 
-                trigger_error($warning, E_USER_DEPRECATED);
+                \trigger_error($warning, E_USER_DEPRECATED);
 
             }
         }
@@ -380,7 +382,7 @@ abstract class AbstractAutoloader
                 $class, $constructorName
             );
 
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             throw new AutoloaderException_Include_ClassConstructor(
                 $class,
                 $exception

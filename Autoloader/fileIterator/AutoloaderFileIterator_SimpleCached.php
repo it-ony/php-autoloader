@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * These classes must be loaded.
  */
@@ -166,7 +168,7 @@ class AutoloaderFileIterator_SimpleCached extends AutoloaderFileIterator
             return true;
 
         } else {
-            $this->_iterator = new ArrayIterator($this->_foundFiles);
+            $this->_iterator = new \ArrayIterator($this->_foundFiles);
             return false;
 
         }

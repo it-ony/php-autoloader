@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * Stores the location of class defintions for speeding up recurring searches
  *
@@ -49,7 +51,7 @@
  * @see        Autoloader::setIndex()
  * @see        Autoloader::getIndex()
  */
-abstract class AutoloaderIndex implements Countable
+abstract class AutoloaderIndex implements \Countable
 {
 
     private
@@ -380,7 +382,7 @@ abstract class AutoloaderIndex implements Countable
     final protected function getContext()
     {
         return empty($this->_context)
-            ? md5($this->autoloader->getPath())
+            ? \md5($this->autoloader->getPath())
             : $this->_context;
     }
 

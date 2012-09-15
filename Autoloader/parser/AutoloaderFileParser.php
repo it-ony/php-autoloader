@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * These classes must be loaded.
  */
@@ -123,8 +125,8 @@ abstract class AutoloaderFileParser
         $classes            = $this->getClassesInSource($source);
 
         $this->_normalizeClass($normalizedClass);
-        array_walk($classes, array($this, '_normalizeClass'));
-        return in_array($normalizedClass, $classes);
+        \array_walk($classes, array($this, '_normalizeClass'));
+        return \in_array($normalizedClass, $classes);
     }
 
     /**
@@ -171,7 +173,7 @@ abstract class AutoloaderFileParser
      */
     private function _normalizeClass(&$class, $index = false)
     {
-        $class = strtolower($class);
+        $class = \strtolower($class);
     }
 
     /**
@@ -188,9 +190,9 @@ abstract class AutoloaderFileParser
      */
     private function _getSource($file)
     {
-        $source = @file_get_contents($file);
+        $source = @\file_get_contents($file);
         if ($source === false) {
-            $error = error_get_last();
+            $error = \error_get_last();
             throw new AutoloaderException_Parser_IO(
                 "Could not read $file while searching for classes: $error[message]"
             );

@@ -1,6 +1,8 @@
 #!/bin/env php
 <?php
 
+namespace malkusch\autoloader\example;
+
 try {
     require __DIR__ . "/../../autoloader.php";
 

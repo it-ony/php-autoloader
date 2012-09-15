@@ -30,6 +30,8 @@
  * @link      http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * These classes are needed. As autoloading does not work here,
  * they have to be required traditionally.
@@ -213,7 +215,7 @@ class Autoloader extends AbstractAutoloader
      */
     static public function getRegisteredAutoloader($path = null)
     {
-        $path = realpath(is_null($path) ? self::_getCallersPath() : $path);
+        $path = \realpath(is_null($path) ? self::_getCallersPath() : $path);
 
         foreach (self::getRegisteredAutoloaders() as $autoloader) {
             if (strpos($path, $autoloader->getPath()) === 0) {
@@ -288,12 +290,12 @@ class Autoloader extends AbstractAutoloader
     static private function _getCallersPath()
     {
         $autoloaderPaths = array(
-            realpath(__DIR__),
-            realpath(__DIR__ . '/..'),
+            \realpath(__DIR__),
+            \realpath(__DIR__ . '/..'),
         );
-        foreach (debug_backtrace() as $trace) {
-            $path = realpath(dirname($trace['file']));
-            if (! in_array($path, $autoloaderPaths)) {
+        foreach (\debug_backtrace() as $trace) {
+            $path = \realpath(\dirname($trace['file']));
+            if (! \in_array($path, $autoloaderPaths)) {
                 return $path;
 
             }
@@ -484,7 +486,7 @@ class Autoloader extends AbstractAutoloader
     {
         foreach (self::getRegisteredAutoloaders() as $removalCandidate) {
             foreach (self::getRegisteredAutoloaders() as $parentCandidate) {
-                $strpos = strpos(
+                $strpos = \strpos(
                     $removalCandidate->getPath(),
                     $parentCandidate->getPath()
                 );
@@ -515,7 +517,7 @@ class Autoloader extends AbstractAutoloader
     {
         $realpath = realpath($path);
         if (! $realpath) {
-            if (! file_exists($path)) {
+            if (! \file_exists($path)) {
                 throw new AutoloaderException_ClassPath_NotExists(
                     $this->locale->sprintf("CLASSPATH_NOT_EXIST", $path)
                 );
@@ -658,7 +660,7 @@ class Autoloader extends AbstractAutoloader
      */
     protected function searchPath($class)
     {
-        set_time_limit($this->_searchTimeoutSeconds);
+        \set_time_limit($this->_searchTimeoutSeconds);
 
         $caughtExceptions = array();
         try {

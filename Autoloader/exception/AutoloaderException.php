@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * Base exception of the PHP Autoloader project
  * 
@@ -44,7 +46,7 @@
  * @version    Release: 1.12
  * @link       http://php-autoloader.malkusch.de/en/
  */
-class AutoloaderException extends Exception
+class AutoloaderException extends \Exception
 {
     
 }

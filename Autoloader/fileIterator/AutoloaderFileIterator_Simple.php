@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+namespace malkusch\autoloader;
+
 /**
  * The parent class must be loaded.
  */
@@ -111,7 +113,7 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
     public function rewind()
     {
         $this->_stack    = array();
-        $this->_iterator = new DirectoryIterator($this->autoloader->getPath());
+        $this->_iterator = new \DirectoryIterator($this->autoloader->getPath());
         $this->_iterator->rewind();
     }
 
@@ -139,7 +141,7 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
 
             // recurse backwards
             if (! $this->_iterator->valid()) {
-                $this->_iterator = array_pop($this->_stack);
+                $this->_iterator = \array_pop($this->_stack);
                 continue;
 
             }
@@ -154,7 +156,7 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
 
             // apply file filters
             foreach ($this->skipPatterns as $pattern) {
-                if (preg_match($pattern, $path)) {
+                if (\preg_match($pattern, $path)) {
                     $this->_iterator->next();
                     continue 2;
 
@@ -163,7 +165,7 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
             }
 
             // skip . and ..
-            $isNavigationLink = in_array(
+            $isNavigationLink = \in_array(
                 $this->_iterator->current()->getFilename(), array('.', '..')
             );
             if ($isNavigationLink) {
@@ -176,7 +178,7 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
             if ($this->_iterator->current()->isDir()) {
                 $this->_iterator->next();
                 $this->_stack[]  = $this->_iterator;
-                $this->_iterator = new DirectoryIterator($path);
+                $this->_iterator = new \DirectoryIterator($path);
                 $this->_iterator->rewind();
                 continue;
 

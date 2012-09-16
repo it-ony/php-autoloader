@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+use malkusch\autoloader\AutoloadAPI;
+
 /**
  * Needed classes
  */
@@ -67,8 +69,8 @@ class TestAutoloadAPI extends PHPUnit_Framework_TestCase
     {
         $expectedInstance
             = version_compare(PHP_VERSION, "5.2.11", '>=')
-            ? 'AutoloadAPI'
-            : 'AutoloadAPI_Old';
+            ? 'malkusch\autoloader\AutoloadAPI'
+            : 'malkusch\autoloader\AutoloadAPI_Old';
 
         $this->assertEquals(
             $expectedInstance,

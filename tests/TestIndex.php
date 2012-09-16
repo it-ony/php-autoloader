@@ -31,6 +31,17 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+use malkusch\autoloader\AutoloaderIndex_Dummy;
+use malkusch\autoloader\AutoloaderIndex;
+use malkusch\autoloader\Autoloader;
+use malkusch\autoloader\AutoloaderIndex_PHPArrayCode;
+use malkusch\autoloader\AutoloaderIndex_CSV;
+use malkusch\autoloader\AutoloaderIndex_IniFile;
+use malkusch\autoloader\AutoloaderIndex_SerializedHashtable;
+use malkusch\autoloader\AutoloaderIndex_SerializedHashtable_GZ;
+use malkusch\autoloader\AutoloaderIndex_Memcache;
+use malkusch\autoloader\AutoloaderIndex_PDO;
+
 /**
  * The Autoloader is used for class loading.
  */
@@ -168,7 +179,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
      * @param AutoloaderIndex $index The tested AutoloaderIndex object
      *
      * @dataProvider provideIndexes
-     * @expectedException AutoloaderException_Index_NotFound
+     * @expectedException malkusch\autoloader\AutoloaderException_Index_NotFound
      * @see AutoloaderIndex::getPath()
      * @see AutoloaderException_Index_NotFound
      * @return void
@@ -423,7 +434,7 @@ class TestIndex extends PHPUnit_Framework_TestCase
      */
     private function _createAutoloaderIndexPdoMySQL()
     {
-        $index = new AutoloaderIndex_PDO(new PDO("mysql:dbname=test"));
+        $index = new AutoloaderIndex_PDO(new PDO("mysql:dbname=test", "test"));
         $this->_initIndex($index);
         return $index;
     }

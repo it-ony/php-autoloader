@@ -226,7 +226,7 @@ class InstantAutoloader
 
         }
         
-        if ($reflectionClass->isTrait()) {
+        if (\version_compare(PHP_VERSION, "5.4", '>=') && $reflectionClass->isTrait()) {
             return false;
 
         }

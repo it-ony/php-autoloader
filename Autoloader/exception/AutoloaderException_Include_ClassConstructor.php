@@ -61,7 +61,7 @@ class AutoloaderException_Include_ClassConstructor extends
      * @param String    $class classname
      * @param Exception $cause cause for this exception
      */
-    public function __construct($class, Exception $cause)
+    public function __construct($class, \Exception $cause)
     {
         $causeExceptionName = get_class($cause);
         parent::__construct(

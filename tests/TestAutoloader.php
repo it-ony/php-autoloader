@@ -31,6 +31,10 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+use malkusch\autoloader\Autoloader;
+use malkusch\autoloader\AbstractAutoloader;
+use malkusch\autoloader\AutoloaderException_PathNotRegistered;
+
 /**
  * The Autoloader is used for class loading.
  */
@@ -66,7 +70,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     /**
      * An exception during the class constructor should be thrown
      *
-     * @expectedException AutoloaderException_Include_ClassConstructor
+     * @expectedException malkusch\autoloader\AutoloaderException_Include_ClassConstructor
      * @return void
      */
     public function testClassConstructorException()
@@ -541,7 +545,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
      * @param Autoloader $autoloader An Autoloader which should fail
      *
      * @dataProvider provideTestFailBuildIndex
-     * @expectedException AutoloaderException_IndexBuildCollision
+     * @expectedException malkusch\autoloader\AutoloaderException_IndexBuildCollision
      * @see Autoloader::buildIndex()
      * @return void
      */
@@ -613,8 +617,8 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
 
         `cp -r $linkOption $sourcePath $copyPath`;
 
-        include __DIR__ . "/../Autoloader.php";
-        include "$copyPath/Autoloader.php";
+        include __DIR__ . "/../autoloader.php";
+        include "$copyPath/autoloader.php";
 
         `rm -rf $copyPath`;
     }
@@ -838,9 +842,13 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
         $cases[] = array(
             "interface_exists", false, "interface_" . uniqid()
         );
-        $cases[] = array(
-            "trait_exists", false, "trait_" . uniqid()
-        );
+        
+        if ($this->_autoloaderTestHelper->hasTraitsSupport()) {
+            $cases[] = array(
+                "trait_exists", false, "trait_" . uniqid()
+            );
+            
+        }
 
         // Existing cases
         $cases[] = array(
@@ -857,15 +865,19 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
                 "<?php interface %name% { } ?>"
             )
         );
-        $cases[] = array(
-            "trait_exists",
-            true,
-            $this->_autoloaderTestHelper->makeClass(
-                "Trait",
-                "",
-                "<?php trait %name% { } ?>"
-            )
-        );
+        
+        if ($this->_autoloaderTestHelper->hasTraitsSupport()) {
+            $cases[] = array(
+                "trait_exists",
+                true,
+                $this->_autoloaderTestHelper->makeClass(
+                    "Trait",
+                    "",
+                    "<?php trait %name% { } ?>"
+                )
+            );
+            
+        }
 
         return $cases;
     }
@@ -903,9 +915,12 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
         $classes[] = $this->_autoloaderTestHelper->makeClass("TestF1", "e/f");
         $classes[] = $this->_autoloaderTestHelper->makeClass("TestF2", "e/f");
 
-        $classes[] = $this->_autoloaderTestHelper->makeClass(
-            "TestTrait", "g", "<?php trait %name%{}?>"
-        );
+        if ($this->_autoloaderTestHelper->hasTraitsSupport()) {
+            $classes[] = $this->_autoloaderTestHelper->makeClass(
+                "TestTrait", "g", "<?php trait %name%{}?>"
+            );
+            
+        }
 
         $classes[] = $this->_autoloaderTestHelper->makeClass(
             "TestInterface", "g", "<?php interface %name%{}?>"
@@ -1014,7 +1029,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
      *
      * @param String $path A path wich is not registered
      *
-     * @expectedException AutoloaderException_PathNotRegistered
+     * @expectedException malkusch\autoloader\AutoloaderException_PathNotRegistered
      * @dataProvider provideTestGetRegisteredAutoloaderFailure
      * @see Autoloader::getRegisteredAutoloader()
      * @return void
@@ -1220,7 +1235,7 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
         $autoloaders = Autoloader::getRegisteredAutoloaders();
         Autoloader::removeAll();
 
-        $autoloaderPath = __DIR__ . "/../Autoloader.php";
+        $autoloaderPath = __DIR__ . "/../autoloader.php";
 
         $classA   = $this->_autoloaderTestHelper->makeClass("A", "a");
         $classA2  = $this->_autoloaderTestHelper->makeClass("A2", "a");

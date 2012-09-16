@@ -75,7 +75,7 @@ class AutoloaderFileParser_Tokenizer extends AutoloaderFileParser
      */
     static public function isSupported()
     {
-        return \function_exists("\token_get_all");
+        return \function_exists("token_get_all");
     }
 
 

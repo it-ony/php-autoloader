@@ -31,6 +31,12 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+use malkusch\autoloader\AutoloaderFileIterator;
+use malkusch\autoloader\AutoloaderFileIterator_Simple;
+use malkusch\autoloader\AutoloaderFileIterator_SimpleCached;
+use malkusch\autoloader\AutoloaderFileIterator_PriorityList;
+use malkusch\autoloader\Autoloader;
+
 /**
  * The Autoloader is used for class loading.
  */

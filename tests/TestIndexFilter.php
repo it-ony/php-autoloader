@@ -31,6 +31,8 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+use malkusch\autoloader\AutoloaderIndexFilter_RelativePath;
+
 /**
  * The Autoloader is used for class loading.
  */
@@ -111,7 +113,7 @@ class TestIndexFilter extends PHPUnit_Framework_TestCase
     public function testFailRelativePathBasePath($basePath)
     {
         $this->setExpectedException(
-            'AutoloaderException_Index_Filter_RelativePath_InvalidBasePath'
+            'malkusch\autoloader\AutoloaderException_Index_Filter_RelativePath_InvalidBasePath'
         );
         new AutoloaderIndexFilter_RelativePath($basePath);
     }

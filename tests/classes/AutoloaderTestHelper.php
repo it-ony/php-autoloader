@@ -199,9 +199,7 @@ class AutoloaderTestHelper
         $directory,
         $definition = "<?php namespace %namespace%; class %name%{}?>"
     ) {
-        $definition = \str_replace('%namespace%', $namespace, $definition);
-        $name       = $this->makeClass($name, $directory, $definition);
-        return "$namespace\\$name";
+        return $this->makeClass($name, $directory, $definition, $namespace);
     }
 
     /**
@@ -223,16 +221,22 @@ class AutoloaderTestHelper
      * @return String The name of the created class
      */
     public function makeClass(
-        $name, $directory, $definition = "<?php class %name%{}?>"
+        $name, $directory, $definition = "<?php class %name%{}?>",
+        $namespace = null
     ) {
         $name     .= \uniqid();
         $directory = self::getClassDirectory() . DIRECTORY_SEPARATOR . $directory;
         $path      = $directory . DIRECTORY_SEPARATOR . "$name.test.php";
 
 
-        $normlizedName = $name;
-        AbstractAutoloader::normalizeClass($normlizedName);
-        $this->_generatedClassPaths[$normlizedName] = $path;
+        $normalizedName = $name;
+        if (! empty($namespace)) {
+            $normalizedName = $namespace . "\\" . $name;
+            
+        }
+        AbstractAutoloader::normalizeClass($normalizedName);
+        
+        $this->_generatedClassPaths[$normalizedName] = $path;
 
         if (\file_exists($path)) {
             return $name;
@@ -244,9 +248,19 @@ class AutoloaderTestHelper
 
         }
         $definition = \str_replace("%name%", $name, $definition);
+        if (! empty($namespace)) {
+            $definition = \str_replace('%namespace%', $namespace, $definition);
+            
+        }
         \file_put_contents($path, $definition);
 
-        return $name;
+        if (! empty($namespace)) {
+            return "$namespace\\$name";
+            
+        } else {
+            return $name;
+            
+        }
     }
 
     /**
@@ -263,9 +277,9 @@ class AutoloaderTestHelper
      */
     public function getGeneratedClassPath($class)
     {
-        $normlizedName = $class;
-        AbstractAutoloader::normalizeClass($normlizedName);
-        return $this->_generatedClassPaths[$normlizedName];
+        $normalizedName = $class;
+        AbstractAutoloader::normalizeClass($normalizedName);
+        return $this->_generatedClassPaths[$normalizedName];
     }
 
     /**

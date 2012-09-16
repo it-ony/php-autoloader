@@ -31,6 +31,11 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+use malkusch\autoloader\AutoloaderFileParser;
+use malkusch\autoloader\AutoloaderFileParser_RegExp;
+use malkusch\autoloader\AutoloaderFileParser_Tokenizer;
+use malkusch\autoloader\Autoloader;
+
 /**
  * The Autoloader is used for class loading.
  */
@@ -220,7 +225,6 @@ class TestParser extends PHPUnit_Framework_TestCase
     public function provideSource()
     {
         $cases = array(
-            array(array("Test"), "<?php trait Test{}?>"),
             array(array("Test"), "<?php interface Test{}?>"),
             array(array("teSt"), "<?php interface teSt{}?>"),
             array(array("Test"), "<?php abstract class Test{}?>"),
@@ -316,6 +320,13 @@ class TestParser extends PHPUnit_Framework_TestCase
             );
 
         }
+        
+        // These tests works only if PHP >= 5.3
+        if ($helper->hasTraitsSupport()) {
+            $cases[] = array(array("Test"), "<?php trait Test{}?>");
+            
+        }
+        
         return $cases;
     }
 

@@ -31,6 +31,9 @@
  * @link       http://php-autoloader.malkusch.de/en/
  */
 
+use malkusch\autoloader\Autoloader;
+use malkusch\autoloader\InternalAutoloader;
+
 /**
  * The Autoloader is used for class loading.
  */
@@ -67,7 +70,7 @@ class TestInternalAutoloader extends PHPUnit_Framework_TestCase
         $autoloaderTestHelper = new AutoloaderTestHelper($this);
 
         Autoloader::removeAll();
-
+        
         $autoloaderTestHelper->assertNotLoadable($class);
         InternalAutoloader::getInstance()->registerClass($class, $path);
         $autoloaderTestHelper->assertLoadable($class);
@@ -145,7 +148,8 @@ class TestInternalAutoloader extends PHPUnit_Framework_TestCase
         $autoloaderTestHelper = new AutoloaderTestHelper($this);
         $return               = array();
 
-        $class    = $autoloaderTestHelper->makeClass(
+        $class    = $autoloaderTestHelper->makeClassInNamespace(
+            "malkusch\autoloader",
             "ClassA",
             'testInternal'
         );
@@ -153,7 +157,8 @@ class TestInternalAutoloader extends PHPUnit_Framework_TestCase
             $class,
             $autoloaderTestHelper->getGeneratedClassPath($class)
         );
-        $class    = $autoloaderTestHelper->makeClass(
+        $class    = $autoloaderTestHelper->makeClassInNamespace(
+            "malkusch\autoloader",
             "ClassA2",
             'testInternal'
         );
@@ -161,7 +166,8 @@ class TestInternalAutoloader extends PHPUnit_Framework_TestCase
             $class,
             $autoloaderTestHelper->getGeneratedClassPath($class)
         );
-        $class    = $autoloaderTestHelper->makeClass(
+        $class    = $autoloaderTestHelper->makeClassInNamespace(
+            "malkusch\autoloader",
             "ClassB",
             'testInternal/sub'
         );

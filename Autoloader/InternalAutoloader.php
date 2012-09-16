@@ -148,7 +148,10 @@ class InternalAutoloader extends AbstractAutoloader
      */
     public function registerClass($class, $path)
     {
-        $class = __NAMESPACE__ . "\\" . $class;
+        if (strpos($class, "\\") === false) {
+            $class = __NAMESPACE__ . "\\" . $class;
+            
+        }
         Autoloader::normalizeClass($class);
         $this->_classes[$class] = $path;
     }

@@ -2,7 +2,7 @@ PHP-Autoloader
 ==============
 
 The Autoloader works out of the box as simple as possible. You have
-nothing more to do than include the file Autoloader.php. Don't bother the
+nothing more to do than include the file autoloader.php. Don't bother the
 time it consumes when it's called the first time. Let it build its index.
 The second time it will run as fast as light.
 
@@ -29,7 +29,7 @@ The simplest and probably most common use case shows this example:
     {
     
     
-As you can see it's only necessary to require Autoloader.php once.
+As you can see it's only necessary to require autoloader.php once.
 If this is done in the document root of your classes (*index.php* in
 this case) the Autoloader is already configured. After requiring
 this file you don't have to worry where your classes reside.
@@ -39,6 +39,9 @@ As the autoloader has no knowledge of this arbitrary path you have to
 tell him where your class path is:
 
     <?php
+
+    use malkusch\autoloader\Autoloader;
+
     require __DIR__ . "/autoloader/autoloader.php";
     
     // As the guessed class path is wrong you should remove this Autoloader.

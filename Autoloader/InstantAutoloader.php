@@ -101,8 +101,8 @@ class InstantAutoloader
     public function register()
     {
         // spl_autoload_register() disables __autoload(). This might be unwanted.
-        if (\function_exists("\__autoload")) {
-            \spl_autoload_register("\__autoload");
+        if (\function_exists("__autoload")) {
+            \spl_autoload_register("__autoload");
 
         }
         \spl_autoload_register(array($this, "__autoload"));

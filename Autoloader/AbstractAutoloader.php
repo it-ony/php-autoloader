@@ -144,8 +144,8 @@ abstract class AbstractAutoloader
     public function register()
     {
         // spl_autoload_register() disables __autoload(). This might be unwanted.
-        if (\function_exists('\__autoload')) {
-            AutoloadAPI::getInstance()->registerAutoloader("\__autoload");
+        if (\function_exists('__autoload')) {
+            AutoloadAPI::getInstance()->registerAutoloader("__autoload");
 
         }
         AutoloadAPI::getInstance()->registerAutoloader($this->getCallback());

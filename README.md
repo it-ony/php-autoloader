@@ -28,6 +28,8 @@ The simplest and probably most common use case shows this example:
     class MyParentClass
     {
     
+    }
+    
     
 As you can see it's only necessary to require autoloader.php once.
 If this is done in the document root of your classes (*index.php* in

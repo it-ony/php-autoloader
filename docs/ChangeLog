@@ -3,6 +3,11 @@
     * Autoloader/Autoloader.php (Autoloader):
     Moved into namespace malkusch\autoloader
 
+2012-09-14 Markus Malkusch <markus@malkusch.de>
+
+    * Autoloader.php:
+    Renamed Autoloader.php into autoloader.php
+
 2012-09-11 Markus Malkusch <markus@malkusch.de>
 
     * Autoloader/parser/AutoloaderFileParser_Tokenizer.php (AutoloaderFileParser_Tokenizer::getClassesInSource()):

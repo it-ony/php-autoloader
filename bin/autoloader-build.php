@@ -43,6 +43,14 @@
 namespace malkusch\autoloader;
 
 /**
+ * fix PHP version 
+ */
+include_once __DIR__ . "/../Autoloader/OldPHPAPI.php";
+$__oldAPI = new OldPHPAPI();
+$__oldAPI->checkAPI();
+unset($__oldAPI);
+
+/**
  * Autoloader classes
  */
 require __DIR__ . "/../Autoloader/Autoloader.php";

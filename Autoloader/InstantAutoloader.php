@@ -155,11 +155,17 @@ class InstantAutoloader
         if (
             \class_exists($class, false)
             || \interface_exists($class, false)
-            || \trait_exists($class, false)
         ) {
             return;
 
         }
+	if (
+            \version_compare(PHP_VERSION, "5.4", '>=')
+	    && \trait_exists($class, false)
+        ) {
+	    return;
+
+	}
         if (! \array_key_exists($class, $this->_index)) {
             return;
 

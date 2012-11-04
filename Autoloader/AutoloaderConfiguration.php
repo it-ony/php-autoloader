@@ -93,6 +93,10 @@ class AutoloaderConfiguration
      */
     FILE = "file",
     /**
+     * File permissions
+     */
+    PERMISSIONS = "permissions",
+    /**
      * Memcache host
      */
     MEMCACHE_HOST = "memcache.host",
@@ -295,7 +299,7 @@ class AutoloaderConfiguration
         
         return $this->_configuration[$setting];
     }
-
+    
     /**
      * Read a classname from configuration
      *
@@ -415,15 +419,18 @@ class AutoloaderConfiguration
                 'AutoloaderIndex_SerializedHashtable_GZ'
             );
 
-        // set a configured file
-        if (
-            $index instanceof AutoloaderIndex_File
-            && $this->hasSetting(self::FILE)
-        ) {
-            $index->setIndexPath(
-                $this->getValue(self::FILE)
-            );
+        // configure AutoloaderIndex_File
+        if ($index instanceof AutoloaderIndex_File) {
+            // set the file
+            if ($this->hasSetting(self::FILE)) {
+                $index->setIndexPath($this->getValue(self::FILE));
 
+            }
+            // set the file permissions
+            if ($this->hasSetting(self::PERMISSIONS)) {
+                $index->setFilePermissions(intval($this->getValue(self::PERMISSIONS), 8));
+
+            }
         }
 
         return $index;

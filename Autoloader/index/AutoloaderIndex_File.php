@@ -83,6 +83,10 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
 
     private
     /**
+     * @var int
+     */
+    $_filePermissions = 0644,
+    /**
      * @var String
      */
     $_path = '',
@@ -115,6 +119,21 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
      */
     abstract protected function serializeIndex(Array $index);
 
+    /**
+     * Sets the file permissions for the index file
+     * 
+     * The default permissions are 0644 (-rw-r--r--). If you use the autoloader
+     * as different users you should change the persmissions to 0664 or 0666.
+     * 
+     * @param int $permissions file permissions
+     * 
+     * @return void
+     */
+    public function setFilePermissions($permissions)
+    {
+        $this->_filePermissions = $permissions;
+    }
+    
     /**
      * Sets the path to the index file
      *
@@ -289,7 +308,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
 
         }
         
-        \chmod($this->getIndexPath(), 0644);
+        \chmod($this->getIndexPath(), $this->_filePermissions);
     }
 
     /**

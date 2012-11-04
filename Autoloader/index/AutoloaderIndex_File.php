@@ -123,7 +123,7 @@ abstract class AutoloaderIndex_File extends AutoloaderIndex
      * Sets the file permissions for the index file
      * 
      * The default permissions are 0644 (-rw-r--r--). If you use the autoloader
-     * as different users you should change the persmissions to 0664 or 0666.
+     * as different users you should change the permissions to 0664 or 0666.
      * 
      * @param int $permissions file permissions
      * 

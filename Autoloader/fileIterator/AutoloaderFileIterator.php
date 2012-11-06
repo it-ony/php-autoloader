@@ -77,6 +77,7 @@ abstract class AutoloaderFileIterator implements \Iterator
      */
     $skipPatterns = array(
         '~/\.svn/~',
+        '~/\.git/~',
         '~/\.CVS/~',
         '~\.(dist|jpe?g|gif|png|svg|og[gm]|mp3|wav|mpe?g)$~i'
     ),
@@ -129,7 +130,7 @@ abstract class AutoloaderFileIterator implements \Iterator
      *
      * This is useful for version control paths where files
      * with class definitions exists.
-     * Subversion (.svn) and CVS (.CVS) are excluded by default.
+     * Subversion (.svn), CVS (.CVS) and GIT (.git) are excluded by default.
      *
      * This changes the configuration of this object, so reset() is called.
      *

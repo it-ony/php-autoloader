@@ -44,7 +44,7 @@ InternalAutoloader::getInstance()->registerClass(
 /**
  * Searches all files without any logic
  *
- * It uses a stack of DirectoryIterator objects for searching recursively.
+ * It uses RecursiveDirectoryIterator.
  *
  * @category   PHP
  * @package    Autoloader
@@ -60,11 +60,7 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
 
     private
     /**
-     * @var Array The stack hold DirectoryIterator objects for recursion.
-     */
-    $_stack = array(),
-    /**
-     * @var DirectoryIterator The current used DirectoryIterator object.
+     * @var \RecursiveDirectoryIterator
      */
     $_iterator;
 
@@ -80,7 +76,7 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
     }
 
     /**
-     * Returns the key of the current DirectoryIterator object.
+     * Returns the key of the current file.
      *
      * This key is not meant to be used or to be distinct.
      *
@@ -93,7 +89,7 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
     }
 
     /**
-     * Calls next() on the current DirectoryIterator
+     * Calls next() on the iterator
      *
      * @see Iterator::next()
      * @return void
@@ -104,98 +100,64 @@ class AutoloaderFileIterator_Simple extends AutoloaderFileIterator
     }
 
     /**
-     * Clears the stack and sets the current iterator to a new instance of
-     * DirectoryIterator with the class path of $autoloader.
+     * Rewinds the iterator
      *
      * @see Iterator::rewind()
      * @return void
      */
     public function rewind()
     {
-        $this->_stack    = array();
-        $this->_iterator = new \DirectoryIterator($this->autoloader->getPath());
+        $flags = \FilesystemIterator::SKIP_DOTS
+            | \FilesystemIterator::FOLLOW_SYMLINKS
+            | \FilesystemIterator::CURRENT_AS_FILEINFO;
+        $this->_iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($this->autoloader->getPath(), $flags)
+        );
         $this->_iterator->rewind();
     }
 
     /**
-     * Does the recursion magic
+     * Filters the result set
      * 
-     * If the current path is a directory, the current iterator is put on the stack
-     * and a new DirectoryIterator with the current path becomes the current
-     * iterator.
-     * 
-     * If the current iterator is no more valid the last iterator is pulled from the
-     * stack and becomes the current iterator. If no more iterators are left on the
-     * stack, this iterator is no more valid.
-     *
      * @see Iterator::valid()
      * @return bool
      */
     public function valid()
     {
-        while (true) {
-            if (is_null($this->_iterator)) {
-                return false;
-
-            }
-
-            // recurse backwards
-            if (! $this->_iterator->valid()) {
-                $this->_iterator = \array_pop($this->_stack);
-                continue;
-
-            }
-
-            // skip unreadable nodes
-            if (! $this->_iterator->current()->isReadable()) {
-                continue;
-
-            }
-
-            $path = $this->_iterator->current()->getPathname();
-
-            // apply file filters
-            foreach ($this->skipPatterns as $pattern) {
-                if (\preg_match($pattern, $path)) {
-                    $this->_iterator->next();
-                    continue 2;
-
-                }
-
-            }
-
-            // skip . and ..
-            $isNavigationLink = \in_array(
-                $this->_iterator->current()->getFilename(), array('.', '..')
-            );
-            if ($isNavigationLink) {
-                $this->_iterator->next();
-                continue;
-
-            }
-
-            // recurse through the directories
-            if ($this->_iterator->current()->isDir()) {
-                $this->_iterator->next();
-                $this->_stack[]  = $this->_iterator;
-                $this->_iterator = new \DirectoryIterator($path);
-                $this->_iterator->rewind();
-                continue;
-
-            }
-
-            // skip too big files
-            $isTooBig
-                = ! empty($this->skipFilesize)
-                && $this->_iterator->current()->getSize() > $this->skipFilesize;
-            if ($isTooBig) {
-                $this->_iterator->next();
-                continue;
-
-            }
-
-            return true;
+        if (! $this->_iterator->valid()) {
+            return false;
+            
         }
+        
+        // skip unreadable nodes
+        if (! $this->_iterator->current()->isReadable()) {
+            $this->_iterator->next();
+            return $this->valid();
+            
+        }
+        
+        $path = $this->_iterator->current()->getPathname();
+
+        // apply file filters
+        foreach ($this->skipPatterns as $pattern) {
+            if (preg_match($pattern, $path)) {
+                $this->_iterator->next();
+                return $this->valid();
+
+            }
+        }
+
+        // skip too big files
+        $isTooBig
+            = ! empty($this->skipFilesize)
+            && $this->_iterator->current()->getSize() > $this->skipFilesize;
+        if ($isTooBig) {
+            $this->_iterator->next();
+            return $this->valid();
+
+        }
+
+        return true;
     }
 
 }

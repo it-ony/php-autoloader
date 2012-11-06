@@ -139,6 +139,9 @@ class TestFileIterator extends PHPUnit_Framework_TestCase
         $alTestHelper->getGeneratedClassPath(
             $alTestHelper->makeClass("I4", "testCompleteIteration/.svn")
         );
+        $alTestHelper->getGeneratedClassPath(
+            $alTestHelper->makeClass("I5", "testCompleteIteration/.git")
+        );
         $classDirectory
             = AutoloaderTestHelper::getClassDirectory("testCompleteIteration");
         touch("$classDirectory/test.dist");
@@ -360,6 +363,7 @@ class TestFileIterator extends PHPUnit_Framework_TestCase
         $alTestHelper->makeClass("B", "testEmptyIterator/onlyIgnored/.svn");
         $alTestHelper->makeClass("C", "testEmptyIterator/onlyIgnored/.svn/C");
         $alTestHelper->makeClass("D", "testEmptyIterator/onlyIgnored/myPattern1");
+        $alTestHelper->makeClass("E", "testEmptyIterator/onlyIgnored/.git");
         $alTestHelper->makeClass("myPattern2", "testEmptyIterator/onlyIgnored/");
         mkdir(
             AutoloaderTestHelper::getClassDirectory(

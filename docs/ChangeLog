@@ -1,3 +1,8 @@
+2012-11-06 Markus Malkusch <markus@malkusch.de>
+
+    * Autoloader/fileIterator/AutoloaderFileIterator_Simple (AutoloaderFileIterator_Simple):
+    Using PHP's RecursiveDirectoryIterator.
+
 2012-11-04 Markus Malkusch <markus@malkusch.de>
 
     * Autoloader/index/AutoloaderIndex_File (AutoloaderIndex_File):

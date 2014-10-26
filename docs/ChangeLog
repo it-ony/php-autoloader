@@ -1,3 +1,9 @@
+2014-10-26 Markus Malkusch <markus@malkusch.de>
+
+    * Autoloader/InstantAutoloader.php (InstantAutoloader):
+    Fix issue with multiple class declarations.
+    See https://github.com/bav-php/bav-symfony/issues/1
+
 2012-11-06 Markus Malkusch <markus@malkusch.de>
 
     * Autoloader/fileIterator/AutoloaderFileIterator_Simple (AutoloaderFileIterator_Simple):

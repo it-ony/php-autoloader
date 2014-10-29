@@ -485,6 +485,8 @@ class Autoloader extends AbstractAutoloader
     private static function _normalizeSearchPaths()
     {
         foreach (self::getRegisteredAutoloaders() as $removalCandidate) {
+            $removalParts = explode(DIRECTORY_SEPARATOR, $removalCandidate->getPath());
+
             foreach (self::getRegisteredAutoloaders() as $parentCandidate) {
                 $strpos = \strpos(
                     $removalCandidate->getPath(),
@@ -493,7 +495,13 @@ class Autoloader extends AbstractAutoloader
                 $isIncluded
                     = $strpos === 0
                     && $removalCandidate !== $parentCandidate;
-                if ($isIncluded) {
+                if (! $isIncluded) {
+                    continue;
+
+                }
+
+                $parentParts = explode(DIRECTORY_SEPARATOR, $parentCandidate->getPath());
+                if (array_slice($removalParts, 0, count($parentParts)) == $parentParts) {
                     $removalCandidate->_removeByNormalization();
 
                 }

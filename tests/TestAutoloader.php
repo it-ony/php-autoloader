@@ -765,6 +765,57 @@ class TestAutoloader extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests two separate classpaths where one is the prefix of the other.
+     *
+     * Registering e.g. classes/ and classes2/ should result in two
+     * registered autoloaders.
+     *
+     * @dataProvider provideTestNormalizedClassPathPrefixRegression()
+     */
+    public function testNormalizedClassPathPrefixRegression($path1, $path2)
+    {
+        $autoloader = Autoloader::getRegisteredAutoloader();
+        Autoloader::removeAll();
+
+        $classA = $this->_autoloaderTestHelper->makeClass(
+            "A", "testNormalizedClassPathPrefixRegression/$path1"
+        );
+        $autoloaderA = new Autoloader(
+            AutoloaderTestHelper::getClassDirectory() . "/testNormalizedClassPathPrefixRegression/$path1"
+        );
+
+        $classB = $this->_autoloaderTestHelper->makeClass(
+            "B", "testNormalizedClassPathPrefixRegression/$path2"
+        );
+        $autoloaderB = new Autoloader(
+            AutoloaderTestHelper::getClassDirectory() . "/testNormalizedClassPathPrefixRegression/$path2"
+        );
+
+        $autoloaderA->register();
+        $autoloaderB->register();
+
+        $this->assertTrue($autoloaderA->isRegistered());
+        $this->assertTrue($autoloaderB->isRegistered());
+
+        Autoloader::removeAll();
+        $autoloader->register();
+    }
+
+    public function provideTestNormalizedClassPathPrefixRegression()
+    {
+        return array(
+            array(
+                "classes",
+                "classes2"
+            ),
+            array(
+                "classes",
+                "classes2/subdir"
+            )
+        );
+    }
+
+    /**
      * Asserts that an autoloader has the expected class path
      *
      * @param Autoloader $autoloader   An instance of Autoloader

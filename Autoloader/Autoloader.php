@@ -571,7 +571,7 @@ class Autoloader extends AbstractAutoloader
      */
     private function _getAutoloaderPosition()
     {
-        $position = array_search($this, self::getRegisteredAutoloaders());
+        $position = array_search($this, self::getRegisteredAutoloaders(), true);
         if ($position === false) {
             throw new AutoloaderException_PathNotRegistered($this->_path);
 

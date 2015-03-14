@@ -158,7 +158,14 @@ abstract class AutoloaderFileParser
      */
     public function getClassesInFile($file)
     {
-        return $this->getClassesInSource($this->_getSource($file));
+        $classesInSource = $this->getClassesInSource($this->_getSource($file));
+        $ret = array();
+
+        foreach ($classesInSource as $class) {
+            $ret[$class] = true;
+        }
+
+        return array_keys($ret);
     }
 
     /**
